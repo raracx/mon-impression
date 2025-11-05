@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "monimpression - Personnalisez vos produits",
+    "description": "Boutique d'impression personnalisée: t-shirts, hoodies, tasses, masques."
+  },
+  "header": {
+    "nav": {
+      "customize": "Personnaliser",
+      "catalog": "Catalogue",
+      "faq": "FAQ",
+      "submission": "Soumission",
+      "contact": "Contactez-nous",
+      "sizes": "Tableau des tailles"
+    },
+    "search": "Rechercher",
+    "account": "Compte",
+    "cart": "Panier"
+  },
+  "footer": {
+    "company": "monimpression",
+    "address": "7077 Blvd. Newman, LaSalle, QC H8N 1X1",
+    "phone": "438-299-6565",
+    "email": "contact@monimpression.com",
+    "information": "Informations",
+    "about": "À propos",
+    "contactUs": "Nous Contacter",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'utilisation",
+    "myAccount": "Mon Compte",
+    "login": "Se connecter",
+    "orders": "Mes commandes",
+    "helpSupport": "Aide & Support",
+    "shipping": "Infos sur les prix",
+    "returns": "Retours",
+    "copyright": "Tous droits réservés"
+  },
+  "home": {
+    "hero": {
+      "title": "La boutique du vêtement sur mesure moderne.",
+      "subtitle1": "Personnalisez vos t-shirts, hoodies et accessoires en ligne.",
+      "subtitle2": "Conçus pour durer, imprimés ici, livrés partout.",
+      "cta": "Lancer le studio"
+    },
+    "popularProducts": "Produits populaires",
+    "viewAll": "Voir tout",
+    "features": {
+      "fast": "Livraison rapide",
+      "fastDesc": "Expédition sous 2-5 jours",
+      "quality": "Qualité garantie",
+      "qualityDesc": "Produits testés et approuvés",
+      "support": "Support 7j/7",
+      "supportDesc": "On est là pour vous"
+    },
+    "section1": {
+      "title": "Créez votre pièce personnalisée ou laissez‑nous le faire pour vous",
+      "description": "Concevez en ligne des vêtements et accessoires sur mesure (t‑shirts, hoodies, casquettes, tasses, etc.). Choisissez votre modèle, téléversez vos visuels, ajoutez du texte et prévisualisez en temps réel — nous nous occupons du reste."
+    },
+    "section2": {
+      "title": "Choisissez un design qui buzz",
+      "description": "Parcourez des centaines d'idées pour vêtements et accessoires, ou créez votre propre design. Sauvegardez vos maquettes et commandez en un clic.",
+      "proudlyCanadian": "Fièrement canadien"
+    },
+    "whyChoose": {
+      "title": "Pourquoi choisir monimpression ?",
+      "reason1": "Bonne qualité, prix honnêtes, fait sur mesure",
+      "reason2": "Production rapide (souvent 5 à 15 minutes pour de petits items)",
+      "reason3": "Grande variété de vêtements et d'accessoires"
+    },
+    "whyCustom": {
+      "title": "Pourquoi créer un vêtement ou un accessoire personnalisé ?",
+      "reason1": "Pour obtenir une pièce qui vous ressemble",
+      "reason2": "Pour faire un cadeau unique et mémorable",
+      "reason3": "Pour vos évènements, votre équipe, votre entreprise"
+    },
+    "advantages": {
+      "title": "Avantage de la boutique monimpression VS compétiteurs",
+      "advantage1": "Service local à Montréal + Boutique ouverte 7 jours",
+      "advantage2": "Personnalisation en direct avec aperçu en temps réel",
+      "advantage3": "Surprise aucune sur la qualité et garantie de nos chandails"
+    }
+  },
+  "products": {
+    "hoodie": "Hoodie unisexe",
+    "crewneck": "Col rond unisexe",
+    "teeShort": "T-shirt manches courtes (adulte)",
+    "teeLong": "T-shirt manches longues (adulte)",
+    "teeShortKid": "T-shirt manches courtes (enfant)",
+    "truckerCap": "Casquette camionneur",
+    "customize": "Personnaliser"
+  },
+  "common": {
+    "price": "Prix",
+    "addToCart": "Ajouter au panier",
+    "buyNow": "Acheter maintenant",
+    "back": "Retour",
+    "next": "Suivant",
+    "close": "Fermer",
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  },
+  "language": {
+    "fr": "Français",
+    "en": "English",
+    "switchLanguage": "Changer de langue"
+  }
+}

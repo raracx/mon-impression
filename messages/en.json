@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "monimpression - Customize Your Products",
+    "description": "Custom printing shop: t-shirts, hoodies, mugs, masks."
+  },
+  "header": {
+    "nav": {
+      "customize": "Customize",
+      "catalog": "Catalog",
+      "faq": "FAQ",
+      "submission": "Quote",
+      "contact": "Contact Us",
+      "sizes": "Size Chart"
+    },
+    "search": "Search",
+    "account": "Account",
+    "cart": "Cart"
+  },
+  "footer": {
+    "company": "monimpression",
+    "address": "7077 Blvd. Newman, LaSalle, QC H8N 1X1",
+    "phone": "438-299-6565",
+    "email": "contact@monimpression.com",
+    "information": "Information",
+    "about": "About",
+    "contactUs": "Contact Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "myAccount": "My Account",
+    "login": "Sign In",
+    "orders": "My Orders",
+    "helpSupport": "Help & Support",
+    "shipping": "Pricing Info",
+    "returns": "Returns",
+    "copyright": "All rights reserved"
+  },
+  "home": {
+    "hero": {
+      "title": "The modern custom clothing shop.",
+      "subtitle1": "Customize your t-shirts, hoodies and accessories online.",
+      "subtitle2": "Built to last, printed here, delivered everywhere.",
+      "cta": "Launch Studio"
+    },
+    "popularProducts": "Popular Products",
+    "viewAll": "View All",
+    "features": {
+      "fast": "Fast Delivery",
+      "fastDesc": "Shipping within 2-5 days",
+      "quality": "Guaranteed Quality",
+      "qualityDesc": "Tested and approved products",
+      "support": "24/7 Support",
+      "supportDesc": "We're here for you"
+    },
+    "section1": {
+      "title": "Create your custom piece or let us do it for you",
+      "description": "Design custom clothing and accessories online (t-shirts, hoodies, caps, mugs, etc.). Choose your model, upload your visuals, add text and preview in real time — we take care of the rest."
+    },
+    "section2": {
+      "title": "Choose a design that buzzes",
+      "description": "Browse hundreds of ideas for clothing and accessories, or create your own design. Save your mockups and order with one click.",
+      "proudlyCanadian": "Proudly Canadian"
+    },
+    "whyChoose": {
+      "title": "Why choose monimpression?",
+      "reason1": "Good quality, fair prices, custom made",
+      "reason2": "Fast production (often 5 to 15 minutes for small items)",
+      "reason3": "Wide variety of clothing and accessories"
+    },
+    "whyCustom": {
+      "title": "Why create a custom garment or accessory?",
+      "reason1": "To get a piece that reflects you",
+      "reason2": "To make a unique and memorable gift",
+      "reason3": "For your events, your team, your business"
+    },
+    "advantages": {
+      "title": "Advantage of monimpression shop VS competitors",
+      "advantage1": "Local service in Montreal + Shop open 7 days",
+      "advantage2": "Live customization with real-time preview",
+      "advantage3": "No surprises on quality and guarantee of our shirts"
+    }
+  },
+  "products": {
+    "hoodie": "Unisex Hoodie",
+    "crewneck": "Unisex Crewneck",
+    "teeShort": "Short Sleeve T-shirt (Adult)",
+    "teeLong": "Long Sleeve T-shirt (Adult)",
+    "teeShortKid": "Short Sleeve T-shirt (Kids)",
+    "truckerCap": "Trucker Cap",
+    "customize": "Customize"
+  },
+  "common": {
+    "price": "Price",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "language": {
+    "fr": "Français",
+    "en": "English",
+    "switchLanguage": "Switch Language"
+  }
+}
