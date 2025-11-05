@@ -137,6 +137,7 @@
     "colors": "Couleurs: {colors}",
     "sizes": "Tailles Adultes: {adult} — Enfants: {kids}",
     "method": "Procédé DTF par défaut. Sublimation et broderie sur demande.",
+    "details": "details",
     "customizeModel": "Personnaliser ce modèle",
     "shippingTitle": "Livraison et entretien",
     "shippingPrice": "Livraison: {price} — Gratuite dès {freeFrom} d’achat",

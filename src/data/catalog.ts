@@ -10,6 +10,8 @@ export type CatalogItem = {
   featuresFr: string[];
   featuresEn: string[];
   image?: string;
+  imageFront?: string;
+  imageBack?: string;
 };
 
 export const COLORS = {
@@ -184,8 +186,8 @@ export const GARMENTS: CatalogItem[] = [
     audience: "adult",
     descriptionFr: "Léger et respirant.",
     descriptionEn: "Lightweight and breathable.",
-    image:
-      "https://assets.wordans.ca/files/model_specifications/2025/7/1/1440958/1440958_mediumbig.jpg?1751351539",
+    imageFront: "/assets/tshirt/front.png",
+    imageBack: "/assets/tshirt/back.png",
     prices: [
       {
         labelFr: "impression 1 face",

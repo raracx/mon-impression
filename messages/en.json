@@ -137,6 +137,7 @@
     "colors": "Colors: {colors}",
     "sizes": "Adult sizes: {adult} — Kids: {kids}",
     "method": "DTF by default. Sublimation and embroidery on request.",
+    "details": "Details",
     "customizeModel": "Customize this model",
     "shippingTitle": "Shipping and care",
     "shippingPrice": "Shipping: {price} — Free from {freeFrom} purchase",

@@ -21,7 +21,7 @@ const productImages: Record<string, string> = {
 export default function PersonnaliserPage({
   params,
 }: {
-  params: { id: string };
+  params: { slug: string };
 }) {
   const t = useTranslations("personnaliser");
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function PersonnaliserPage({
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const ref = useRef<CustomizerHandle | null>(null);
-  const productId = params.id;
+  const productId = params.slug;
   const [base, setBase] = useState<string>(
     productImages[productId] || "/assets/tshirt.jpg",
   );
