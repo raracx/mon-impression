@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type Order = {
   id: string;
@@ -12,6 +13,7 @@ type Order = {
 };
 
 export default function AdminPage() {
+  const t = useTranslations("admin");
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,16 +40,16 @@ export default function AdminPage() {
 
   return (
     <div className="container-page py-10">
-      <h1 className="text-2xl font-semibold mb-6">Admin — Commandes</h1>
+      <h1 className="text-2xl font-semibold mb-6">{t("title")}</h1>
       <div className="card overflow-hidden">
         <table className="min-w-full text-sm">
           <thead className="bg-slate-50 text-left">
             <tr>
-              <th className="p-3">Date</th>
-              <th className="p-3">Client</th>
-              <th className="p-3">Montant</th>
-              <th className="p-3">Statut</th>
-              <th className="p-3">Design</th>
+              <th className="p-3">{t("table.date")}</th>
+              <th className="p-3">{t("table.customer")}</th>
+              <th className="p-3">{t("table.amount")}</th>
+              <th className="p-3">{t("table.status")}</th>
+              <th className="p-3">{t("table.design")}</th>
               <th className="p-3"></th>
             </tr>
           </thead>
@@ -55,7 +57,7 @@ export default function AdminPage() {
             {loading && (
               <tr>
                 <td className="p-3" colSpan={6}>
-                  Chargement…
+                  {t("loading")}
                 </td>
               </tr>
             )}
@@ -76,7 +78,7 @@ export default function AdminPage() {
                       target="_blank"
                       className="text-slate-900 underline"
                     >
-                      Télécharger
+                      {t("download")}
                     </a>
                   ) : (
                     "-"
@@ -88,13 +90,13 @@ export default function AdminPage() {
                       className="btn-primary"
                       onClick={() => setStatus(o.id, "fulfilled")}
                     >
-                      Marquer livré
+                      {t("markFulfilled")}
                     </button>
                     <button
                       className="btn-primary"
                       onClick={() => setStatus(o.id, "failed")}
                     >
-                      Annuler
+                      {t("cancel")}
                     </button>
                   </div>
                 </td>

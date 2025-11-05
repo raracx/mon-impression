@@ -5,7 +5,9 @@ import CustomizerCanvas, {
 } from "@/components/CustomizerCanvas";
 import Toolbox from "@/components/Toolbox";
 import StickersPanel from "@/components/StickersPanel";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const productImages: Record<string, string> = {
   tshirt: "/assets/tshirt.jpg",
@@ -21,6 +23,7 @@ export default function PersonnaliserPage({
 }: {
   params: { id: string };
 }) {
+  const t = useTranslations("personnaliser");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -57,10 +60,7 @@ export default function PersonnaliserPage({
         body: JSON.stringify({ productId, email, design: dataUrl }),
       });
       const json = await res.json();
-      if (!res.ok)
-        throw new Error(
-          json.error || "Erreur lors de la création de la commande",
-        );
+      if (!res.ok) throw new Error(json.error || t("errorOrder"));
       const { orderId } = json;
       const pay = await fetch("/api/stripe/checkout", {
         method: "POST",
@@ -68,7 +68,7 @@ export default function PersonnaliserPage({
         body: JSON.stringify({ orderId, productId }),
       });
       const payJson = await pay.json();
-      if (!pay.ok) throw new Error(payJson.error || "Erreur Stripe");
+      if (!pay.ok) throw new Error(payJson.error || t("errorStripe"));
       setLoading(false);
       router.push(payJson.url);
     } catch (e: any) {
@@ -93,11 +93,10 @@ export default function PersonnaliserPage({
       </div>
       <div className="space-y-4">
         <div className="card p-5">
-          <h1 className="text-xl font-semibold">Personnaliser — {productId}</h1>
-          <p className="text-sm text-slate-600">
-            Ajoutez du texte, importez une image, appliquez vos styles, puis
-            commandez.
-          </p>
+          <h1 className="text-xl font-semibold">
+            {t("title", { product: productId })}
+          </h1>
+          <p className="text-sm text-slate-600">{t("subtitle")}</p>
         </div>
         <Toolbox
           onAddText={() => ref.current?.addText()}
@@ -127,7 +126,7 @@ export default function PersonnaliserPage({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
-            placeholder="Votre email"
+            placeholder={t("emailPlaceholder")}
             className="border rounded-md px-3 py-2 w-full"
           />
           <button
@@ -135,12 +134,9 @@ export default function PersonnaliserPage({
             disabled={!email || loading}
             onClick={order}
           >
-            {loading ? "Chargement…" : "Commander maintenant"}
+            {loading ? t("loading") : t("orderNow")}
           </button>
-          <p className="text-xs text-slate-500">
-            Le paiement est traité par Stripe. Un aperçu de votre design sera
-            envoyé avec la commande.
-          </p>
+          <p className="text-xs text-slate-500">{t("paymentNote")}</p>
         </div>
       </div>
     </div>

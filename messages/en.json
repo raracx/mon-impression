@@ -86,7 +86,9 @@
     "teeLong": "Long Sleeve T-shirt (Adult)",
     "teeShortKid": "Short Sleeve T-shirt (Kids)",
     "truckerCap": "Trucker Cap",
-    "customize": "Customize"
+    "customize": "Customize",
+    "mug": "Mug",
+    "mask": "Mask"
   },
   "common": {
     "price": "Price",
@@ -107,5 +109,194 @@
     "title": "Everyone can spread happiness",
     "prev": "Previous",
     "next": "Next"
+  },
+  "faq": {
+    "title": "FAQ",
+    "items": {
+      "productionTime": {
+        "q": "How long to produce a t-shirt?",
+        "a": "Most small orders are ready in 5–15 minutes in-store. Online, expect 1–3 business days depending on workload."
+      },
+      "imageFormats": {
+        "q": "Which image formats do you accept?",
+        "a": "PNG/JPG recommended. For logos, an SVG or high‑resolution PNG gives the best result."
+      },
+      "frontBack": {
+        "q": "Can I print front/back?",
+        "a": "Yes. Our tool lets you choose the print area and position your design."
+      },
+      "volumeDiscounts": {
+        "q": "Do you offer volume discounts?",
+        "a": "Yes, contact us via the Quote page for a tailored price."
+      }
+    }
+  },
+  "catalogue": {
+    "title": "Catalog – monimpression",
+    "subtitle": "Custom unisex apparel – Adults and kids",
+    "colors": "Colors: {colors}",
+    "sizes": "Adult sizes: {adult} — Kids: {kids}",
+    "method": "DTF by default. Sublimation and embroidery on request.",
+    "customizeModel": "Customize this model",
+    "shippingTitle": "Shipping and care",
+    "shippingPrice": "Shipping: {price} — Free from {freeFrom} purchase",
+    "mugsCta": "See the Mugs & Tumblers section"
+  },
+  "mugs": {
+    "title": "Mugs & Tumblers",
+    "subtitle": "Images are illustrative; variants may differ by supplier.",
+    "galleryAlt": "Mug preview",
+    "priceLabel": "Price:"
+  },
+  "quote": {
+    "title": "Request a quote",
+    "subtitle": "Give us a few details and we'll get back quickly with a tailored price.",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "product": "Product",
+      "quantity": "Quantity",
+      "message": "Project details (colors, areas, timelines, etc.)",
+      "submit": "Send request",
+      "sending": "Sending…",
+      "sent": "Quote sent ✔",
+      "error": "An error occurred"
+    },
+    "products": {
+      "tshirt": "T-shirt",
+      "hoodie": "Hoodie",
+      "mug": "Mug",
+      "mask": "Mask"
+    },
+    "why": {
+      "title": "Why request a quote?",
+      "benefit1": "Volume pricing available",
+      "benefit2": "Help from our designers",
+      "benefit3": "Timelines confirmed in writing"
+    }
+  },
+  "contact": {
+    "title": "Contact us",
+    "addressLine": "7077 Blvd. Newman, LaSalle, QC H8N 1X1 — 438-299-6565 — custombuzz@gmail.com",
+    "mapTitle": "Map",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "message": "Your message",
+      "submit": "Send",
+      "sending": "Sending…",
+      "sent": "Message sent ✔",
+      "error": "An error occurred"
+    }
+  },
+  "sizes": {
+    "title": "Size chart (Unisex T-shirt)",
+    "headers": {
+      "size": "Size",
+      "chest": "Chest",
+      "length": "Length"
+    },
+    "footnote": "Flat measurements, ±2 cm tolerance depending on model and manufacturer."
+  },
+  "about": {
+    "title": "About monimpression",
+    "p1": "We’re proud to customize your apparel and accessories. Starting with t‑shirt printing, our team now covers everything printable with consistent quality and fast turnaround.",
+    "p2": "Visit our shop or use our online studio to create the perfect product."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "p1": "We respect your privacy. Your information is used to process orders and improve your experience. We do not sell your data."
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "p1": "By using this site, you agree to our terms. monimpression custom products are made to order and are non‑refundable except for manufacturing defects."
+  },
+  "success": {
+    "title": "Thank you for your purchase!",
+    "description": "A confirmation email has been sent. We’ll process your order quickly.",
+    "backHome": "Back to home"
+  },
+  "product": {
+    "title": "Custom {name}",
+    "description": "Create your perfect {name} with our customization tool. Upload images, add text and preview in real time."
+  },
+  "customizer": {
+    "title": "Customize",
+    "products": {
+      "tshirt": "T-shirt",
+      "hoodie": "Hoodie",
+      "mug": "Mug"
+    },
+    "addToCart": "Add to cart (Stripe)",
+    "exportFirst": "Export your design first to enable payment."
+  },
+  "personnaliser": {
+    "title": "Customize — {product}",
+    "subtitle": "Add text, import an image, apply your styles, then order.",
+    "emailPlaceholder": "Your email",
+    "orderNow": "Order now",
+    "loading": "Loading…",
+    "paymentNote": "Payment is processed by Stripe. A preview of your design will be sent with the order.",
+    "errorOrder": "Error creating order",
+    "errorStripe": "Stripe error"
+  },
+  "admin": {
+    "title": "Admin — Orders",
+    "loading": "Loading…",
+    "table": {
+      "date": "Date",
+      "customer": "Customer",
+      "amount": "Amount",
+      "status": "Status",
+      "design": "Design",
+      "actions": "Actions"
+    },
+    "download": "Download",
+    "markFulfilled": "Mark fulfilled",
+    "cancel": "Cancel"
+  },
+  "toolbox": {
+    "title": "Tools",
+    "sides": {
+      "front": "Front",
+      "back": "Back"
+    },
+    "actions": {
+      "addText": "Add text",
+      "uploadImage": "Upload image",
+      "duplicate": "Duplicate",
+      "bringForward": "Bring forward",
+      "sendBackward": "Send backward",
+      "delete": "Delete"
+    },
+    "properties": {
+      "font": "Font",
+      "size": "Size",
+      "color": "Color",
+      "stroke": "Stroke",
+      "strokeWidth": "Stroke width",
+      "style": "Style",
+      "bold": "Bold",
+      "italic": "Italic",
+      "alignment": "Alignment",
+      "left": "Left",
+      "center": "Center",
+      "right": "Right"
+    },
+    "zoom": {
+      "in": "+ Zoom",
+      "out": "− Zoom",
+      "reset": "Reset"
+    },
+    "grid": "Grid",
+    "export": "Download PNG",
+    "tip": "Tip: click an element to activate it, use Delete key to remove it, Ctrl+D to duplicate."
+  },
+  "stickers": {
+    "title": "Library",
+    "categories": {
+      "icons": "Icons",
+      "badges": "Badges"
+    }
   }
 }

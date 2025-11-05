@@ -1,4 +1,5 @@
-export const metadata = { title: "Tableau des tailles — Custom Buzz" };
+export const metadata = { title: "Tableau des tailles — monimpression" };
+import { getTranslations } from "next-intl/server";
 
 const rows = [
   { size: "XS", chest: "84-89 cm", length: "64 cm" },
@@ -9,19 +10,18 @@ const rows = [
   { size: "2XL", chest: "119-127 cm", length: "79 cm" },
 ];
 
-export default function SizesPage() {
+export default async function SizesPage() {
+  const t = await getTranslations('sizes');
   return (
     <div className="container-page py-10">
-      <h1 className="text-2xl font-semibold mb-6">
-        Tableau des tailles (T-shirt unisexe)
-      </h1>
+      <h1 className="text-2xl font-semibold mb-6">{t('title')}</h1>
       <div className="card overflow-hidden">
         <table className="min-w-full text-sm">
           <thead className="bg-slate-50 text-left">
             <tr>
-              <th className="p-3">Taille</th>
-              <th className="p-3">Tour de poitrine</th>
-              <th className="p-3">Longueur</th>
+              <th className="p-3">{t('headers.size')}</th>
+              <th className="p-3">{t('headers.chest')}</th>
+              <th className="p-3">{t('headers.length')}</th>
             </tr>
           </thead>
           <tbody>
@@ -35,9 +35,7 @@ export default function SizesPage() {
           </tbody>
         </table>
       </div>
-      <p className="text-slate-600 text-sm mt-3">
-        Mesures à plat, tolérance ±2 cm selon le modèle et le fabricant.
-      </p>
+      <p className="text-slate-600 text-sm mt-3">{t('footnote')}</p>
     </div>
   );
 }

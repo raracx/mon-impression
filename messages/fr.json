@@ -86,7 +86,9 @@
     "teeLong": "T-shirt manches longues (adulte)",
     "teeShortKid": "T-shirt manches courtes (enfant)",
     "truckerCap": "Casquette camionneur",
-    "customize": "Personnaliser"
+    "customize": "Personnaliser",
+    "mug": "Tasse",
+    "mask": "Masque"
   },
   "common": {
     "price": "Prix",
@@ -107,5 +109,194 @@
     "title": "Tout le monde peut propager du bonheur",
     "prev": "Précédent",
     "next": "Suivant"
+  },
+  "faq": {
+    "title": "FAQ",
+    "items": {
+      "productionTime": {
+        "q": "Combien de temps pour produire un t-shirt ?",
+        "a": "La plupart des petites commandes sont prêtes en 5 à 15 minutes en boutique. En ligne, prévoyez 1-3 jours ouvrables selon la charge."
+      },
+      "imageFormats": {
+        "q": "Quels formats d’images acceptez-vous ?",
+        "a": "PNG/JPG recommandés. Pour les logos, un SVG ou PNG haute résolution donnera le meilleur résultat."
+      },
+      "frontBack": {
+        "q": "Puis-je imprimer devant/derrière ?",
+        "a": "Oui. Notre outil vous laisse choisir la zone d’impression et positionner votre design."
+      },
+      "volumeDiscounts": {
+        "q": "Offrez-vous des rabais de volume ?",
+        "a": "Oui, contactez-nous via la page Soumission pour un prix sur mesure."
+      }
+    }
+  },
+  "catalogue": {
+    "title": "Catalogue – monimpression",
+    "subtitle": "Vêtements personnalisés unisexes – Adultes et enfants",
+    "colors": "Couleurs: {colors}",
+    "sizes": "Tailles Adultes: {adult} — Enfants: {kids}",
+    "method": "Procédé DTF par défaut. Sublimation et broderie sur demande.",
+    "customizeModel": "Personnaliser ce modèle",
+    "shippingTitle": "Livraison et entretien",
+    "shippingPrice": "Livraison: {price} — Gratuite dès {freeFrom} d’achat",
+    "mugsCta": "Voir la section Tasses & Gobelets"
+  },
+  "mugs": {
+    "title": "Tasses & Gobelets",
+    "subtitle": "Les images sont à titre d’exemple; certaines variantes peuvent différer selon le fournisseur.",
+    "galleryAlt": "Aperçu tasse",
+    "priceLabel": "Prix :"
+  },
+  "quote": {
+    "title": "Demander une soumission",
+    "subtitle": "Donnez-nous quelques détails et nous vous répondrons rapidement avec un prix personnalisé.",
+    "form": {
+      "name": "Nom complet",
+      "email": "Email",
+      "product": "Produit",
+      "quantity": "Quantité",
+      "message": "Détails du projet (couleurs, zones, délais, etc.)",
+      "submit": "Envoyer la demande",
+      "sending": "Envoi…",
+      "sent": "Soumission envoyée ✔",
+      "error": "Une erreur est survenue"
+    },
+    "products": {
+      "tshirt": "T-shirt",
+      "hoodie": "Hoodie",
+      "mug": "Tasse",
+      "mask": "Masque"
+    },
+    "why": {
+      "title": "Pourquoi demander une soumission ?",
+      "benefit1": "Prix de volume avantageux",
+      "benefit2": "Aide de nos graphistes",
+      "benefit3": "Délais confirmés par écrit"
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "addressLine": "7077 Blvd. Newman, LaSalle, QC H8N 1X1 — 438-299-6565 — custombuzz@gmail.com",
+    "mapTitle": "Carte",
+    "form": {
+      "name": "Nom complet",
+      "email": "Email",
+      "message": "Votre message",
+      "submit": "Envoyer",
+      "sending": "Envoi…",
+      "sent": "Message envoyé ✔",
+      "error": "Une erreur est survenue"
+    }
+  },
+  "sizes": {
+    "title": "Tableau des tailles (T-shirt unisexe)",
+    "headers": {
+      "size": "Taille",
+      "chest": "Tour de poitrine",
+      "length": "Longueur"
+    },
+    "footnote": "Mesures à plat, tolérance ±2 cm selon le modèle et le fabricant."
+  },
+  "about": {
+    "title": "À propos de monimpression",
+    "p1": "Nous sommes fiers de personnaliser vos vêtements et accessoires. Démarrée avec l’impression de t-shirts, notre équipe couvre aujourd’hui tout ce qui est imprimable, avec une qualité constante et des délais rapides.",
+    "p2": "Venez en boutique ou utilisez notre outil en ligne pour créer le produit parfait."
+  },
+  "privacy": {
+    "title": "Politique de Confidentialité",
+    "p1": "Nous respectons votre vie privée. Vos informations sont utilisées pour traiter les commandes et améliorer votre expérience. Nous ne vendons pas vos données."
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "p1": "En utilisant ce site, vous acceptez nos conditions. Les produits personnalisés monimpression sont fabriqués sur demande et ne sont pas remboursables sauf défaut de fabrication."
+  },
+  "success": {
+    "title": "Merci pour votre achat!",
+    "description": "Un email de confirmation vous a été envoyé. Nous traiterons votre commande rapidement.",
+    "backHome": "Retour à l'accueil"
+  },
+  "product": {
+    "title": "{name} personnalisé",
+    "description": "Créez votre {name} parfait avec notre outil de personnalisation. Téléversez vos images, ajoutez du texte et prévisualisez en temps réel."
+  },
+  "customizer": {
+    "title": "Personnaliser",
+    "products": {
+      "tshirt": "T-shirt",
+      "hoodie": "Hoodie",
+      "mug": "Tasse"
+    },
+    "addToCart": "Ajouter au panier (Stripe)",
+    "exportFirst": "Exportez d'abord votre design pour activer le paiement."
+  },
+  "personnaliser": {
+    "title": "Personnaliser — {product}",
+    "subtitle": "Ajoutez du texte, importez une image, appliquez vos styles, puis commandez.",
+    "emailPlaceholder": "Votre email",
+    "orderNow": "Commander maintenant",
+    "loading": "Chargement…",
+    "paymentNote": "Le paiement est traité par Stripe. Un aperçu de votre design sera envoyé avec la commande.",
+    "errorOrder": "Erreur lors de la création de la commande",
+    "errorStripe": "Erreur Stripe"
+  },
+  "admin": {
+    "title": "Admin — Commandes",
+    "loading": "Chargement…",
+    "table": {
+      "date": "Date",
+      "customer": "Client",
+      "amount": "Montant",
+      "status": "Statut",
+      "design": "Design",
+      "actions": "Actions"
+    },
+    "download": "Télécharger",
+    "markFulfilled": "Marquer livré",
+    "cancel": "Annuler"
+  },
+  "toolbox": {
+    "title": "Outils",
+    "sides": {
+      "front": "Avant",
+      "back": "Arrière"
+    },
+    "actions": {
+      "addText": "Ajouter du texte",
+      "uploadImage": "Importer une image",
+      "duplicate": "Dupliquer",
+      "bringForward": "Avant-plan",
+      "sendBackward": "Arrière-plan",
+      "delete": "Supprimer"
+    },
+    "properties": {
+      "font": "Police",
+      "size": "Taille",
+      "color": "Couleur",
+      "stroke": "Contour",
+      "strokeWidth": "Épaisseur contour",
+      "style": "Style",
+      "bold": "Gras",
+      "italic": "Italique",
+      "alignment": "Alignement",
+      "left": "Gauche",
+      "center": "Centre",
+      "right": "Droite"
+    },
+    "zoom": {
+      "in": "+ Zoom",
+      "out": "− Zoom",
+      "reset": "Reset"
+    },
+    "grid": "Grille",
+    "export": "Télécharger PNG",
+    "tip": "Astuce: cliquez sur un élément pour l'activer, utilisez la touche Suppr pour le retirer, Ctrl+D pour dupliquer."
+  },
+  "stickers": {
+    "title": "Bibliothèque",
+    "categories": {
+      "icons": "Icônes",
+      "badges": "Badges"
+    }
   }
 }

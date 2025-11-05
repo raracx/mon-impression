@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const stickers: {
-  category: string;
+  categoryKey: string;
   items: { src: string; label: string }[];
 }[] = [
   {
-    category: "Icônes",
+    categoryKey: "icons",
     items: [
       { src: "/assets/stickers/star.svg", label: "Star" },
       { src: "/assets/stickers/heart.svg", label: "Heart" },
@@ -23,7 +24,7 @@ const stickers: {
     ],
   },
   {
-    category: "Badges",
+    categoryKey: "badges",
     items: [
       { src: "/assets/stickers/badge-rounded.svg", label: "Badge" },
       { src: "/assets/stickers/coffee.svg", label: "Coffee" },
@@ -37,13 +38,14 @@ export default function StickersPanel({
 }: {
   onPick: (url: string) => void;
 }) {
+  const t = useTranslations("stickers");
   return (
     <div className="card p-4 space-y-4 max-h-[520px] overflow-auto">
-      <div className="font-semibold">Bibliothèque</div>
+      <div className="font-semibold">{t("title")}</div>
       {stickers.map((cat) => (
-        <div key={cat.category} className="space-y-3">
+        <div key={cat.categoryKey} className="space-y-3">
           <div className="text-xs uppercase tracking-wide text-slate-500">
-            {cat.category}
+            {t(`categories.${cat.categoryKey}`)}
           </div>
           <div className="grid grid-cols-4 gap-3">
             {cat.items.map((s) => (

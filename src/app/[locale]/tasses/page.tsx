@@ -1,4 +1,5 @@
 import { MUGS } from "@/data/catalog";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const gallery = [
   "/Tasses%26goblets/IMG_7118.jpg",
@@ -19,17 +20,16 @@ const gallery = [
 
 export const metadata = { title: "Tasses & Gobelets — monimpression" };
 
-export default function TassesPage() {
+export default async function TassesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const isFr = locale === 'fr';
+  const t = await getTranslations('mugs');
   return (
     <div className="container-page py-10 space-y-10">
       <header className="text-center">
-        <h1 className="text-2xl md:text-3xl font-semibold">
-          Tasses & Gobelets
-        </h1>
-        <p className="text-slate-600 mt-2">
-          Les images sont à titre d’exemple; certaines variantes peuvent
-          différer selon le fournisseur.
-        </p>
+        <h1 className="text-2xl md:text-3xl font-semibold">{t('title')}</h1>
+        <p className="text-slate-600 mt-2">{t('subtitle')}</p>
       </header>
 
       <section className="card p-4 overflow-hidden">
@@ -38,7 +38,7 @@ export default function TassesPage() {
             <img
               key={src}
               src={src}
-              alt="Aperçu tasse"
+              alt={t('galleryAlt')}
               className="snap-start rounded-md h-56 w-auto object-cover"
             />
           ))}
@@ -48,15 +48,15 @@ export default function TassesPage() {
       <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {MUGS.map((m) => (
           <article key={m.slug} className="card p-6">
-            <h2 className="font-semibold text-lg">{m.title}</h2>
-            <p className="text-slate-600 text-sm mt-1">{m.description}</p>
+            <h2 className="font-semibold text-lg">{isFr ? m.titleFr : m.titleEn}</h2>
+            <p className="text-slate-600 text-sm mt-1">{isFr ? m.descriptionFr : m.descriptionEn}</p>
             <ul className="mt-3 text-sm list-disc ml-5 text-slate-700">
-              {m.bullets.map((b) => (
+              {(isFr ? m.bulletsFr : m.bulletsEn).map((b) => (
                 <li key={b}>{b}</li>
               ))}
             </ul>
             <div className="mt-3 text-sm">
-              <span className="font-semibold">Prix:</span> {m.price}
+              <span className="font-semibold">{t('priceLabel')}</span> {m.price}
             </div>
           </article>
         ))}

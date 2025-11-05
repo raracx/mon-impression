@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 
 type Props = {
   onAddText: () => void;
@@ -25,36 +26,37 @@ type Props = {
 };
 
 export default function Toolbox(props: Props) {
+  const t = useTranslations("toolbox");
   const inputRef = useRef<HTMLInputElement | null>(null);
   return (
     <div className="card p-4 space-y-4">
       <div className="flex items-center justify-between">
-        <div className="font-semibold">Outils</div>
+        <div className="font-semibold">{t("title")}</div>
         <div className="flex gap-2">
           <button
             className="btn-primary"
             onClick={() => props.onSetSide("front")}
           >
-            Avant
+            {t("sides.front")}
           </button>
           <button
             className="btn-primary"
             onClick={() => props.onSetSide("back")}
           >
-            Arrière
+            {t("sides.back")}
           </button>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
         <button className="btn-primary" onClick={props.onAddText}>
-          Ajouter du texte
+          {t("actions.addText")}
         </button>
         <button
           className="btn-primary"
           onClick={() => inputRef.current?.click()}
         >
-          Importer une image
+          {t("actions.uploadImage")}
         </button>
         <input
           ref={inputRef}
@@ -68,22 +70,24 @@ export default function Toolbox(props: Props) {
           }}
         />
         <button className="btn-primary" onClick={props.onDuplicate}>
-          Dupliquer
+          {t("actions.duplicate")}
         </button>
         <button className="btn-primary" onClick={props.onForward}>
-          Avant-plan
+          {t("actions.bringForward")}
         </button>
         <button className="btn-primary" onClick={props.onBackward}>
-          Arrière-plan
+          {t("actions.sendBackward")}
         </button>
         <button className="btn-primary" onClick={props.onDelete}>
-          Supprimer
+          {t("actions.delete")}
         </button>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <label className="text-xs text-slate-500">Police</label>
+          <label className="text-xs text-slate-500">
+            {t("properties.font")}
+          </label>
           <select
             onChange={(e) => props.onFontFamily(e.target.value)}
             className="border rounded-md px-3 py-2 w-full"
@@ -95,7 +99,9 @@ export default function Toolbox(props: Props) {
           </select>
         </div>
         <div className="space-y-2">
-          <label className="text-xs text-slate-500">Taille</label>
+          <label className="text-xs text-slate-500">
+            {t("properties.size")}
+          </label>
           <input
             type="range"
             min={10}
@@ -105,7 +111,9 @@ export default function Toolbox(props: Props) {
           />
         </div>
         <div className="space-y-2">
-          <label className="text-xs text-slate-500">Couleur</label>
+          <label className="text-xs text-slate-500">
+            {t("properties.color")}
+          </label>
           <input
             type="color"
             onChange={(e) => props.onColor(e.target.value)}
@@ -113,7 +121,9 @@ export default function Toolbox(props: Props) {
           />
         </div>
         <div className="space-y-2">
-          <label className="text-xs text-slate-500">Contour</label>
+          <label className="text-xs text-slate-500">
+            {t("properties.stroke")}
+          </label>
           <input
             type="color"
             onChange={(e) => props.onStroke(e.target.value)}
@@ -121,7 +131,9 @@ export default function Toolbox(props: Props) {
           />
         </div>
         <div className="space-y-2">
-          <label className="text-xs text-slate-500">Épaisseur contour</label>
+          <label className="text-xs text-slate-500">
+            {t("properties.strokeWidth")}
+          </label>
           <input
             type="range"
             min={0}
@@ -131,36 +143,40 @@ export default function Toolbox(props: Props) {
           />
         </div>
         <div className="space-y-2">
-          <label className="text-xs text-slate-500">Style</label>
+          <label className="text-xs text-slate-500">
+            {t("properties.style")}
+          </label>
           <div className="flex gap-2">
             <button className="btn-primary" onClick={props.onBold}>
-              Gras
+              {t("properties.bold")}
             </button>
             <button className="btn-primary" onClick={props.onItalic}>
-              Italique
+              {t("properties.italic")}
             </button>
           </div>
         </div>
         <div className="space-y-2 col-span-2">
-          <label className="text-xs text-slate-500">Alignement</label>
+          <label className="text-xs text-slate-500">
+            {t("properties.alignment")}
+          </label>
           <div className="flex gap-2">
             <button
               className="btn-primary"
               onClick={() => props.onAlign("left")}
             >
-              Gauche
+              {t("properties.left")}
             </button>
             <button
               className="btn-primary"
               onClick={() => props.onAlign("center")}
             >
-              Centre
+              {t("properties.center")}
             </button>
             <button
               className="btn-primary"
               onClick={() => props.onAlign("right")}
             >
-              Droite
+              {t("properties.right")}
             </button>
           </div>
         </div>
@@ -168,26 +184,23 @@ export default function Toolbox(props: Props) {
 
       <div className="flex flex-wrap gap-2">
         <button className="btn-primary" onClick={props.onZoomOut}>
-          − Zoom
+          {t("zoom.out")}
         </button>
         <button className="btn-primary" onClick={props.onZoomIn}>
-          + Zoom
+          {t("zoom.in")}
         </button>
         <button className="btn-primary" onClick={props.onResetZoom}>
-          Reset
+          {t("zoom.reset")}
         </button>
         <button className="btn-primary" onClick={props.onToggleGrid}>
-          Grille
+          {t("grid")}
         </button>
         <button className="btn-primary" onClick={props.onExport}>
-          Télécharger PNG
+          {t("export")}
         </button>
       </div>
 
-      <p className="text-sm text-slate-600">
-        Astuce: cliquez sur un élément pour l’activer, utilisez la touche Suppr
-        pour le retirer, Ctrl+D pour dupliquer.
-      </p>
+      <p className="text-sm text-slate-600">{t("tip")}</p>
     </div>
   );
 }
