@@ -52,7 +52,7 @@ export default function Header() {
           >
             <FaSearch />
           </button>
-          <Link
+          {/* <Link
             href="/account"
             aria-label={t("account")}
             className="p-2.5 rounded-full hover:bg-slate-900 hover:text-white transition-all duration-300"
@@ -68,7 +68,7 @@ export default function Header() {
             <span className="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-red-600 text-white text-[10px] leading-4 rounded-full w-5 h-5 grid place-content-center font-bold shadow-lg group-hover:scale-110 transition-transform">
               0
             </span>
-          </Link>
+          </Link> */}
         </div>
       </div>
       <div className="md:hidden border-t border-slate-200/50">

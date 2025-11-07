@@ -6,20 +6,25 @@ import { Resend } from "resend";
 export const config = { api: { bodyParser: false } } as any;
 
 export async function POST(req: NextRequest) {
+  console.log("Webhook received:", req.url);
   const buf = await req.arrayBuffer();
   const sig = req.headers.get("stripe-signature") as string;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
+  console.log("Webhook secret:", webhookSecret ? "set" : "not set");
   try {
     const event = stripe.webhooks.constructEvent(
       Buffer.from(buf),
       sig,
-      webhookSecret,
+      webhookSecret
     );
+    console.log("Event type:", event.type);
     if (event.type === "checkout.session.completed") {
+      console.log("Processing checkout.session.completed");
       const session: any = event.data.object;
       const email = session.customer_details?.email || "";
       const amount = session.amount_total || 0;
       const orderId = session.metadata?.orderId as string | undefined;
+      console.log("Order ID:", orderId, "Email:", email, "Amount:", amount);
       if (orderId) {
         await supabase
           .from("orders")
@@ -31,17 +36,16 @@ export async function POST(req: NextRequest) {
           })
           .eq("id", orderId);
       } else {
-        await supabase
-          .from("orders")
-          .insert({
-            status: "paid",
-            email,
-            amount,
-            currency: session.currency || "cad",
-          });
+        await supabase.from("orders").insert({
+          status: "paid",
+          email,
+          amount,
+          currency: session.currency || "cad",
+        });
       }
 
       if (process.env.RESEND_API_KEY && email) {
+        console.log("Sending email with Resend");
         // Fetch order details
         let orderDetails = null;
         if (orderId) {
@@ -51,6 +55,7 @@ export async function POST(req: NextRequest) {
             .eq("id", orderId)
             .single();
           orderDetails = order;
+          console.log("Order details fetched:", orderDetails ? "yes" : "no");
         }
 
         const resend = new Resend(process.env.RESEND_API_KEY);
@@ -99,6 +104,7 @@ export async function POST(req: NextRequest) {
           }
         }
 
+        console.log("Sending email to:", [email, process.env.ADMIN_EMAIL]);
         await resend.emails.send({
           from: "monimpression <no-reply@monimpression.dev>",
           to: [email, process.env.ADMIN_EMAIL || "admin@example.com"], // Send to both customer and admin
@@ -106,6 +112,9 @@ export async function POST(req: NextRequest) {
           html,
           attachments: attachments as any,
         });
+        console.log("Email sent successfully");
+      } else {
+        console.log("Resend API key or email missing");
       }
     }
     return new Response("ok");

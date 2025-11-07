@@ -61,7 +61,7 @@ export default function Footer() {
         <div>
           <h4 className="font-bold mb-4">{t("myAccount")}</h4>
           <ul className="space-y-3 text-sm text-slate-300">
-            <li>
+            {/* <li>
               <Link
                 href="/login"
                 className="hover:text-white transition-colors animated-underline"
@@ -76,7 +76,7 @@ export default function Footer() {
               >
                 {t("orders")}
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
         <div>
@@ -90,7 +90,7 @@ export default function Footer() {
                 FAQ
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 href="/shipping"
                 className="hover:text-white transition-colors animated-underline"
@@ -105,7 +105,7 @@ export default function Footer() {
               >
                 {t("returns")}
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
