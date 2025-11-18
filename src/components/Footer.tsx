@@ -1,6 +1,8 @@
 "use client";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { FaFacebook } from "react-icons/fa";
+import Image from "next/image";
 
 export default function Footer() {
   const t = useTranslations("footer");
@@ -8,9 +10,15 @@ export default function Footer() {
     <footer className="bg-gradient-to-br from-slate-900 to-slate-800 text-white mt-20">
       <div className="container-page py-16 grid md:grid-cols-4 gap-10">
         <div>
-          <h4 className="font-bold text-lg mb-4 gradient-text bg-gradient-to-r from-white to-slate-300 bg-clip-text">
-            {t("company")}
-          </h4>
+          <div className="mb-4">
+            <Image
+              src="/Logo.png"
+              alt="monimpression"
+              width={180}
+              height={60}
+              className="h-12 w-auto object-contain"
+            />
+          </div>
           <p className="text-sm text-slate-300 leading-relaxed">
             {t("address")}
           </p>
@@ -20,6 +28,14 @@ export default function Footer() {
           <p className="text-sm text-slate-300 hover:text-white transition-colors">
             ✉️ {t("email")}
           </p>
+          <a 
+            href="https://www.facebook.com/share/16gq2T7tHK/?mibextid=wwXIfr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-slate-300 hover:text-white transition-colors flex items-center gap-2 mt-2"
+          >
+            <FaFacebook className="text-lg" /> {t("facebook")}
+          </a>
         </div>
         <div>
           <h4 className="font-bold mb-4">{t("information")}</h4>

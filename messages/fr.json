@@ -21,6 +21,7 @@
     "address": "7077 Blvd. Newman, LaSalle, QC H8N 1X1",
     "phone": "438-299-6565",
     "email": "contact@monimpression.com",
+    "facebook": "Notre page Facebook",
     "information": "Informations",
     "about": "À propos",
     "contactUs": "Nous Contacter",
@@ -197,7 +198,7 @@
       "chest": "Tour de poitrine",
       "length": "Longueur"
     },
-    "footnote": "Mesures à plat, tolérance ±2 cm selon le modèle et le fabricant."
+    "footnote": "Les grandeurs sont standards tel qu'ils se retrouvent sur le marché. Pour toute précision, veuillez nous contacter par courriel."
   },
   "about": {
     "title": "À propos de monimpression",

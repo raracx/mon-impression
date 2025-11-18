@@ -11,7 +11,6 @@ const navLinks = [
   { key: "faq", href: "/faq" },
   { key: "submission", href: "/soumission" },
   { key: "contact", href: "/contact" },
-  { key: "sizes", href: "/tailles" },
 ];
 
 export default function Header() {
@@ -23,15 +22,13 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative">
             <Image
-              src="/assets/Logo320x320pixels(Facebook)-1920w.webp"
+              src="/Logo.png"
               alt="monimpression"
-              width={64}
+              width={200}
               height={64}
-              className="rounded transition-transform duration-300 group-hover:scale-110"
+              className="w-full h-12 object-contain"
             />
-            <div className="absolute inset-0 rounded bg-gradient-to-br from-transparent to-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
-          <span className="font-bold text-xl gradient-text">monimpression</span>
         </Link>
         <nav className="hidden md:flex gap-8">
           {navLinks.map((n) => (

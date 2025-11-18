@@ -20,11 +20,16 @@ export const metadata: Metadata = {
   title: "monimpression - Personnalisez vos produits",
   description:
     "Boutique d'impression personnalisée: t-shirts, hoodies, tasses, masques.",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
     title: "monimpression",
     description:
       "Créez un t-shirt personnalisé ou laissez-nous le faire pour vous.",
     type: "website",
+    images: ["/Logo.png"],
   },
   metadataBase: new URL("https://monimpression.example.com"),
 };

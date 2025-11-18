@@ -21,6 +21,7 @@
     "address": "7077 Blvd. Newman, LaSalle, QC H8N 1X1",
     "phone": "438-299-6565",
     "email": "contact@monimpression.com",
+    "facebook": "Our Facebook Page",
     "information": "Information",
     "about": "About",
     "contactUs": "Contact Us",
@@ -197,7 +198,7 @@
       "chest": "Chest",
       "length": "Length"
     },
-    "footnote": "Flat measurements, ±2 cm tolerance depending on model and manufacturer."
+    "footnote": "Sizes are standard as found on the market. For any clarification, please contact us by email."
   },
   "about": {
     "title": "About monimpression",
