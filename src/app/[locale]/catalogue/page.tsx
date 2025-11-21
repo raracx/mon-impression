@@ -2,7 +2,7 @@ import Link from "next/link";
 import { GARMENTS, COLORS, SIZES, SHIPPING } from "@/data/catalog";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export const metadata = { title: "Catalogue — monimpression" };
+export const metadata = { title: "Catalogue — Mon Impression" };
 
 export default async function CataloguePage({
   params,

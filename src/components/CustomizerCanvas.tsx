@@ -19,6 +19,52 @@ import {
 } from "react-konva";
 import useImage from "use-image";
 
+// Separate component to handle image loading with useImage hook
+type CanvasImageProps = {
+  id: string;
+  src: string;
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  rotation?: number;
+  draggable: boolean;
+  onClick: () => void;
+  onDragMove: (e: any) => void;
+  onTransformEnd: (e: any) => void;
+};
+
+const CanvasImage = ({
+  id,
+  src,
+  x,
+  y,
+  width = 180,
+  height = 180,
+  rotation = 0,
+  draggable,
+  onClick,
+  onDragMove,
+  onTransformEnd,
+}: CanvasImageProps) => {
+  const [image] = useImage(src, "anonymous");
+  return (
+    <KImage
+      id={id}
+      image={image as any}
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      rotation={rotation}
+      draggable={draggable}
+      onClick={onClick}
+      onDragMove={onDragMove}
+      onTransformEnd={onTransformEnd}
+    />
+  );
+};
+
 export type CanvasItem = {
   id: string;
   type: "text" | "image";
@@ -460,15 +506,15 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
 
               {items.map((it) =>
                 it.type === "image" ? (
-                  <KImage
+                  <CanvasImage
                     key={it.id}
                     id={`node-${it.id}`}
-                    image={useImage(it.src!, "anonymous")[0] as any}
+                    src={it.src!}
                     x={it.x}
                     y={it.y}
-                    width={it.width || 180}
-                    height={it.height || 180}
-                    rotation={it.rotation || 0}
+                    width={it.width}
+                    height={it.height}
+                    rotation={it.rotation}
                     draggable
                     onClick={() => setSelectedId(it.id)}
                     onDragMove={(e) => onDragMove(it.id, e)}

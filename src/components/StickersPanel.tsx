@@ -6,6 +6,47 @@ const stickers: {
   items: { src: string; label: string }[];
 }[] = [
   {
+    categoryKey: "inspirational",
+    items: [
+      { src: "/imagesguy/God is good all the time-01.png", label: "God is good all the time" },
+      { src: "/imagesguy/Stronger than the storm-01.png", label: "Stronger than the storm" },
+      { src: "/imagesguy/Pray. wait trust god has a plan-01.png", label: "Pray wait trust" },
+      { src: "/imagesguy/Jesus is my jam-01.png", label: "Jesus is my jam" },
+      { src: "/imagesguy/I will not be shaken psalm 16 8-01.png", label: "I will not be shaken" },
+      { src: "/imagesguy/I john 4 9 10 oh, how he loves us-01.png", label: "Oh how he loves us" },
+      { src: "/imagesguy/God is my strength-01.png", label: "God is my strength" },
+      { src: "/imagesguy/God don't play about me-01.png", label: "God don't play about me" },
+      { src: "/imagesguy/Created with a purpose-01.png", label: "Created with a purpose" },
+      { src: "/imagesguy/The way the truth jesus the life-01.png", label: "The way the truth" },
+    ],
+  },
+  {
+    categoryKey: "golf",
+    items: [
+      { src: "/imagesguy/born to golf forced to work.jpg", label: "Born to golf" },
+      { src: "/imagesguy/born to golf forced to work1.jpg", label: "Born to golf v2" },
+      { src: "/imagesguy/born to golf forced to work2.jpg", label: "Born to golf v3" },
+      { src: "/imagesguy/born to play golf with daddy.jpg", label: "Golf with daddy" },
+      { src: "/imagesguy/golf dad.jpg", label: "Golf dad" },
+      { src: "/imagesguy/golf guy.jpg", label: "Golf guy" },
+      { src: "/imagesguy/golf mom.jpg", label: "Golf mom" },
+      { src: "/imagesguy/golf mom1.jpg", label: "Golf mom v2" },
+      { src: "/imagesguy/it takes a lot of balls to golf like I do.jpg", label: "Lot of balls" },
+      { src: "/imagesguy/let's par-tee.jpg", label: "Let's par-tee" },
+      { src: "/imagesguy/life is short swing hard.jpg", label: "Life is short" },
+      { src: "/imagesguy/love to golf.jpg", label: "Love to golf" },
+      { src: "/imagesguy/love to golf1.jpg", label: "Love to golf v2" },
+      { src: "/imagesguy/may the course be with you.jpg", label: "May the course" },
+      { src: "/imagesguy/may the course be with you1.jpg", label: "May the course v2" },
+      { src: "/imagesguy/the most important shot in golf is the next one.jpg", label: "Next shot" },
+      { src: "/imagesguy/this girl's got drive.jpg", label: "Girl's got drive" },
+      { src: "/imagesguy/this girl's got drive1.jpg", label: "Girl's got drive v2" },
+      { src: "/imagesguy/weapons of grass destruction.jpg", label: "Grass destruction" },
+      { src: "/imagesguy/weekend forecast golf with a chance of beer.jpg", label: "Weekend forecast" },
+      { src: "/imagesguy/8.png", label: "Golf design" },
+    ],
+  },
+  {
     categoryKey: "icons",
     items: [
       { src: "/assets/stickers/star.svg", label: "Star" },
@@ -39,26 +80,27 @@ export default function StickersPanel({
 }) {
   const t = useTranslations("stickers");
   return (
-    <div className="card p-4 space-y-4 max-h-[520px] overflow-auto">
-      <div className="font-semibold">{t("title")}</div>
+    <div className="card p-4 space-y-4 max-h-[600px] overflow-auto">
+      <div className="font-semibold text-lg">{t("title")}</div>
       {stickers.map((cat) => (
         <div key={cat.categoryKey} className="space-y-3">
-          <div className="text-xs uppercase tracking-wide text-slate-500">
+          <div className="text-sm font-medium uppercase tracking-wide text-slate-700 bg-slate-50 px-3 py-2 rounded-md">
             {t(`categories.${cat.categoryKey}`)}
           </div>
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             {cat.items.map((s) => (
               <button
                 key={s.src}
                 onClick={() => onPick(s.src)}
-                className="rounded-lg border p-2 bg-white hover:shadow-md hover:-translate-y-0.5 transition-all"
+                className="rounded-lg border-2 border-slate-200 p-2 bg-white hover:border-slate-900 hover:shadow-lg hover:-translate-y-1 transition-all group"
+                title={s.label}
               >
                 <Image
                   src={s.src}
                   alt={s.label}
-                  width={80}
-                  height={80}
-                  className="w-full h-16 object-contain"
+                  width={120}
+                  height={120}
+                  className="w-full h-20 object-contain group-hover:scale-105 transition-transform"
                 />
               </button>
             ))}

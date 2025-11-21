@@ -18,7 +18,7 @@ const gallery = [
   "/Tasses%26goblets/Grande%20tasse%20isotherme%20(37).png",
 ];
 
-export const metadata = { title: "Tasses & Gobelets — monimpression" };
+export const metadata = { title: "Tasses & Gobelets — Mon Impression" };
 
 export default async function TassesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

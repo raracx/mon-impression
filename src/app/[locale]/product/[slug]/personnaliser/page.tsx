@@ -5,6 +5,7 @@ import CustomizerCanvas, {
 } from "@/components/CustomizerCanvas";
 import Toolbox from "@/components/Toolbox";
 import StickersPanel from "@/components/StickersPanel";
+import TermsModal from "@/components/TermsModal";
 import { useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -28,6 +29,7 @@ export default function PersonnaliserPage({
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
   const ref = useRef<CustomizerHandle | null>(null);
   const productId = params.slug;
   const [base, setBase] = useState<string>(
@@ -75,6 +77,15 @@ export default function PersonnaliserPage({
       setLoading(false);
       alert(e.message);
     }
+  };
+
+  const handleOrderClick = () => {
+    setShowTermsModal(true);
+  };
+
+  const handleTermsConfirm = () => {
+    setShowTermsModal(false);
+    order();
   };
 
   const download = () => {
@@ -132,13 +143,19 @@ export default function PersonnaliserPage({
           <button
             className="btn-primary w-full"
             disabled={!email || loading}
-            onClick={order}
+            onClick={handleOrderClick}
           >
             {loading ? t("loading") : t("orderNow")}
           </button>
           <p className="text-xs text-slate-500">{t("paymentNote")}</p>
         </div>
       </div>
+
+      <TermsModal
+        isOpen={showTermsModal}
+        onClose={() => setShowTermsModal(false)}
+        onConfirm={handleTermsConfirm}
+      />
     </div>
   );
 }

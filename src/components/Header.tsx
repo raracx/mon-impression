@@ -23,7 +23,7 @@ export default function Header() {
           <div className="relative">
             <Image
               src="/Logo.png"
-              alt="monimpression"
+              alt="Mon Impression"
               width={200}
               height={64}
               className="w-full h-12 object-contain"

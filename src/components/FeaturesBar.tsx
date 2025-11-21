@@ -4,14 +4,14 @@ import { getTranslations } from "next-intl/server";
 export default async function FeaturesBar() {
   const t = await getTranslations("home.features");
   const items = [
-    { icon: FaTruck, title: t("fast"), text: t("fastDesc") },
-    { icon: FaHeadset, title: t("support"), text: t("supportDesc") },
-    { icon: FaShieldAlt, title: t("quality"), text: t("qualityDesc") },
+    { icon: FaTruck, title: t("fast") },
+    { icon: FaHeadset, title: t("support") },
+    { icon: FaShieldAlt, title: t("quality") },
   ];
 
   return (
     <section className="container-page grid sm:grid-cols-3 gap-6 my-12">
-      {items.map(({ icon: Icon, title, text }, index) => (
+      {items.map(({ icon: Icon, title }, index) => (
         <div
           key={index}
           className="group card p-6 flex items-center gap-4 hover:bg-gradient-to-br hover:from-slate-50 hover:to-white cursor-pointer"
@@ -24,7 +24,6 @@ export default async function FeaturesBar() {
             <div className="font-bold text-slate-900 group-hover:text-slate-700 transition-colors">
               {title}
             </div>
-            <div className="text-sm text-slate-600 mt-1">{text}</div>
           </div>
         </div>
       ))}

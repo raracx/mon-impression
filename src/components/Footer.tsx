@@ -13,7 +13,7 @@ export default function Footer() {
           <div className="mb-4">
             <Image
               src="/Logo.png"
-              alt="monimpression"
+              alt="Mon Impression"
               width={180}
               height={60}
               className="h-12 w-auto object-contain"

@@ -5,6 +5,7 @@ import { GARMENTS } from "@/data/catalog";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import { setRequestLocale } from "next-intl/server";
+import Image from "next/image";
 
 const pick = (slug: string) => GARMENTS.find((g) => g.slug === slug);
 const popularBase: Omit<Product, "name">[] = [
@@ -61,15 +62,15 @@ export default async function HomePage({
     <div>
       <section className="relative mt-0 overflow-hidden aspect-[16/7] md:aspect-[16/6]">
         <div className="absolute inset-0">
-          {/* Video background from Pexels */}
-          <video
-            className="w-full h-full object-cover"
-            src="https://www.pexels.com/download/video/8738549/"
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
+          <div className="relative h-full w-full">
+            <Image
+              src="/WH_October_15th_2025_October_15_2025_15.webp"
+              alt="Atelier de personnalisation textile"
+              fill
+              priority
+              className="object-cover"
+            />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
         </div>
         <div className="container-page relative py-10 md:py-16 flex justify-end">

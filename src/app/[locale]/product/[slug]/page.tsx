@@ -7,6 +7,7 @@ import { GARMENTS, COLORS } from "@/data/catalog";
 import { useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import TermsModal from "@/components/TermsModal";
 
 const images: Record<string, string> = {
   tshirt: "/assets/tshirt/front.png",
@@ -26,6 +27,7 @@ export default function ProductPage() {
   const isFr = locale === "fr";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   const [customTshirtImage, setCustomTshirtImage] = useState<string | null>(
     null
@@ -72,6 +74,11 @@ export default function ProductPage() {
       alert(isFr ? "Veuillez télécharger une image" : "Please upload an image");
       return;
     }
+    // Show terms modal instead of directly processing
+    setShowTermsModal(true);
+  };
+
+  const processOrder = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/orders", {
@@ -112,6 +119,11 @@ export default function ProductPage() {
       setLoading(false);
       alert(e.message);
     }
+  };
+
+  const handleTermsConfirm = () => {
+    setShowTermsModal(false);
+    processOrder();
   };
 
   // Map slug to garment slug
@@ -448,6 +460,12 @@ export default function ProductPage() {
             : "Default DTF process — durable, flexible and precise. Sublimation and embroidery available on request for certain products."}
         </p>
       </div>
+
+      <TermsModal
+        isOpen={showTermsModal}
+        onClose={() => setShowTermsModal(false)}
+        onConfirm={handleTermsConfirm}
+      />
     </div>
   );
 }

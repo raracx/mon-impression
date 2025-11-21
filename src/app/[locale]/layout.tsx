@@ -17,7 +17,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "monimpression - Personnalisez vos produits",
+  title: "Mon Impression - Personnalisez vos produits",
   description:
     "Boutique d'impression personnalisée: t-shirts, hoodies, tasses, masques.",
   icons: {
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
     apple: "/favicon.png",
   },
   openGraph: {
-    title: "monimpression",
+    title: "Mon Impression",
     description:
       "Créez un t-shirt personnalisé ou laissez-nous le faire pour vous.",
     type: "website",
     images: ["/Logo.png"],
   },
-  metadataBase: new URL("https://monimpression.example.com"),
+  metadataBase: new URL("https://monimpression.com"),
 };
 
 export function generateStaticParams() {

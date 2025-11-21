@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "monimpression - Personnalisez vos produits",
+    "title": "Mon Impression - Personnalisez vos produits",
     "description": "Boutique d'impression personnalisée: t-shirts, hoodies, tasses, masques."
   },
   "header": {
@@ -9,17 +9,16 @@
       "catalog": "Catalogue",
       "faq": "FAQ",
       "submission": "Soumission",
-      "contact": "Contactez-nous",
-      "sizes": "Tableau des tailles"
+      "contact": "Contactez-nous"
     },
     "search": "Rechercher",
     "account": "Compte",
     "cart": "Panier"
   },
   "footer": {
-    "company": "monimpression",
-    "address": "7077 Blvd. Newman, LaSalle, QC H8N 1X1",
-    "phone": "438-299-6565",
+    "company": "Mon Impression",
+    "address": "Saint-Lin–Laurentides, QC",
+    "phone": "514-677-2809",
     "email": "contact@monimpression.com",
     "facebook": "Notre page Facebook",
     "information": "Informations",
@@ -46,11 +45,8 @@
     "viewAll": "Voir tout",
     "features": {
       "fast": "Livraison rapide",
-      "fastDesc": "Expédition sous 2-5 jours",
       "quality": "Qualité garantie",
-      "qualityDesc": "Produits testés et approuvés",
-      "support": "Support 7j/7",
-      "supportDesc": "On est là pour vous"
+      "support": "Support 6/7"
     },
     "section1": {
       "title": "Créez votre pièce personnalisée ou laissez‑nous le faire pour vous",
@@ -62,9 +58,9 @@
       "proudlyCanadian": "Fièrement canadien"
     },
     "whyChoose": {
-      "title": "Pourquoi choisir monimpression ?",
+      "title": "Pourquoi choisir Mon Impression ?",
       "reason1": "Bonne qualité, prix honnêtes, fait sur mesure",
-      "reason2": "Production rapide (souvent 5 à 15 minutes pour de petits items)",
+      "reason2": "Production rapide",
       "reason3": "Grande variété de vêtements et d'accessoires"
     },
     "whyCustom": {
@@ -74,22 +70,24 @@
       "reason3": "Pour vos évènements, votre équipe, votre entreprise"
     },
     "advantages": {
-      "title": "Avantage de la boutique monimpression VS compétiteurs",
-      "advantage1": "Service local à Montréal + Boutique ouverte 7 jours",
+      "title": "Avantage de la boutique Mon Impression VS compétiteurs",
+      "advantage1": "Service local à Lanaudière + Boutique ouverte 7 jours",
       "advantage2": "Personnalisation en direct avec aperçu en temps réel",
       "advantage3": "Surprise aucune sur la qualité et garantie de nos chandails"
     }
   },
   "products": {
-    "hoodie": "Hoodie unisexe",
-    "crewneck": "Col rond unisexe",
-    "teeShort": "T-shirt manches courtes (adulte)",
-    "teeLong": "T-shirt manches longues (adulte)",
-    "teeShortKid": "T-shirt manches courtes (enfant)",
-    "truckerCap": "Casquette camionneur",
+    "hoodie": "Chandail à capuchon",
+    "crewneck": "Chandail à col rond",
+    "teeShort": "t-shirt manches courtes",
+    "teeLong": "t-shirt manches longues",
+    "teeShortKid": "t-shirt manches courtes (enfant)",
+    "truckerCap": "Casquette",
     "customize": "Personnaliser",
     "mug": "Tasse",
-    "mask": "Masque"
+    "bottle": "Bouteille isotherme",
+    "glassBottle": "Bouteille en vitre",
+    "glassware": "Verre en vitre"
   },
   "common": {
     "price": "Prix",
@@ -114,26 +112,30 @@
   "faq": {
     "title": "FAQ",
     "items": {
+      "customizableProducts": {
+        "q": "Quels types de vêtements puis-je personnaliser ?",
+        "a": "Vous pouvez personnaliser une large gamme d'articles : t-shirts (courts et longs), chandails à capuchon (hoodies), chandails à col rond, casquettes, tasses, bouteilles isothermes, verres en vitre, et plus encore."
+      },
+      "paymentConfirmation": {
+        "q": "Pourquoi dois-je payer immédiatement après avoir personnalisé mon chandail ? Vais-je recevoir une confirmation ?",
+        "a": "Oui. Une fois le paiement effectué et le modèle envoyé (ou la demande soumise), vous recevrez une preuve de réception confirmant que votre commande a bien été enregistrée. Notre équipe vous transmettra ensuite une maquette d'approbation (exquise) pour confirmer que le visuel final vous convient. Dès votre approbation, nous procédons à la production, et vous recevrez un courriel de confirmation d'expédition lorsque la commande sera envoyée."
+      },
+      "printingTypes": {
+        "q": "Quels sont vos types d'impression ?",
+        "a": "Chez Mon Impression, nous utilisons plusieurs techniques selon le type de produit : DTF (Direct-to-Film) pour impression principale sur la majorité des vêtements (durable et de haute qualité), Vinyle utilisée également sur certains tissus pour un rendu précis, Broderie (sur demande) pour un effet haut de gamme et professionnel, Sublimation (sur demande et surtout pour tissus blancs ou en polyester). Pour les tasses : impressions faites principalement en sublimation, mais le vinyle est aussi possible selon le modèle."
+      },
       "productionTime": {
-        "q": "Combien de temps pour produire un t-shirt ?",
-        "a": "La plupart des petites commandes sont prêtes en 5 à 15 minutes en boutique. En ligne, prévoyez 1-3 jours ouvrables selon la charge."
+        "q": "Quels sont les délais de production ?",
+        "a": "Nos commandes sont produites rapidement et habituellement expédiées entre 2 et 5 jours ouvrables, selon le type d'article, la disponibilité et la quantité."
       },
-      "imageFormats": {
-        "q": "Quels formats d’images acceptez-vous ?",
-        "a": "PNG/JPG recommandés. Pour les logos, un SVG ou PNG haute résolution donnera le meilleur résultat."
-      },
-      "frontBack": {
-        "q": "Puis-je imprimer devant/derrière ?",
-        "a": "Oui. Notre outil vous laisse choisir la zone d’impression et positionner votre design."
-      },
-      "volumeDiscounts": {
-        "q": "Offrez-vous des rabais de volume ?",
-        "a": "Oui, contactez-nous via la page Soumission pour un prix sur mesure."
+      "quote": {
+        "q": "Puis-je obtenir une soumission avant de commander ?",
+        "a": "Oui, tout à fait ! Vous pouvez soumettre votre demande dans la section Soumission du site."
       }
     }
   },
   "catalogue": {
-    "title": "Catalogue – monimpression",
+    "title": "Catalogue – Mon Impression",
     "subtitle": "Vêtements personnalisés unisexes – Adultes et enfants",
     "colors": "Couleurs: {colors}",
     "sizes": "Tailles Adultes: {adult} — Enfants: {kids}",
@@ -179,7 +181,7 @@
   },
   "contact": {
     "title": "Contactez-nous",
-    "addressLine": "7077 Blvd. Newman, LaSalle, QC H8N 1X1 — 438-299-6565 — custombuzz@gmail.com",
+    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 — contact@monimpression.com",
     "mapTitle": "Carte",
     "form": {
       "name": "Nom complet",
@@ -192,26 +194,74 @@
     }
   },
   "sizes": {
-    "title": "Tableau des tailles (T-shirt unisexe)",
-    "headers": {
-      "size": "Taille",
-      "chest": "Tour de poitrine",
-      "length": "Longueur"
-    },
     "footnote": "Les grandeurs sont standards tel qu'ils se retrouvent sur le marché. Pour toute précision, veuillez nous contacter par courriel."
   },
   "about": {
-    "title": "À propos de monimpression",
+    "title": "À propos de Mon Impression",
     "p1": "Nous sommes fiers de personnaliser vos vêtements et accessoires. Démarrée avec l’impression de t-shirts, notre équipe couvre aujourd’hui tout ce qui est imprimable, avec une qualité constante et des délais rapides.",
     "p2": "Venez en boutique ou utilisez notre outil en ligne pour créer le produit parfait."
   },
   "privacy": {
     "title": "Politique de Confidentialité",
-    "p1": "Nous respectons votre vie privée. Vos informations sont utilisées pour traiter les commandes et améliorer votre expérience. Nous ne vendons pas vos données."
+    "intro": "Chez Mon Impression, nous respectons votre vie privée et nous nous engageons à protéger vos informations personnelles.",
+    "section1": {
+      "title": "1. Collecte d'informations",
+      "content": "Nous collectons les informations que vous nous fournissez lors de la création d'une commande : nom, adresse courriel, adresse de livraison, et informations de paiement. Nous collectons également les designs et images que vous téléchargez pour personnaliser vos produits."
+    },
+    "section2": {
+      "title": "2. Utilisation des informations",
+      "content": "Vos informations sont utilisées pour traiter et expédier vos commandes, communiquer avec vous concernant votre commande, améliorer nos services et notre site web. Nous ne vendons jamais vos informations personnelles à des tiers."
+    },
+    "section3": {
+      "title": "3. Protection des données",
+      "content": "Nous utilisons des mesures de sécurité standards de l'industrie pour protéger vos informations. Les paiements sont traités de manière sécurisée via Stripe, et nous ne stockons pas les informations de carte de crédit sur nos serveurs."
+    },
+    "section4": {
+      "title": "4. Partage d'informations",
+      "content": "Nous partageons vos informations uniquement avec nos partenaires de confiance nécessaires pour exécuter votre commande (processeurs de paiement, transporteurs). Ces partenaires sont tenus de protéger vos informations."
+    },
+    "section5": {
+      "title": "5. Vos droits",
+      "content": "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles. Pour exercer ces droits, contactez-nous à contact@monimpression.com."
+    },
+    "section6": {
+      "title": "6. Cookies",
+      "content": "Notre site utilise des cookies pour améliorer votre expérience de navigation et analyser l'utilisation du site. Vous pouvez désactiver les cookies dans les paramètres de votre navigateur."
+    },
+    "contact": "Pour toute question concernant cette politique, contactez-nous à contact@monimpression.com ou au 514-677-2809."
   },
   "terms": {
     "title": "Conditions d'utilisation",
-    "p1": "En utilisant ce site, vous acceptez nos conditions. Les produits personnalisés monimpression sont fabriqués sur demande et ne sont pas remboursables sauf défaut de fabrication."
+    "intro": "Bienvenue sur le site de Mon Impression. En utilisant ce site et nos services, vous acceptez les présentes conditions d'utilisation.",
+    "section1": {
+      "title": "1. Produits et Personnalisation",
+      "content": "Les produits personnalisés Mon Impression sont fabriqués sur demande selon vos spécifications. En téléchargeant vos designs, vous confirmez détenir tous les droits nécessaires pour leur utilisation. Nous nous réservons le droit de refuser toute commande contenant des éléments offensants, illégaux ou qui enfreignent les droits de tiers."
+    },
+    "section2": {
+      "title": "2. Droits d'auteur et Propriété Intellectuelle",
+      "content": "Vous conservez la propriété de vos designs. En soumettant votre illustration, vous nous accordez une licence non exclusive pour utiliser votre illustration uniquement pour l'exécution de votre commande. Nous ne vendons ni ne partageons vos designs avec des tiers."
+    },
+    "section3": {
+      "title": "3. Commandes et Paiement",
+      "content": "Le paiement est requis au moment de la commande. Une fois le paiement effectué, vous recevrez une confirmation par courriel. Notre équipe vous enverra une maquette d'approbation avant la production finale. Les modifications peuvent être apportées à cette étape."
+    },
+    "section4": {
+      "title": "4. Production et Délais",
+      "content": "Nos commandes sont habituellement expédiées entre 2 et 5 jours ouvrables. Les délais peuvent varier selon le type d'article, la disponibilité et la quantité commandée."
+    },
+    "section5": {
+      "title": "5. Politique de Retour et Remboursement",
+      "content": "Les produits personnalisés sont fabriqués sur mesure selon vos spécifications et ne sont pas remboursables sauf en cas de défaut de fabrication ou d'erreur de notre part. Si vous recevez un produit défectueux, contactez-nous dans les 7 jours suivant la réception."
+    },
+    "section6": {
+      "title": "6. Qualité d'impression",
+      "content": "Nous nous efforçons de reproduire fidèlement vos designs. Cependant, Mon Impression n'est pas responsable des erreurs d'impression dues à des images de mauvaise qualité (basse résolution, format inadéquat). Pour de meilleurs résultats, envoyez vos fichiers haute résolution par courriel."
+    },
+    "section7": {
+      "title": "7. Limitation de Responsabilité",
+      "content": "Mon Impression n'est pas responsable des délais de livraison causés par des transporteurs tiers, des événements hors de notre contrôle, ou des erreurs dans les informations de livraison fournies par le client."
+    },
+    "contact": "Pour toute question concernant ces conditions, contactez-nous à contact@monimpression.com ou par téléphone au 514-677-2809."
   },
   "success": {
     "title": "Merci pour votre achat!",
@@ -225,9 +275,15 @@
   "customizer": {
     "title": "Personnaliser",
     "products": {
-      "tshirt": "T-shirt",
-      "hoodie": "Hoodie",
-      "mug": "Tasse"
+      "tshirtShort": "t-shirt manches courtes",
+      "tshirtLong": "t-shirt manches longues",
+      "hoodie": "Chandail à capuchon",
+      "crewneck": "Chandail à col rond",
+      "cap": "Casquette",
+      "mug": "Tasse",
+      "bottle": "Bouteille isotherme",
+      "glassBottle": "Bouteille en vitre",
+      "glassware": "Verre en vitre"
     },
     "addToCart": "Ajouter au panier (Stripe)",
     "exportFirst": "Exportez d'abord votre design pour activer le paiement."
@@ -295,10 +351,18 @@
     "tip": "Astuce: cliquez sur un élément pour l'activer, utilisez la touche Suppr pour le retirer, Ctrl+D pour dupliquer."
   },
   "stickers": {
-    "title": "Bibliothèque",
+    "title": "Bibliothèque de designs",
     "categories": {
+      "inspirational": "Messages inspirants",
+      "golf": "Golf",
       "icons": "Icônes",
       "badges": "Badges"
     }
+  },
+  "termsModal": {
+    "title": "Confirmation",
+    "message": "En téléchargeant votre illustration ou votre logo, vous confirmez que vous avez le droit légal de l'utiliser et acceptez l'entière responsabilité de son contenu. Assurez-vous qu'il ne porte pas atteinte aux droits de tiers et qu'il est exempt de contenu offensant. Pour de meilleurs résultats, envoyez votre illustration par e-mail à contact@monimpression.com avec votre numéro de commande. Mon Impression peut apporter des modifications mineures à des fins d'impression et n'est pas responsable des erreurs d'impression dues à des images de mauvaise qualité. En soumettant votre illustration, vous nous accordez une licence non exclusive pour utiliser votre illustration pour l'exécution de la commande.",
+    "checkbox": "Je comprends et accepte les conditions générales",
+    "confirmButton": "COMMANDER MAINTENANT"
   }
 }

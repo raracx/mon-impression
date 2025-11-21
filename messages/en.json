@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "monimpression - Customize Your Products",
+    "title": "Mon Impression - Customize Your Products",
     "description": "Custom printing shop: t-shirts, hoodies, mugs, masks."
   },
   "header": {
@@ -9,17 +9,16 @@
       "catalog": "Catalog",
       "faq": "FAQ",
       "submission": "Quote",
-      "contact": "Contact Us",
-      "sizes": "Size Chart"
+      "contact": "Contact Us"
     },
     "search": "Search",
     "account": "Account",
     "cart": "Cart"
   },
   "footer": {
-    "company": "monimpression",
-    "address": "7077 Blvd. Newman, LaSalle, QC H8N 1X1",
-    "phone": "438-299-6565",
+    "company": "Mon Impression",
+    "address": "Saint-Lin–Laurentides, QC",
+    "phone": "514-677-2809",
     "email": "contact@monimpression.com",
     "facebook": "Our Facebook Page",
     "information": "Information",
@@ -46,11 +45,8 @@
     "viewAll": "View All",
     "features": {
       "fast": "Fast Delivery",
-      "fastDesc": "Shipping within 2-5 days",
       "quality": "Guaranteed Quality",
-      "qualityDesc": "Tested and approved products",
-      "support": "24/7 Support",
-      "supportDesc": "We're here for you"
+      "support": "Support 6/7"
     },
     "section1": {
       "title": "Create your custom piece or let us do it for you",
@@ -62,9 +58,9 @@
       "proudlyCanadian": "Proudly Canadian"
     },
     "whyChoose": {
-      "title": "Why choose monimpression?",
+      "title": "Why choose Mon Impression?",
       "reason1": "Good quality, fair prices, custom made",
-      "reason2": "Fast production (often 5 to 15 minutes for small items)",
+      "reason2": "Fast production",
       "reason3": "Wide variety of clothing and accessories"
     },
     "whyCustom": {
@@ -74,22 +70,24 @@
       "reason3": "For your events, your team, your business"
     },
     "advantages": {
-      "title": "Advantage of monimpression shop VS competitors",
-      "advantage1": "Local service in Montreal + Shop open 7 days",
+      "title": "Advantage of Mon Impression shop VS competitors",
+      "advantage1": "Local service in Lanaudière + Shop open 7 days",
       "advantage2": "Live customization with real-time preview",
       "advantage3": "No surprises on quality and guarantee of our shirts"
     }
   },
   "products": {
-    "hoodie": "Unisex Hoodie",
-    "crewneck": "Unisex Crewneck",
-    "teeShort": "Short Sleeve T-shirt (Adult)",
-    "teeLong": "Long Sleeve T-shirt (Adult)",
-    "teeShortKid": "Short Sleeve T-shirt (Kids)",
-    "truckerCap": "Trucker Cap",
+    "hoodie": "Hoodie",
+    "crewneck": "Crewneck Sweatshirt",
+    "teeShort": "Short sleeve t-shirt",
+    "teeLong": "Long sleeve t-shirt",
+    "teeShortKid": "Short sleeve t-shirt (Kids)",
+    "truckerCap": "Cap",
     "customize": "Customize",
     "mug": "Mug",
-    "mask": "Mask"
+    "bottle": "Insulated Bottle",
+    "glassBottle": "Glass Bottle",
+    "glassware": "Glassware"
   },
   "common": {
     "price": "Price",
@@ -114,26 +112,30 @@
   "faq": {
     "title": "FAQ",
     "items": {
+      "customizableProducts": {
+        "q": "What types of garments can I customize?",
+        "a": "You can customize a wide range of items: t-shirts (short and long sleeve), hoodies, crewneck sweatshirts, caps, mugs, insulated bottles, glassware, and more."
+      },
+      "paymentConfirmation": {
+        "q": "Why do I have to pay immediately after customizing my item? Will I receive a confirmation?",
+        "a": "Yes. Once payment is made and the design is submitted, you will receive a receipt confirmation that your order has been registered. Our team will then send you an approval mockup to confirm that the final design meets your expectations. Once approved, we proceed with production, and you will receive a shipping confirmation email when the order is sent."
+      },
+      "printingTypes": {
+        "q": "What are your printing methods?",
+        "a": "At Mon Impression, we use several techniques depending on the product type: DTF (Direct-to-Film) for main printing on most garments (durable and high quality), Vinyl also used on certain fabrics for precise rendering, Embroidery (on request) for a premium and professional effect, Sublimation (on request, especially for white or polyester fabrics). For mugs: prints are mainly done in sublimation, but vinyl is also possible depending on the model."
+      },
       "productionTime": {
-        "q": "How long to produce a t-shirt?",
-        "a": "Most small orders are ready in 5–15 minutes in-store. Online, expect 1–3 business days depending on workload."
+        "q": "What are the production times?",
+        "a": "Our orders are produced quickly and usually shipped within 2 to 5 business days, depending on the type of item, availability and quantity."
       },
-      "imageFormats": {
-        "q": "Which image formats do you accept?",
-        "a": "PNG/JPG recommended. For logos, an SVG or high‑resolution PNG gives the best result."
-      },
-      "frontBack": {
-        "q": "Can I print front/back?",
-        "a": "Yes. Our tool lets you choose the print area and position your design."
-      },
-      "volumeDiscounts": {
-        "q": "Do you offer volume discounts?",
-        "a": "Yes, contact us via the Quote page for a tailored price."
+      "quote": {
+        "q": "Can I get a quote before ordering?",
+        "a": "Yes, absolutely! You can submit your request in the Quote section of the site."
       }
     }
   },
   "catalogue": {
-    "title": "Catalog – monimpression",
+    "title": "Catalog – Mon Impression",
     "subtitle": "Custom unisex apparel – Adults and kids",
     "colors": "Colors: {colors}",
     "sizes": "Adult sizes: {adult} — Kids: {kids}",
@@ -179,7 +181,7 @@
   },
   "contact": {
     "title": "Contact us",
-    "addressLine": "7077 Blvd. Newman, LaSalle, QC H8N 1X1 — 438-299-6565 — custombuzz@gmail.com",
+    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 — contact@monimpression.com",
     "mapTitle": "Map",
     "form": {
       "name": "Full name",
@@ -192,26 +194,74 @@
     }
   },
   "sizes": {
-    "title": "Size chart (Unisex T-shirt)",
-    "headers": {
-      "size": "Size",
-      "chest": "Chest",
-      "length": "Length"
-    },
     "footnote": "Sizes are standard as found on the market. For any clarification, please contact us by email."
   },
   "about": {
-    "title": "About monimpression",
+    "title": "About Mon Impression",
     "p1": "We’re proud to customize your apparel and accessories. Starting with t‑shirt printing, our team now covers everything printable with consistent quality and fast turnaround.",
     "p2": "Visit our shop or use our online studio to create the perfect product."
   },
   "privacy": {
     "title": "Privacy Policy",
-    "p1": "We respect your privacy. Your information is used to process orders and improve your experience. We do not sell your data."
+    "intro": "At Mon Impression, we respect your privacy and are committed to protecting your personal information.",
+    "section1": {
+      "title": "1. Information Collection",
+      "content": "We collect information you provide when creating an order: name, email address, shipping address, and payment information. We also collect designs and images you upload to customize your products."
+    },
+    "section2": {
+      "title": "2. Use of Information",
+      "content": "Your information is used to process and ship your orders, communicate with you about your order, improve our services and website. We never sell your personal information to third parties."
+    },
+    "section3": {
+      "title": "3. Data Protection",
+      "content": "We use industry-standard security measures to protect your information. Payments are processed securely through Stripe, and we do not store credit card information on our servers."
+    },
+    "section4": {
+      "title": "4. Information Sharing",
+      "content": "We share your information only with trusted partners necessary to fulfill your order (payment processors, carriers). These partners are required to protect your information."
+    },
+    "section5": {
+      "title": "5. Your Rights",
+      "content": "You have the right to access, correct, or delete your personal information. To exercise these rights, contact us at contact@monimpression.com."
+    },
+    "section6": {
+      "title": "6. Cookies",
+      "content": "Our site uses cookies to improve your browsing experience and analyze site usage. You can disable cookies in your browser settings."
+    },
+    "contact": "For any questions regarding this policy, contact us at contact@monimpression.com or at 514-677-2809."
   },
   "terms": {
     "title": "Terms of Use",
-    "p1": "By using this site, you agree to our terms. monimpression custom products are made to order and are non‑refundable except for manufacturing defects."
+    "intro": "Welcome to Mon Impression. By using this site and our services, you agree to these terms of use.",
+    "section1": {
+      "title": "1. Products and Customization",
+      "content": "Mon Impression custom products are made to order according to your specifications. By uploading your designs, you confirm that you hold all necessary rights for their use. We reserve the right to refuse any order containing offensive, illegal elements or that infringe third-party rights."
+    },
+    "section2": {
+      "title": "2. Copyright and Intellectual Property",
+      "content": "You retain ownership of your designs. By submitting your illustration, you grant us a non-exclusive license to use your illustration solely for fulfilling your order. We do not sell or share your designs with third parties."
+    },
+    "section3": {
+      "title": "3. Orders and Payment",
+      "content": "Payment is required at the time of order. Once payment is made, you will receive a confirmation email. Our team will send you an approval mockup before final production. Changes can be made at this stage."
+    },
+    "section4": {
+      "title": "4. Production and Timelines",
+      "content": "Our orders are usually shipped within 2 to 5 business days. Timelines may vary depending on the type of item, availability, and quantity ordered."
+    },
+    "section5": {
+      "title": "5. Return and Refund Policy",
+      "content": "Custom products are made to order according to your specifications and are non-refundable except in case of manufacturing defect or error on our part. If you receive a defective product, contact us within 7 days of receipt."
+    },
+    "section6": {
+      "title": "6. Print Quality",
+      "content": "We strive to faithfully reproduce your designs. However, Mon Impression is not responsible for printing errors due to poor quality images (low resolution, inadequate format). For best results, send your high-resolution files by email."
+    },
+    "section7": {
+      "title": "7. Limitation of Liability",
+      "content": "Mon Impression is not responsible for delivery delays caused by third-party carriers, events beyond our control, or errors in delivery information provided by the customer."
+    },
+    "contact": "For any questions regarding these terms, contact us at contact@monimpression.com or by phone at 514-677-2809."
   },
   "success": {
     "title": "Thank you for your purchase!",
@@ -225,9 +275,15 @@
   "customizer": {
     "title": "Customize",
     "products": {
-      "tshirt": "T-shirt",
+      "tshirtShort": "Short sleeve t-shirt",
+      "tshirtLong": "Long sleeve t-shirt",
       "hoodie": "Hoodie",
-      "mug": "Mug"
+      "crewneck": "Crewneck Sweatshirt",
+      "cap": "Cap",
+      "mug": "Mug",
+      "bottle": "Insulated Bottle",
+      "glassBottle": "Glass Bottle",
+      "glassware": "Glassware"
     },
     "addToCart": "Add to cart (Stripe)",
     "exportFirst": "Export your design first to enable payment."
@@ -295,10 +351,18 @@
     "tip": "Tip: click an element to activate it, use Delete key to remove it, Ctrl+D to duplicate."
   },
   "stickers": {
-    "title": "Library",
+    "title": "Design Library",
     "categories": {
+      "inspirational": "Inspirational Messages",
+      "golf": "Golf",
       "icons": "Icons",
       "badges": "Badges"
     }
+  },
+  "termsModal": {
+    "title": "Confirmation",
+    "message": "By uploading your illustration or logo, you confirm that you have the legal right to use it and accept full responsibility for its content. Ensure it does not infringe on third-party rights and is free of offensive content. For best results, send your illustration by email to contact@monimpression.com with your order number. Mon Impression may make minor modifications for printing purposes and is not responsible for printing errors due to poor quality images. By submitting your illustration, you grant us a non-exclusive license to use your illustration for order fulfillment.",
+    "checkbox": "I understand and accept the general terms and conditions",
+    "confirmButton": "ORDER NOW"
   }
 }

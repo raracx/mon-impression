@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import CustomizerCanvas, {
   type CustomizerHandle,
 } from "@/components/CustomizerCanvas";
+import TermsModal from "@/components/TermsModal";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
@@ -10,6 +11,7 @@ export default function CustomizerPage() {
   const t = useTranslations("customizer");
   const ref = useRef<CustomizerHandle | null>(null);
   const [base, setBase] = useState("/assets/products/tshirt.svg");
+  const [showTermsModal, setShowTermsModal] = useState(false);
   const router = useRouter();
 
   const checkout = async () => {
@@ -26,6 +28,17 @@ export default function CustomizerPage() {
     });
     const { url } = await res.json();
     router.push(url);
+  };
+
+  const handleCheckoutClick = () => {
+    const exportUrl = ref.current?.exportDesign();
+    if (!exportUrl) return;
+    setShowTermsModal(true);
+  };
+
+  const handleTermsConfirm = () => {
+    setShowTermsModal(false);
+    checkout();
   };
 
   return (
@@ -48,10 +61,16 @@ export default function CustomizerPage() {
       </div>
       <CustomizerCanvas ref={ref} baseImage={base} />
       <div className="flex gap-3">
-        <button className="btn-primary" onClick={checkout}>
+        <button className="btn-primary" onClick={handleCheckoutClick}>
           {t("addToCart")}
         </button>
       </div>
+
+      <TermsModal
+        isOpen={showTermsModal}
+        onClose={() => setShowTermsModal(false)}
+        onConfirm={handleTermsConfirm}
+      />
     </div>
   );
 }
