@@ -36,7 +36,7 @@ export default function TermsModal({
       {/* Modal */}
       <div className="relative bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-gray-700 text-white px-6 py-4 flex items-center justify-between rounded-t-lg">
+        <div className="sticky top-0 bg-navy text-white px-6 py-4 flex items-center justify-between rounded-t-lg">
           <h2 className="text-xl font-semibold">{t("title")}</h2>
           <button
             onClick={onClose}
@@ -49,7 +49,7 @@ export default function TermsModal({
 
         {/* Content */}
         <div className="p-6 space-y-4">
-          <p className="text-gray-700 leading-relaxed">{t("message")}</p>
+          <p className="text-brand-gray-dark leading-relaxed">{t("message")}</p>
 
           {/* Checkbox */}
           <div className="flex items-start gap-3 pt-2">
@@ -58,11 +58,11 @@ export default function TermsModal({
               id="terms-checkbox"
               checked={isChecked}
               onChange={(e) => setIsChecked(e.target.checked)}
-              className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              className="mt-1 w-4 h-4 text-navy border-brand-gray-light rounded focus:ring-navy"
             />
             <label
               htmlFor="terms-checkbox"
-              className="text-sm text-gray-800 cursor-pointer"
+              className="text-sm text-brand-black cursor-pointer"
             >
               {t("checkbox")} <span className="text-red-600">*</span>
             </label>
@@ -75,8 +75,8 @@ export default function TermsModal({
               disabled={!isChecked}
               className={`px-8 py-3 rounded-md font-semibold text-white transition-colors ${
                 isChecked
-                  ? "bg-black hover:bg-gray-800"
-                  : "bg-gray-400 cursor-not-allowed"
+                  ? "bg-navy hover:bg-navy-dark"
+                  : "bg-brand-gray-light cursor-not-allowed"
               }`}
             >
               {t("confirmButton")}

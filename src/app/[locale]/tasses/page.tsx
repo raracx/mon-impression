@@ -29,7 +29,7 @@ export default async function TassesPage({ params }: { params: Promise<{ locale:
     <div className="container-page py-10 space-y-10">
       <header className="text-center">
         <h1 className="text-2xl md:text-3xl font-semibold">{t('title')}</h1>
-        <p className="text-slate-600 mt-2">{t('subtitle')}</p>
+        <p className="text-brand-gray-dark mt-2">{t('subtitle')}</p>
       </header>
 
       <section className="card p-4 overflow-hidden">
@@ -49,8 +49,8 @@ export default async function TassesPage({ params }: { params: Promise<{ locale:
         {MUGS.map((m) => (
           <article key={m.slug} className="card p-6">
             <h2 className="font-semibold text-lg">{isFr ? m.titleFr : m.titleEn}</h2>
-            <p className="text-slate-600 text-sm mt-1">{isFr ? m.descriptionFr : m.descriptionEn}</p>
-            <ul className="mt-3 text-sm list-disc ml-5 text-slate-700">
+            <p className="text-brand-gray-dark text-sm mt-1">{isFr ? m.descriptionFr : m.descriptionEn}</p>
+            <ul className="mt-3 text-sm list-disc ml-5 text-brand-gray-dark">
               {(isFr ? m.bulletsFr : m.bulletsEn).map((b) => (
                 <li key={b}>{b}</li>
               ))}

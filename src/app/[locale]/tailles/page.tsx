@@ -8,7 +8,7 @@ export default async function SizesPage() {
       <div className="max-w-2xl mx-auto">
         <div className="card p-8 text-center">
           <h1 className="text-2xl font-semibold mb-6">Information sur les tailles</h1>
-          <p className="text-slate-700 text-lg leading-relaxed">{t('footnote')}</p>
+          <p className="text-brand-gray-dark text-lg leading-relaxed">{t('footnote')}</p>
         </div>
       </div>
     </div>

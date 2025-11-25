@@ -14,14 +14,14 @@ export default async function FeaturesBar() {
       {items.map(({ icon: Icon, title }, index) => (
         <div
           key={index}
-          className="group card p-6 flex items-center gap-4 hover:bg-gradient-to-br hover:from-slate-50 hover:to-white cursor-pointer"
+          className="group card p-6 flex items-center gap-4 hover:bg-gradient-to-br hover:from-navy-50 hover:to-white cursor-pointer border-l-4 border-transparent hover:border-navy transition-all duration-300"
           style={{ animationDelay: `${index * 100}ms` }}
         >
-          <div className="text-slate-900 text-2xl p-3 rounded-xl bg-slate-100 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 group-hover:rotate-6">
+          <div className="text-navy text-2xl p-3 rounded-xl bg-navy-50 group-hover:bg-navy group-hover:text-white transition-all duration-300 group-hover:rotate-6">
             <Icon />
           </div>
           <div>
-            <div className="font-bold text-slate-900 group-hover:text-slate-700 transition-colors">
+            <div className="font-bold text-brand-black group-hover:text-navy transition-colors">
               {title}
             </div>
           </div>

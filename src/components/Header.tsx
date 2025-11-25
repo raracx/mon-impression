@@ -17,7 +17,7 @@ export default function Header() {
   const pathname = usePathname();
   const t = useTranslations("header");
   return (
-    <header className="glass sticky top-0 z-50 shadow-sm">
+    <header className="glass sticky top-0 z-50 border-b border-brand-gray-light/30">
       <div className="container-page flex items-center justify-between py-3">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative">
@@ -35,7 +35,7 @@ export default function Header() {
             <Link
               key={n.href}
               href={n.href}
-              className={`text-sm font-medium animated-underline ${pathname === n.href ? "text-slate-900" : "text-slate-600 hover:text-slate-900"}`}
+              className={`text-sm font-medium animated-underline ${pathname === n.href ? "text-navy font-semibold" : "text-brand-gray-dark hover:text-navy"}`}
             >
               {t(`nav.${n.key}`)}
             </Link>
@@ -45,36 +45,36 @@ export default function Header() {
           <LanguageSwitcher />
           <button
             aria-label={t("search")}
-            className="p-2.5 rounded-full hover:bg-slate-900 hover:text-white transition-all duration-300"
+            className="p-2.5 rounded-full text-brand-gray-dark hover:bg-navy hover:text-white transition-all duration-300"
           >
             <FaSearch />
           </button>
           {/* <Link
             href="/account"
             aria-label={t("account")}
-            className="p-2.5 rounded-full hover:bg-slate-900 hover:text-white transition-all duration-300"
+            className="p-2.5 rounded-full hover:bg-navy hover:text-white transition-all duration-300"
           >
             <FaRegUser />
           </Link>
           <Link
             href="/cart"
             aria-label={t("cart")}
-            className="p-2.5 rounded-full hover:bg-slate-900 hover:text-white transition-all duration-300 relative group"
+            className="p-2.5 rounded-full hover:bg-navy hover:text-white transition-all duration-300 relative group"
           >
             <FaShoppingCart />
-            <span className="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-red-600 text-white text-[10px] leading-4 rounded-full w-5 h-5 grid place-content-center font-bold shadow-lg group-hover:scale-110 transition-transform">
+            <span className="absolute -top-1 -right-1 bg-gradient-to-br from-navy to-navy-light text-white text-[10px] leading-4 rounded-full w-5 h-5 grid place-content-center font-bold shadow-lg group-hover:scale-110 transition-transform">
               0
             </span>
           </Link> */}
         </div>
       </div>
-      <div className="md:hidden border-t border-slate-200/50">
+      <div className="md:hidden border-t border-brand-gray-light/50">
         <div className="container-page flex overflow-x-auto gap-6 py-2 no-scrollbar">
           {navLinks.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className={`text-sm whitespace-nowrap font-medium ${pathname === n.href ? "text-slate-900 border-b-2 border-slate-900" : "text-slate-600"}`}
+              className={`text-sm whitespace-nowrap font-medium ${pathname === n.href ? "text-navy border-b-2 border-navy" : "text-brand-gray-dark"}`}
             >
               {t(`nav.${n.key}`)}
             </Link>

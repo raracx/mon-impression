@@ -18,8 +18,8 @@ export default async function FAQPage() {
       <div className="space-y-6">
         {ids.map((id) => (
           <div key={id} className="card p-6 hover:shadow-lg transition-shadow">
-            <div className="font-semibold text-lg text-slate-900 mb-3">{t(`items.${id}.q`)}</div>
-            <div className="text-slate-700 leading-relaxed">{t(`items.${id}.a`)}</div>
+            <div className="font-semibold text-lg text-brand-black mb-3">{t(`items.${id}.q`)}</div>
+            <div className="text-brand-gray-dark leading-relaxed">{t(`items.${id}.a`)}</div>
           </div>
         ))}
       </div>

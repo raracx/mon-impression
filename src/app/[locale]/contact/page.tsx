@@ -24,30 +24,30 @@ export default function ContactPage() {
     <div className="container-page py-10 grid md:grid-cols-2 gap-10">
       <div>
         <h1 className="text-2xl font-semibold mb-4">{t('title')}</h1>
-        <p className="text-slate-600">{t('addressLine')}</p>
+        <p className="text-brand-gray-dark">{t('addressLine')}</p>
         <form className="card p-6 mt-6 space-y-4" onSubmit={submit}>
           <input
             name="name"
             required
             placeholder={t('form.name')}
-            className="border rounded-md px-3 py-2 w-full"
+            className="border border-brand-gray-light rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
           />
           <input
             name="email"
             type="email"
             required
             placeholder={t('form.email')}
-            className="border rounded-md px-3 py-2 w-full"
+            className="border border-brand-gray-light rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
           />
           <textarea
             name="message"
             rows={5}
             required
             placeholder={t('form.message')}
-            className="border rounded-md px-3 py-2 w-full"
+            className="border border-brand-gray-light rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
           />
           <button className="btn-primary" type="submit">{t('form.submit')}</button>
-          {status && <div className="text-sm text-slate-600">{status}</div>}
+          {status && <div className="text-sm text-brand-gray-dark">{status}</div>}
         </form>
       </div>
       <div className="card overflow-hidden">

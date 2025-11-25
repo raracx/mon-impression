@@ -177,7 +177,7 @@ export default function ProductPage() {
         {/* Image Section */}
         <div className="space-y-4 lg:sticky lg:top-4 lg:self-start">
           <div className="card p-4">
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-sm font-semibold text-brand-gray-dark mb-2">
               {isFr
                 ? "Télécharger votre T-shirt personnalisé"
                 : "Upload Your Custom T-shirt"}
@@ -185,9 +185,9 @@ export default function ProductPage() {
 
             {/* Custom T-shirt Preview */}
             {customTshirtImage ? (
-              <div className="mb-3 p-4 bg-slate-50 rounded-lg border border-slate-200">
+              <div className="mb-3 p-4 bg-brand-gray-lighter rounded-lg border border-brand-gray-light">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-slate-600">
+                  <span className="text-xs font-medium text-brand-gray-dark">
                     {isFr ? "Aperçu du T-shirt" : "T-shirt Preview"}
                   </span>
                   <button
@@ -209,9 +209,9 @@ export default function ProductPage() {
                 </div>
               </div>
             ) : (
-              <div className="mb-3 p-4 bg-slate-50 rounded-lg border border-slate-200">
+              <div className="mb-3 p-4 bg-brand-gray-lighter rounded-lg border border-brand-gray-light">
                 <div className="flex items-center justify-center h-64">
-                  <p className="text-slate-500 text-center">
+                  <p className="text-brand-gray-dark text-center">
                     {isFr ? "Aucune image téléchargée" : "No image uploaded"}
                   </p>
                 </div>
@@ -227,11 +227,11 @@ export default function ProductPage() {
             />
             <button
               onClick={() => tshirtImageInputRef.current?.click()}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-slate-700 font-medium"
+              className="w-full px-4 py-2 border border-brand-gray-light rounded-lg hover:bg-brand-gray-lighter transition-colors text-brand-gray-dark font-medium"
             >
               {isFr ? "Choisir un fichier" : "Choose File"}
             </button>
-            <p className="text-xs text-slate-500 mt-2">
+            <p className="text-xs text-brand-gray-dark mt-2">
               {isFr
                 ? "Téléchargez une photo claire de votre T-shirt personnalisé"
                 : "Upload a clear photo of your custom T-shirt"}
@@ -240,13 +240,13 @@ export default function ProductPage() {
 
           {/* Specifications Section */}
           <form onSubmit={handleSubmit} className="card p-4">
-            <h3 className="text-lg font-semibold text-slate-900 mb-4">
+            <h3 className="text-lg font-semibold text-brand-black mb-4">
               {isFr ? "Spécifications" : "Specifications"}
             </h3>
 
             {/* Name */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-brand-gray-dark mb-2">
                 {isFr ? "Nom" : "Name"}
               </label>
               <input
@@ -256,14 +256,14 @@ export default function ProductPage() {
                 onChange={(e) =>
                   handleSpecificationsChange("name", e.target.value)
                 }
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-brand-gray-light rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 required
               />
             </div>
 
             {/* Email */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-brand-gray-dark mb-2">
                 Email
               </label>
               <input
@@ -273,14 +273,14 @@ export default function ProductPage() {
                 onChange={(e) =>
                   handleSpecificationsChange("email", e.target.value)
                 }
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-brand-gray-light rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 required
               />
             </div>
 
             {/* Size Selection */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-brand-gray-dark mb-2">
                 {isFr ? "Taille" : "Size"}
               </label>
               <select
@@ -289,7 +289,7 @@ export default function ProductPage() {
                 onChange={(e) =>
                   handleSpecificationsChange("size", e.target.value)
                 }
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-brand-gray-light rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 required
               >
                 <option value="">
@@ -308,7 +308,7 @@ export default function ProductPage() {
 
             {/* Detailed Description */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-brand-gray-dark mb-2">
                 {isFr ? "Description détaillée" : "Detailed Description"}
               </label>
               <textarea
@@ -317,7 +317,7 @@ export default function ProductPage() {
                 onChange={(e) =>
                   handleSpecificationsChange("description", e.target.value)
                 }
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-brand-gray-light rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 rows={4}
                 placeholder={
                   isFr
@@ -348,7 +348,7 @@ export default function ProductPage() {
         <div className="space-y-6">
           <div>
             {garment?.audience && (
-              <span className="inline-block bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium mb-3">
+              <span className="inline-block bg-navy-50 text-navy px-3 py-1 rounded-full text-sm font-medium mb-3">
                 {garment.audience === "kids"
                   ? isFr
                     ? "Enfants"
@@ -360,10 +360,10 @@ export default function ProductPage() {
                     : "Unisexe"}
               </span>
             )}
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
+            <h1 className="text-3xl md:text-4xl font-bold text-brand-black">
               {name}
             </h1>
-            <p className="text-slate-600 mt-3 text-lg leading-relaxed">
+            <p className="text-brand-gray-dark mt-3 text-lg leading-relaxed">
               {garment
                 ? isFr
                   ? garment.descriptionFr
@@ -374,20 +374,20 @@ export default function ProductPage() {
 
           {/* Pricing Section */}
           {garment && garment.prices.length > 0 && (
-            <div className="card p-6 bg-slate-50 border border-slate-200">
-              <h2 className="text-lg font-bold text-slate-900 mb-4">
+            <div className="card p-6 bg-brand-gray-lighter border border-brand-gray-light">
+              <h2 className="text-lg font-bold text-brand-black mb-4">
                 {isFr ? "Tarification" : "Pricing"}
               </h2>
               <div className="space-y-3">
                 {garment.prices.map((p) => (
                   <div
                     key={isFr ? p.labelFr : p.labelEn}
-                    className="flex items-start justify-between gap-4 pb-3 border-b border-slate-200 last:border-0 last:pb-0"
+                    className="flex items-start justify-between gap-4 pb-3 border-b border-brand-gray-light last:border-0 last:pb-0"
                   >
-                    <span className="text-slate-700 text-sm flex-1">
+                    <span className="text-brand-gray-dark text-sm flex-1">
                       {isFr ? p.labelFr : p.labelEn}
                     </span>
-                    <span className="font-bold text-lg text-slate-900 whitespace-nowrap">
+                    <span className="font-bold text-lg text-brand-black whitespace-nowrap">
                       {p.price}
                     </span>
                   </div>
@@ -400,7 +400,7 @@ export default function ProductPage() {
           {garment &&
             (isFr ? garment.featuresFr : garment.featuresEn).length > 0 && (
               <div className="card p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">
+                <h2 className="text-lg font-bold text-brand-black mb-4">
                   {isFr ? "Caractéristiques" : "Features"}
                 </h2>
                 <ul className="space-y-3">
@@ -408,10 +408,10 @@ export default function ProductPage() {
                     (feature) => (
                       <li
                         key={feature}
-                        className="flex items-start text-slate-700"
+                        className="flex items-start text-brand-gray-dark"
                       >
                         <svg
-                          className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0"
+                          className="w-5 h-5 text-navy mr-3 mt-0.5 flex-shrink-0"
                           fill="none"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -430,17 +430,17 @@ export default function ProductPage() {
             )}
 
           {/* Colors & Sizes Info */}
-          <div className="card p-6 bg-blue-50 border border-blue-100">
-            <h2 className="text-lg font-bold text-slate-900 mb-3">
+          <div className="card p-6 bg-navy-50 border border-navy-100">
+            <h2 className="text-lg font-bold text-brand-black mb-3">
               {isFr ? "Couleurs disponibles" : "Available Colors"}
             </h2>
-            <p className="text-slate-700 mb-4">
+            <p className="text-brand-gray-dark mb-4">
               {(isFr ? COLORS.fr : COLORS.en).join(", ")}
             </p>
-            <h2 className="text-lg font-bold text-slate-900 mb-3">
+            <h2 className="text-lg font-bold text-brand-black mb-3">
               {isFr ? "Tailles disponibles" : "Available Sizes"}
             </h2>
-            <p className="text-slate-700">
+            <p className="text-brand-gray-dark">
               {garment?.audience === "kids"
                 ? "XS, S, M, L, XL"
                 : "S, M, L, XL, 2XL, 3XL"}
@@ -450,11 +450,11 @@ export default function ProductPage() {
       </div>
 
       {/* Additional Info Section */}
-      <div className="card p-8 bg-gradient-to-br from-slate-50 to-white">
-        <h2 className="text-2xl font-bold text-slate-900 mb-4 text-center">
+      <div className="card p-8 bg-gradient-to-br from-brand-gray-lighter to-white">
+        <h2 className="text-2xl font-bold text-brand-black mb-4 text-center">
           {isFr ? "Procédé d'impression" : "Printing Process"}
         </h2>
-        <p className="text-slate-700 text-center max-w-3xl mx-auto leading-relaxed">
+        <p className="text-brand-gray-dark text-center max-w-3xl mx-auto leading-relaxed">
           {isFr
             ? "Procédé DTF par défaut — durable, souple et précis. Sublimation et broderie disponibles sur demande pour certains produits."
             : "Default DTF process — durable, flexible and precise. Sublimation and embroidery available on request for certain products."}

@@ -125,21 +125,24 @@ export default function Reviews() {
 
   return (
     <section id="reviews" className="container-page my-16">
-      <h2 className="text-center text-2xl md:text-3xl font-semibold text-slate-900">
-        {t("title")}
-      </h2>
-      <div className="relative mt-8">
+      <div className="text-center mb-8">
+        <div className="accent-bar mx-auto mb-3"></div>
+        <h2 className="text-2xl md:text-3xl font-semibold gradient-text">
+          {t("title")}
+        </h2>
+      </div>
+      <div className="relative">
         <button
           aria-label={t("prev")}
           onClick={() => scrollBy(-1)}
-          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 shadow hover:scale-105 transition"
+          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white shadow-lg border border-brand-gray-light hover:bg-navy hover:text-white hover:scale-105 transition-all duration-300"
         >
           <FaChevronLeft />
         </button>
         <button
           aria-label={t("next")}
           onClick={() => scrollBy(1)}
-          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 shadow hover:scale-105 transition"
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white shadow-lg border border-brand-gray-light hover:bg-navy hover:text-white hover:scale-105 transition-all duration-300"
         >
           <FaChevronRight />
         </button>
@@ -155,9 +158,9 @@ export default function Reviews() {
           {reviews.map((r) => (
             <article
               key={r.id}
-              className="min-w-[320px] max-w-[320px] snap-start card p-5 text-center bg-white"
+              className="min-w-[320px] max-w-[320px] snap-start card p-5 text-center bg-white border-t-4 border-navy hover:shadow-lg transition-all duration-300"
             >
-              <div className="mx-auto w-28 h-28 rounded-full overflow-hidden">
+              <div className="mx-auto w-28 h-28 rounded-full overflow-hidden ring-4 ring-navy-100">
                 <Image
                   src={r.image}
                   alt={r.name}
@@ -166,11 +169,11 @@ export default function Reviews() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p className="mt-4 text-slate-700 text-sm leading-relaxed">
+              <p className="mt-4 text-brand-gray-dark text-sm leading-relaxed">
                 {r.text}
               </p>
-              <div className="mt-4 font-medium">{r.name}</div>
-              <div className="mt-2 flex justify-center gap-1 text-red-500">
+              <div className="mt-4 font-semibold text-brand-black">{r.name}</div>
+              <div className="mt-2 flex justify-center gap-1 text-navy">
                 {Array.from({ length: r.rating || 5 }).map((_, i) => (
                   <FaStar key={i} />
                 ))}

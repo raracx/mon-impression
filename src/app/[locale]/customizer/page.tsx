@@ -67,7 +67,7 @@ export default function CustomizerPage() {
         ].map((p) => (
           <button
             key={p.key}
-            className={`btn-primary ${base === p.img ? "bg-slate-800" : ""}`}
+            className={`btn-primary ${base === p.img ? "bg-navy-dark" : ""}`}
             onClick={() => setBase(p.img)}
           >
             {t(`products.${p.key}`)}
@@ -77,7 +77,7 @@ export default function CustomizerPage() {
 
       {/* Garment Color Swatches */}
       <div className="bg-white rounded-xl shadow-md p-4">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">
+        <h3 className="text-sm font-semibold text-brand-black mb-3">
           {t("garmentColor")}
         </h3>
         <div className="flex flex-wrap gap-3">
@@ -91,16 +91,16 @@ export default function CustomizerPage() {
               <div
                 className={`w-10 h-10 rounded-full border-2 transition-all shadow-sm hover:shadow-md hover:scale-110 ${
                   selectedColor === colorOption.color
-                    ? "border-blue-600 ring-2 ring-blue-300 scale-110"
-                    : "border-slate-300 hover:border-slate-400"
+                    ? "border-navy ring-2 ring-navy-100 scale-110"
+                    : "border-brand-gray-light hover:border-brand-gray-dark"
                 }`}
                 style={{ backgroundColor: colorOption.color }}
               />
               <span
                 className={`text-xs font-medium transition-colors ${
                   selectedColor === colorOption.color
-                    ? "text-blue-600"
-                    : "text-slate-600 group-hover:text-slate-900"
+                    ? "text-navy"
+                    : "text-brand-gray-dark group-hover:text-brand-black"
                 }`}
               >
                 {t(`colors.${colorOption.labelKey}`)}

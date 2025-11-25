@@ -44,7 +44,7 @@ export default async function TermsPage() {
         </section>
       </div>
 
-      <div className="mt-10 p-6 bg-slate-50 rounded-lg">
+      <div className="mt-10 p-6 bg-brand-gray-lighter rounded-lg">
         <p className="text-sm">{t('contact')}</p>
       </div>
     </div>

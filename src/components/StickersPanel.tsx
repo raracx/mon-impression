@@ -84,18 +84,18 @@ export default function StickersPanel({
       {stickers.map((cat) => (
         <div key={cat.categoryKey} className="space-y-3">
           <div className="flex items-center gap-2">
-            <div className="h-px flex-1 bg-slate-200" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">
+            <div className="h-px flex-1 bg-brand-gray-light" />
+            <h3 className="text-xs font-bold uppercase tracking-wider text-navy">
               {t(`categories.${cat.categoryKey}`)}
             </h3>
-            <div className="h-px flex-1 bg-slate-200" />
+            <div className="h-px flex-1 bg-brand-gray-light" />
           </div>
           <div className="grid grid-cols-3 gap-2">
             {cat.items.map((s) => (
               <button
                 key={s.src}
                 onClick={() => onPick(s.src)}
-                className="aspect-square rounded-lg border-2 border-slate-200 p-2 bg-white hover:border-blue-500 hover:shadow-md transition-all group"
+                className="aspect-square rounded-lg border-2 border-brand-gray-light p-2 bg-white hover:border-navy hover:shadow-md transition-all group"
                 title={s.label}
               >
                 <Image

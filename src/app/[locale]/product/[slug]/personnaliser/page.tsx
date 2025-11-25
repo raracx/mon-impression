@@ -116,7 +116,7 @@ export default function PersonnaliserPage({
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="bg-gradient-to-br from-brand-gray-lighter to-white">
       {/* Main Content */}
       <div className="relative flex items-start px-4 py-4 gap-4">
         {/* Canvas Area */}
@@ -133,20 +133,20 @@ export default function PersonnaliserPage({
               />
 
               {/* Title and Action Buttons Below Canvas */}
-              <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6">
+              <div className="bg-white border border-brand-gray-light rounded-2xl shadow-lg p-6">
                 <div className="flex items-start justify-between flex-wrap gap-4">
                   <div className="flex-1">
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-900">
+                    <h1 className="text-xl md:text-2xl font-bold text-brand-black">
                       {t("title", { product: productId })}
                     </h1>
-                    <p className="text-sm text-slate-600 mt-2">
+                    <p className="text-sm text-brand-gray-dark mt-2">
                       {t("subtitle")}
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={download}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-all"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-brand-gray-lighter hover:bg-brand-gray-light text-brand-gray-dark rounded-lg font-medium transition-all"
                     >
                       <Download className="w-4 h-4" />
                       <span className="hidden sm:inline">{t("download")}</span>
@@ -154,7 +154,7 @@ export default function PersonnaliserPage({
                     <button
                       onClick={handleOrderClick}
                       disabled={!email || loading}
-                      className="inline-flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="inline-flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-navy to-navy-light hover:from-navy-dark hover:to-navy text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <ShoppingCart className="w-4 h-4" />
                       {loading ? t("loading") : t("orderNow")}
@@ -168,50 +168,50 @@ export default function PersonnaliserPage({
 
         {/* Right Sidebar - Collapsible */}
         <div
-          className={`sticky top-[96px] self-start h-[calc(100vh-112px)] w-96 bg-white border border-slate-200 rounded-2xl shadow-2xl transform transition-transform duration-300 z-20 overflow-hidden flex flex-col shrink-0 ${
+          className={`sticky top-[96px] self-start h-[calc(100vh-112px)] w-96 bg-white border border-brand-gray-light rounded-2xl shadow-2xl transform transition-transform duration-300 z-20 overflow-hidden flex flex-col shrink-0 ${
             rightPanelOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           {/* Toggle Button */}
           <button
             onClick={() => setRightPanelOpen(!rightPanelOpen)}
-            className="fixed -left-12 top-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-lg p-2 shadow-lg hover:bg-slate-50 transition-colors z-30"
+            className="fixed -left-12 top-1/2 -translate-y-1/2 bg-white border border-brand-gray-light rounded-lg p-2 shadow-lg hover:bg-navy-50 transition-colors z-30"
             aria-label="Toggle panel"
             style={{ right: rightPanelOpen ? "calc(1rem + 384px)" : "1rem" }}
           >
             {rightPanelOpen ? (
-              <ChevronRight className="w-5 h-5 text-slate-600" />
+              <ChevronRight className="w-5 h-5 text-brand-gray-dark" />
             ) : (
-              <ChevronLeft className="w-5 h-5 text-slate-600" />
+              <ChevronLeft className="w-5 h-5 text-brand-gray-dark" />
             )}
           </button>
 
           {/* Tabs */}
-          <div className="flex border-b border-slate-200 bg-slate-50">
+          <div className="flex border-b border-brand-gray-light bg-brand-gray-lighter">
             <button
               onClick={() => setActiveTab("tools")}
               className={`flex-1 px-4 py-3 font-semibold text-sm transition-colors relative ${
                 activeTab === "tools"
-                  ? "text-blue-600 bg-white"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  ? "text-navy bg-white"
+                  : "text-brand-gray-dark hover:text-navy hover:bg-navy-50"
               }`}
             >
               {t("toolsTab")}
               {activeTab === "tools" && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-navy" />
               )}
             </button>
             <button
               onClick={() => setActiveTab("stickers")}
               className={`flex-1 px-4 py-3 font-semibold text-sm transition-colors relative ${
                 activeTab === "stickers"
-                  ? "text-blue-600 bg-white"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  ? "text-navy bg-white"
+                  : "text-brand-gray-dark hover:text-brand-black hover:bg-brand-gray-lighter"
               }`}
             >
               {t("designsTab")}
               {activeTab === "stickers" && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-navy" />
               )}
             </button>
           </div>
@@ -273,9 +273,9 @@ export default function PersonnaliserPage({
           </div>
 
           {/* Order Section - Fixed at Bottom */}
-          <div className="border-t border-slate-200 bg-white p-4 space-y-3 shadow-lg">
+          <div className="border-t border-brand-gray-light bg-white p-4 space-y-3 shadow-lg">
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-2">
+              <label className="block text-xs font-medium text-brand-gray-dark mb-2">
                 {t("emailLabel")}
               </label>
               <input
@@ -283,10 +283,10 @@ export default function PersonnaliserPage({
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder={t("emailPlaceholder")}
-                className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                className="w-full border border-brand-gray-light rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
               />
             </div>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-brand-gray-dark leading-relaxed">
               {t("paymentNote")}
             </p>
           </div>

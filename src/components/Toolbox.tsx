@@ -88,7 +88,7 @@ export default function Toolbox(props: Props) {
           <button
             className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
               activeSide === "front"
-                ? "border-blue-600 bg-blue-50 text-blue-700 shadow-sm"
+                ? "border-navy bg-navy-50 text-navy shadow-sm"
                 : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
             }`}
             onClick={() => handleSetSide("front")}
@@ -107,7 +107,7 @@ export default function Toolbox(props: Props) {
           <button
             className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
               activeSide === "back"
-                ? "border-blue-600 bg-blue-50 text-blue-700 shadow-sm"
+                ? "border-navy bg-navy-50 text-navy shadow-sm"
                 : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
             }`}
             onClick={() => handleSetSide("back")}
@@ -126,7 +126,7 @@ export default function Toolbox(props: Props) {
           <button
             className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
               activeSide === "left-sleeve"
-                ? "border-blue-600 bg-blue-50 text-blue-700 shadow-sm"
+                ? "border-navy bg-navy-50 text-navy shadow-sm"
                 : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
             }`}
             onClick={() => handleSetSide("left-sleeve")}
@@ -145,7 +145,7 @@ export default function Toolbox(props: Props) {
           <button
             className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
               activeSide === "right-sleeve"
-                ? "border-blue-600 bg-blue-50 text-blue-700 shadow-sm"
+                ? "border-navy bg-navy-50 text-navy shadow-sm"
                 : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
             }`}
             onClick={() => handleSetSide("right-sleeve")}
@@ -182,7 +182,7 @@ export default function Toolbox(props: Props) {
                 <div
                   className={`w-8 h-8 rounded-full border-2 transition-all shadow-sm hover:shadow-md hover:scale-110 ${
                     props.garmentColor === colorOption.color
-                      ? "border-blue-600 ring-2 ring-blue-300 scale-110"
+                      ? "border-navy ring-2 ring-navy-200 scale-110"
                       : "border-slate-300 hover:border-slate-400"
                   }`}
                   style={{ backgroundColor: colorOption.color }}
@@ -210,13 +210,13 @@ export default function Toolbox(props: Props) {
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={props.onAddText}
-            className="py-2.5 px-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-xs font-semibold rounded-lg shadow-md hover:shadow-lg transition-all"
+            className="py-2.5 px-4 bg-gradient-to-r from-navy to-navy-light hover:from-navy-dark hover:to-navy text-white text-xs font-semibold rounded-lg shadow-md hover:shadow-lg transition-all"
           >
             {t("actions.addText")}
           </button>
           <button
             onClick={() => inputRef.current?.click()}
-            className="py-2.5 px-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white text-xs font-semibold rounded-lg shadow-md hover:shadow-lg transition-all"
+            className="py-2.5 px-4 bg-gradient-to-r from-brand-gray-dark to-brand-black hover:from-brand-black hover:to-brand-gray-dark text-white text-xs font-semibold rounded-lg shadow-md hover:shadow-lg transition-all"
           >
             {t("actions.uploadImage")}
           </button>
@@ -287,7 +287,7 @@ export default function Toolbox(props: Props) {
                   props.onEditText?.(editingText);
                 }
               }}
-              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy"
             />
           </div>
         )}
@@ -298,7 +298,7 @@ export default function Toolbox(props: Props) {
             </label>
             <select
               onChange={(e) => props.onFontFamily(e.target.value)}
-              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy"
             >
               <option value="Poppins">Poppins</option>
               <option value="Arial">Arial</option>
@@ -406,7 +406,7 @@ export default function Toolbox(props: Props) {
           onClick={props.onTogglePan}
           className={`mt-2 w-full py-2 px-3 text-xs font-medium rounded-lg transition-all ${
             props.panMode
-              ? "bg-blue-600 text-white hover:bg-blue-700"
+              ? "bg-navy text-white hover:bg-navy-dark"
               : "bg-slate-100 hover:bg-slate-200 text-slate-700"
           }`}
         >
@@ -415,8 +415,8 @@ export default function Toolbox(props: Props) {
       </div>
 
       {/* Tips */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-        <p className="text-xs text-blue-800 leading-relaxed">{t("tip")}</p>
+      <div className="bg-navy-50 border border-navy-200 rounded-lg p-3">
+        <p className="text-xs text-navy-dark leading-relaxed">{t("tip")}</p>
       </div>
     </div>
   );
