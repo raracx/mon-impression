@@ -292,8 +292,12 @@
     "title": "Personnaliser — {product}",
     "subtitle": "Ajoutez du texte, importez une image, appliquez vos styles, puis commandez.",
     "emailPlaceholder": "Votre email",
+    "emailLabel": "Adresse email",
     "orderNow": "Commander maintenant",
     "loading": "Chargement…",
+    "download": "Télécharger",
+    "toolsTab": "Outils",
+    "designsTab": "Designs",
     "paymentNote": "Le paiement est traité par Stripe. Un aperçu de votre design sera envoyé avec la commande.",
     "errorOrder": "Erreur lors de la création de la commande",
     "errorStripe": "Erreur Stripe"
@@ -315,19 +319,29 @@
   },
   "toolbox": {
     "title": "Outils",
+    "viewSection": "Sélectionner la vue",
+    "addSection": "Ajouter des éléments",
+    "layersSection": "Contrôles de calque",
+    "textSection": "Propriétés du texte",
+    "viewControls": "Contrôles de vue",
     "sides": {
       "front": "Avant",
-      "back": "Arrière"
+      "back": "Arrière",
+      "leftSleeve": "Manche gauche",
+      "rightSleeve": "Manche droite"
     },
     "actions": {
       "addText": "Ajouter du texte",
       "uploadImage": "Importer une image",
-      "duplicate": "Dupliquer",
+      "duplicate": "Copier",
+      "forward": "Avant",
+      "backward": "Arrière",
       "bringForward": "Avant-plan",
       "sendBackward": "Arrière-plan",
       "delete": "Supprimer"
     },
     "properties": {
+      "editTextLabel": "Modifier le texte",
       "font": "Police",
       "size": "Taille",
       "color": "Couleur",
@@ -347,6 +361,7 @@
       "reset": "Reset"
     },
     "grid": "Grille",
+    "pan": "Outil main (déplacer)",
     "export": "Télécharger PNG",
     "tip": "Astuce: cliquez sur un élément pour l'activer, utilisez la touche Suppr pour le retirer, Ctrl+D pour dupliquer."
   },

@@ -31,6 +31,7 @@ type CanvasImageProps = {
   draggable: boolean;
   onClick: () => void;
   onDragMove: (e: any) => void;
+  onDragEnd: (e: any) => void;
   onTransformEnd: (e: any) => void;
 };
 
@@ -45,6 +46,7 @@ const CanvasImage = ({
   draggable,
   onClick,
   onDragMove,
+  onDragEnd,
   onTransformEnd,
 }: CanvasImageProps) => {
   const [image] = useImage(src, "anonymous");
@@ -60,6 +62,7 @@ const CanvasImage = ({
       draggable={draggable}
       onClick={onClick}
       onDragMove={onDragMove}
+      onDragEnd={onDragEnd}
       onTransformEnd={onTransformEnd}
     />
   );
@@ -103,16 +106,26 @@ export type CustomizerHandle = {
   bringForward: () => void;
   sendBackward: () => void;
   deleteSelected: () => void;
-  setSide: (s: "front" | "back") => void;
+  setSide: (s: "front" | "back" | "left-sleeve" | "right-sleeve") => void;
   toggleGrid: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
   resetZoom: () => void;
+  togglePan: () => void;
+  resetPan: () => void;
   exportDesign: () => string | undefined;
+  // return the currently selected item or null
+  getSelected: () => CanvasItem | null;
+  // update the selected text content
+  setSelectedText: (text: string) => void;
 };
 
 type Props = {
   baseImage: string;
+  // optional product id so the canvas can switch base images when changing sides
+  productId?: string;
+  // optional callback when selection changes
+  onSelectionChange?: (item: CanvasItem | null) => void;
 };
 
 function useContainerSize() {
@@ -133,30 +146,57 @@ function useContainerSize() {
 }
 
 const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
-  function CustomizerCanvas({ baseImage }, ref) {
+  function CustomizerCanvas({ baseImage, productId, onSelectionChange }, ref) {
     const { ref: containerRef, width, height } = useContainerSize();
     const stageRef = useRef<any>(null);
-    const [base] = useImage(baseImage, "anonymous");
+    // allow switching the base depending on the selected side for some products
+    const [currentBaseImage, setCurrentBaseImage] = useState<string>(baseImage);
+    useEffect(() => setCurrentBaseImage(baseImage), [baseImage]);
+    const [base] = useImage(currentBaseImage, "anonymous");
 
-    const [side, setSide] = useState<"front" | "back">("front");
+    const [side, setSide] = useState<
+      "front" | "back" | "left-sleeve" | "right-sleeve"
+    >("front");
     const [itemsBySide, setItemsBySide] = useState<
-      Record<"front" | "back", CanvasItem[]>
-    >({ front: [], back: [] });
+      Record<"front" | "back" | "left-sleeve" | "right-sleeve", CanvasItem[]>
+    >({ front: [], back: [], "left-sleeve": [], "right-sleeve": [] });
     const items = itemsBySide[side];
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
     const [scale, setScale] = useState(1);
     const [showGrid, setShowGrid] = useState(true);
+    const [rotation, setRotation] = useState(0);
+    // pan (hand tool) mode
+    const [panMode, setPanMode] = useState(false);
+    const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
 
-    const printRect = useMemo(
-      () => ({
-        x: width * 0.28,
-        y: height * 0.2,
-        w: width * 0.44,
-        h: height * 0.5,
-      }),
-      [width, height],
-    );
+    const printRect = useMemo(() => {
+      // Adjust print area based on which side is being customized
+      switch (side) {
+        case "back":
+          return {
+            x: width * 0.28,
+            y: height * 0.2,
+            w: width * 0.44,
+            h: height * 0.5,
+          };
+        case "left-sleeve":
+        case "right-sleeve":
+          return {
+            x: width * 0.35,
+            y: height * 0.15,
+            w: width * 0.3,
+            h: height * 0.3,
+          };
+        default: // front
+          return {
+            x: width * 0.28,
+            y: height * 0.2,
+            w: width * 0.44,
+            h: height * 0.5,
+          };
+      }
+    }, [width, height, side]);
 
     const setItems = (updater: (prev: CanvasItem[]) => CanvasItem[]) => {
       setItemsBySide((map) => ({ ...map, [side]: updater(map[side]) }));
@@ -191,7 +231,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               fontSize: 28,
               align: "left",
               fontStyle: "normal",
-            }),
+            })
           );
           setSelectedId(id);
         },
@@ -208,7 +248,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                 y: printRect.y + 40,
                 width: 180,
                 height: 180,
-              }),
+              })
             );
             setSelectedId(id);
           };
@@ -229,7 +269,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               y: printRect.y + 40,
               width: 180,
               height: 180,
-            }),
+            })
           );
           setSelectedId(id);
         },
@@ -238,8 +278,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, fill: color }
-                : i,
-            ),
+                : i
+            )
           );
         },
         setFontFamily: (family: string) =>
@@ -247,16 +287,16 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, fontFamily: family }
-                : i,
-            ),
+                : i
+            )
           ),
         setFontSize: (size: number) =>
           setItems((arr) =>
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, fontSize: size }
-                : i,
-            ),
+                : i
+            )
           ),
         toggleBold: () =>
           setItems((arr) =>
@@ -272,8 +312,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                         ? "bold italic"
                         : "bold",
                   }
-                : i,
-            ),
+                : i
+            )
           ),
         toggleItalic: () =>
           setItems((arr) =>
@@ -289,30 +329,30 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                         ? "bold italic"
                         : "italic",
                   }
-                : i,
-            ),
+                : i
+            )
           ),
         alignText: (align) =>
           setItems((arr) =>
             arr.map((i) =>
-              i.id === selectedId && i.type === "text" ? { ...i, align } : i,
-            ),
+              i.id === selectedId && i.type === "text" ? { ...i, align } : i
+            )
           ),
         setStroke: (color: string) =>
           setItems((arr) =>
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, stroke: color }
-                : i,
-            ),
+                : i
+            )
           ),
         setStrokeWidth: (w: number) =>
           setItems((arr) =>
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, strokeWidth: w }
-                : i,
-            ),
+                : i
+            )
           ),
         duplicateSelected: () => {
           if (!selected) return;
@@ -323,7 +363,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               id,
               x: (selected.x || 0) + 20,
               y: (selected.y || 0) + 20,
-            }),
+            })
           );
           setSelectedId(id);
         },
@@ -352,15 +392,54 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
         setSide: (s) => {
           setSide(s);
           setSelectedId(null);
+          // Animate rotation based on side
+          const rotations = {
+            front: 0,
+            back: 180,
+            // avoid rotating 90deg which makes the canvas edge-on and invisible — keep 0 for sleeves
+            "left-sleeve": 0,
+            "right-sleeve": 0,
+          };
+          setRotation(rotations[s] || 0);
+
+          // For t-shirt product, switch the base image to show the selected side
+          if (productId === "tshirt") {
+            const mapping: Record<string, string> = {
+              front: "/assets/tshirt/TShirtFront.png",
+              back: "/assets/tshirt/TShirtBack.png",
+              "left-sleeve": "/assets/tshirt/TShirtLeftSide.png",
+              "right-sleeve": "/assets/tshirt/TShirtRightSide.png",
+              // use front for heart side as fallback
+              // heart-side removed; left/right will use their dedicated images
+            };
+            setCurrentBaseImage(mapping[s] || baseImage);
+          }
         },
         toggleGrid: () => setShowGrid((v) => !v),
         zoomIn: () => setScale((s) => Math.min(2, +(s + 0.1).toFixed(2))),
         zoomOut: () => setScale((s) => Math.max(0.6, +(s - 0.1).toFixed(2))),
-        resetZoom: () => setScale(1),
+        resetZoom: () => {
+          setScale(1);
+          setStagePos({ x: 0, y: 0 });
+        },
+        togglePan: () => setPanMode((v) => !v),
+        resetPan: () => setStagePos({ x: 0, y: 0 }),
         exportDesign: () => stageRef.current?.toDataURL({ pixelRatio: 2 }),
+        getSelected: () => (selected ? selected : null),
+        setSelectedText: (text: string) => {
+          if (!selected || selected.type !== "text") return;
+          setItems((arr) =>
+            arr.map((i) => (i.id === selectedId ? { ...i, text } : i))
+          );
+        },
       }),
-      [selectedId, side, printRect],
+      [selectedId, side, printRect, selected]
     );
+
+    // inform parent component about selection changes
+    useEffect(() => {
+      onSelectionChange?.(selected || null);
+    }, [selectedId, items, selected, onSelectionChange]);
 
     useEffect(() => {
       const onKey = (e: KeyboardEvent) => {
@@ -374,7 +453,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           if (s) {
             const id = crypto.randomUUID();
             setItems((arr) =>
-              arr.concat({ ...s, id, x: (s.x || 0) + 20, y: (s.y || 0) + 20 }),
+              arr.concat({ ...s, id, x: (s.x || 0) + 20, y: (s.y || 0) + 20 })
             );
             setSelectedId(id);
           }
@@ -386,16 +465,17 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
 
     const onDragMove = (id: string, e: any) => {
       const node = e.target;
-      const next = clampToPrint(
-        node.x(),
-        node.y(),
-        node.width(),
-        node.height(),
-      );
+      const w = node.width() * (node.scaleX() || 1);
+      const h = node.height() * (node.scaleY() || 1);
+      const next = clampToPrint(node.x(), node.y(), w, h);
       node.x(next.x);
       node.y(next.y);
+    };
+
+    const onDragEnd = (id: string, e: any) => {
+      const node = e.target;
       setItems((arr) =>
-        arr.map((i) => (i.id === id ? { ...i, x: node.x(), y: node.y() } : i)),
+        arr.map((i) => (i.id === id ? { ...i, x: node.x(), y: node.y() } : i))
       );
     };
 
@@ -418,8 +498,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                 height,
                 rotation: node.rotation(),
               }
-            : i,
-        ),
+            : i
+        )
       );
     };
 
@@ -452,7 +532,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             stroke="#e5e7eb"
             strokeWidth={1}
             listening={false}
-          />,
+          />
         );
       }
       for (let y = printRect.y; y <= printRect.y + printRect.h; y += step) {
@@ -463,7 +543,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             stroke="#e5e7eb"
             strokeWidth={1}
             listening={false}
-          />,
+          />
         );
       }
       return lines;
@@ -471,91 +551,112 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
 
     return (
       <div ref={containerRef} className="w-full">
-        <div className="card p-2">
-          <Stage
-            ref={stageRef}
-            width={width}
-            height={height}
-            scaleX={scale}
-            scaleY={scale}
-            className="bg-white rounded-md"
+        <div className="bg-white rounded-2xl shadow-xl ring-1 ring-slate-200 p-3 relative overflow-hidden">
+          <div
+            className="transition-transform duration-700 ease-in-out"
+            style={{ transform: `rotateY(${rotation}deg)` }}
           >
-            <Layer>
-              {base && (
-                <KImage
-                  image={base as any}
-                  width={width}
-                  height={height}
-                  listening={false}
-                />
-              )}
-              {/* Print area and grid */}
-              <Group listening={false}>
-                {drawGrid()}
-                <Rect
-                  x={printRect.x}
-                  y={printRect.y}
-                  width={printRect.w}
-                  height={printRect.h}
-                  stroke="#ef4444"
-                  dash={[6, 4]}
-                  cornerRadius={6}
-                  opacity={0.7}
-                />
-              </Group>
+            <Stage
+              ref={stageRef}
+              width={width}
+              height={height}
+              scaleX={scale}
+              scaleY={scale}
+              x={stagePos.x}
+              y={stagePos.y}
+              draggable={panMode}
+              onDragEnd={(e) => {
+                setStagePos({ x: e.target.x(), y: e.target.y() });
+              }}
+              style={{ cursor: panMode ? "grab" : "default" }}
+              className="bg-white rounded-md"
+            >
+              <Layer>
+                {base && (
+                  <KImage
+                    image={base as any}
+                    width={width}
+                    height={height}
+                    listening={false}
+                  />
+                )}
+                {/* Print area and grid */}
+                <Group listening={false}>
+                  {drawGrid()}
+                  <Rect
+                    x={printRect.x}
+                    y={printRect.y}
+                    width={printRect.w}
+                    height={printRect.h}
+                    stroke="#ef4444"
+                    dash={[6, 4]}
+                    cornerRadius={6}
+                    opacity={0.7}
+                  />
+                </Group>
 
-              {items.map((it) =>
-                it.type === "image" ? (
-                  <CanvasImage
-                    key={it.id}
-                    id={`node-${it.id}`}
-                    src={it.src!}
-                    x={it.x}
-                    y={it.y}
-                    width={it.width}
-                    height={it.height}
-                    rotation={it.rotation}
-                    draggable
-                    onClick={() => setSelectedId(it.id)}
-                    onDragMove={(e) => onDragMove(it.id, e)}
-                    onTransformEnd={(e) => onTransformEnd(it.id, e.target)}
-                  />
-                ) : (
-                  <KText
-                    key={it.id}
-                    id={`node-${it.id}`}
-                    text={it.text || ""}
-                    x={it.x}
-                    y={it.y}
-                    fill={it.fill || "#111827"}
-                    fontFamily={it.fontFamily || "Poppins"}
-                    fontStyle={it.fontStyle || "normal"}
-                    fontSize={it.fontSize || 28}
-                    align={it.align || "left"}
-                    stroke={it.stroke}
-                    strokeWidth={it.strokeWidth}
-                    draggable
-                    onClick={() => setSelectedId(it.id)}
-                    onDragMove={(e) => onDragMove(it.id, e)}
-                    onTransformEnd={(e) => onTransformEnd(it.id, e.target)}
-                  />
-                ),
-              )}
-              {selectedId && <SelectedTransformer />}
-            </Layer>
-          </Stage>
-        </div>
-        <div className="mt-2 text-xs text-slate-500 flex items-center justify-between">
-          <div>
-            Zone d’impression {Math.round(printRect.w)}×
-            {Math.round(printRect.h)} px — Côté:{" "}
-            <span className="font-semibold">{side}</span>
+                {items.map((it) =>
+                  it.type === "image" ? (
+                    <CanvasImage
+                      key={it.id}
+                      id={`node-${it.id}`}
+                      src={it.src!}
+                      x={it.x}
+                      y={it.y}
+                      width={it.width}
+                      height={it.height}
+                      rotation={it.rotation}
+                      draggable
+                      onClick={() => setSelectedId(it.id)}
+                      onDragMove={(e) => onDragMove(it.id, e)}
+                      onDragEnd={(e) => onDragEnd(it.id, e)}
+                      onTransformEnd={(e) => onTransformEnd(it.id, e.target)}
+                    />
+                  ) : (
+                    <KText
+                      key={it.id}
+                      id={`node-${it.id}`}
+                      text={it.text || ""}
+                      x={it.x}
+                      y={it.y}
+                      fill={it.fill || "#111827"}
+                      fontFamily={it.fontFamily || "Poppins"}
+                      fontStyle={it.fontStyle || "normal"}
+                      fontSize={it.fontSize || 28}
+                      align={it.align || "left"}
+                      stroke={it.stroke}
+                      strokeWidth={it.strokeWidth}
+                      draggable
+                      onClick={() => setSelectedId(it.id)}
+                      onDragMove={(e) => onDragMove(it.id, e)}
+                      onDragEnd={(e) => onDragEnd(it.id, e)}
+                      onTransformEnd={(e) => onTransformEnd(it.id, e.target)}
+                    />
+                  )
+                )}
+                {selectedId && <SelectedTransformer />}
+              </Layer>
+            </Stage>
           </div>
-          <div>Zoom: {Math.round(scale * 100)}%</div>
+        </div>
+        <div className="mt-2 text-xs text-slate-500 flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <span>
+              Zone d'impression {Math.round(printRect.w)}×
+              {Math.round(printRect.h)} px
+            </span>
+            <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-800 font-semibold text-xs">
+              {side === "front" && "Avant"}
+              {side === "back" && "Arrière"}
+              {side === "left-sleeve" && "Manche gauche"}
+              {side === "right-sleeve" && "Manche droite"}
+            </span>
+          </div>
+          <div className="font-medium">Zoom: {Math.round(scale * 100)}%</div>
         </div>
       </div>
     );
-  },
+  }
 );
 
 export default CustomizerCanvas;

@@ -292,8 +292,12 @@
     "title": "Customize — {product}",
     "subtitle": "Add text, import an image, apply your styles, then order.",
     "emailPlaceholder": "Your email",
+    "emailLabel": "Email Address",
     "orderNow": "Order now",
     "loading": "Loading…",
+    "download": "Download",
+    "toolsTab": "Tools",
+    "designsTab": "Designs",
     "paymentNote": "Payment is processed by Stripe. A preview of your design will be sent with the order.",
     "errorOrder": "Error creating order",
     "errorStripe": "Stripe error"
@@ -315,19 +319,29 @@
   },
   "toolbox": {
     "title": "Tools",
+    "viewSection": "Select View",
+    "addSection": "Add Elements",
+    "layersSection": "Layer Controls",
+    "textSection": "Text Properties",
+    "viewControls": "View Controls",
     "sides": {
       "front": "Front",
-      "back": "Back"
+      "back": "Back",
+      "leftSleeve": "Left Sleeve",
+      "rightSleeve": "Right Sleeve"
     },
     "actions": {
       "addText": "Add text",
       "uploadImage": "Upload image",
-      "duplicate": "Duplicate",
+      "duplicate": "Copy",
+      "forward": "Front",
+      "backward": "Back",
       "bringForward": "Bring forward",
       "sendBackward": "Send backward",
       "delete": "Delete"
     },
     "properties": {
+    "editTextLabel": "Edit text",
       "font": "Font",
       "size": "Size",
       "color": "Color",
@@ -347,6 +361,7 @@
       "reset": "Reset"
     },
     "grid": "Grid",
+    "pan": "Hand Tool (Pan)",
     "export": "Download PNG",
     "tip": "Tip: click an element to activate it, use Delete key to remove it, Ctrl+D to duplicate."
   },

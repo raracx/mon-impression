@@ -80,27 +80,30 @@ export default function StickersPanel({
 }) {
   const t = useTranslations("stickers");
   return (
-    <div className="card p-4 space-y-4 max-h-[600px] overflow-auto">
-      <div className="font-semibold text-lg">{t("title")}</div>
+    <div className="space-y-5">
       {stickers.map((cat) => (
         <div key={cat.categoryKey} className="space-y-3">
-          <div className="text-sm font-medium uppercase tracking-wide text-slate-700 bg-slate-50 px-3 py-2 rounded-md">
-            {t(`categories.${cat.categoryKey}`)}
+          <div className="flex items-center gap-2">
+            <div className="h-px flex-1 bg-slate-200" />
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">
+              {t(`categories.${cat.categoryKey}`)}
+            </h3>
+            <div className="h-px flex-1 bg-slate-200" />
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2">
             {cat.items.map((s) => (
               <button
                 key={s.src}
                 onClick={() => onPick(s.src)}
-                className="rounded-lg border-2 border-slate-200 p-2 bg-white hover:border-slate-900 hover:shadow-lg hover:-translate-y-1 transition-all group"
+                className="aspect-square rounded-lg border-2 border-slate-200 p-2 bg-white hover:border-blue-500 hover:shadow-md transition-all group"
                 title={s.label}
               >
                 <Image
                   src={s.src}
                   alt={s.label}
-                  width={120}
-                  height={120}
-                  className="w-full h-20 object-contain group-hover:scale-105 transition-transform"
+                  width={100}
+                  height={100}
+                  className="w-full h-full object-contain group-hover:scale-110 transition-transform"
                 />
               </button>
             ))}
