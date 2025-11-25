@@ -47,10 +47,15 @@ export default function SoumissionPage() {
               className="border border-brand-gray-light rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
               aria-label={t('form.product')}
             >
-              <option value="tshirt">{t('products.tshirt')}</option>
+              <option value="">{t('form.selectProduct')}</option>
+              <option value="tshirt-short">{t('products.tshirtShort')}</option>
+              <option value="tshirt-long">{t('products.tshirtLong')}</option>
               <option value="hoodie">{t('products.hoodie')}</option>
+              <option value="crewneck">{t('products.crewneck')}</option>
+              <option value="cap">{t('products.cap')}</option>
               <option value="mug">{t('products.mug')}</option>
-              <option value="mask">{t('products.mask')}</option>
+              <option value="bottle">{t('products.bottle')}</option>
+              <option value="other">{t('products.other')}</option>
             </select>
             <input
               name="quantity"
@@ -60,6 +65,22 @@ export default function SoumissionPage() {
               className="border border-brand-gray-light rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
               placeholder={t('form.quantity')}
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-brand-gray-dark mb-2">
+              {t('form.technique')}
+            </label>
+            <select
+              name="technique"
+              className="border border-brand-gray-light rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+              aria-label={t('form.technique')}
+            >
+              <option value="dtf">{t('techniques.dtf')}</option>
+              <option value="sublimation">{t('techniques.sublimation')}</option>
+              <option value="embroidery">{t('techniques.embroidery')}</option>
+              <option value="vinyl">{t('techniques.vinyl')}</option>
+              <option value="unsure">{t('techniques.unsure')}</option>
+            </select>
           </div>
           <textarea
             name="details"
@@ -71,13 +92,24 @@ export default function SoumissionPage() {
           {status && <div className="text-sm text-brand-gray-dark">{status}</div>}
         </form>
       </div>
-      <div className="card p-6">
-        <h2 className="font-semibold text-lg">{t('why.title')}</h2>
-        <ul className="list-disc ml-5 text-brand-gray-dark mt-2 space-y-2">
-          <li>{t('why.benefit1')}</li>
-          <li>{t('why.benefit2')}</li>
-          <li>{t('why.benefit3')}</li>
-        </ul>
+      <div className="space-y-6">
+        <div className="card p-6">
+          <h2 className="font-semibold text-lg">{t('why.title')}</h2>
+          <ul className="list-disc ml-5 text-brand-gray-dark mt-2 space-y-2">
+            <li>{t('why.benefit1')}</li>
+            <li>{t('why.benefit2')}</li>
+            <li>{t('why.benefit3')}</li>
+          </ul>
+        </div>
+        <div className="card p-6 bg-navy-50 border-l-4 border-navy">
+          <h2 className="font-semibold text-lg text-navy">{t('techniques.title')}</h2>
+          <ul className="mt-3 space-y-3 text-brand-gray-dark text-sm">
+            <li><strong>DTF</strong> — {t('techniques.dtfDesc')}</li>
+            <li><strong>Sublimation</strong> — {t('techniques.sublimationDesc')}</li>
+            <li><strong>Broderie</strong> — {t('techniques.embroideryDesc')}</li>
+            <li><strong>Vinyle</strong> — {t('techniques.vinylDesc')}</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

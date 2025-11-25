@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "Mon Impression - Customize Your Products",
-    "description": "Custom printing shop: t-shirts, hoodies, mugs, masks."
+    "description": "Custom printing shop: t-shirts, hoodies, mugs, caps and accessories."
   },
   "header": {
     "nav": {
@@ -159,7 +159,9 @@
       "name": "Full name",
       "email": "Email",
       "product": "Product",
+      "selectProduct": "Select a product",
       "quantity": "Quantity",
+      "technique": "Preferred printing technique",
       "message": "Project details (colors, areas, timelines, etc.)",
       "submit": "Send request",
       "sending": "Sending…",
@@ -167,10 +169,26 @@
       "error": "An error occurred"
     },
     "products": {
-      "tshirt": "T-shirt",
+      "tshirtShort": "Short sleeve t-shirt",
+      "tshirtLong": "Long sleeve t-shirt",
       "hoodie": "Hoodie",
-      "mug": "Mug",
-      "mask": "Mask"
+      "crewneck": "Crewneck sweatshirt",
+      "cap": "Cap",
+      "mug": "Mug / Tumbler",
+      "bottle": "Insulated bottle",
+      "other": "Other (specify in details)"
+    },
+    "techniques": {
+      "title": "Our printing techniques",
+      "dtf": "DTF (Direct-to-Film)",
+      "dtfDesc": "Main printing method for most garments. Durable, flexible and high quality.",
+      "sublimation": "Sublimation",
+      "sublimationDesc": "Ideal for white or polyester fabrics. Vibrant and permanent results.",
+      "embroidery": "Embroidery",
+      "embroideryDesc": "Premium and professional effect. Perfect for company logos.",
+      "vinyl": "Vinyl",
+      "vinylDesc": "Precise rendering for small quantities or simple designs.",
+      "unsure": "I'm not sure (we'll advise you)"
     },
     "why": {
       "title": "Why request a quote?",

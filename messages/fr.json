@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "Mon Impression - Personnalisez vos produits",
-    "description": "Boutique d'impression personnalisée: t-shirts, hoodies, tasses, masques."
+    "description": "Boutique d'impression personnalisée: t-shirts, hoodies, tasses, casquettes et accessoires."
   },
   "header": {
     "nav": {
@@ -159,7 +159,9 @@
       "name": "Nom complet",
       "email": "Email",
       "product": "Produit",
+      "selectProduct": "Sélectionnez un produit",
       "quantity": "Quantité",
+      "technique": "Technique d'impression souhaitée",
       "message": "Détails du projet (couleurs, zones, délais, etc.)",
       "submit": "Envoyer la demande",
       "sending": "Envoi…",
@@ -167,10 +169,26 @@
       "error": "Une erreur est survenue"
     },
     "products": {
-      "tshirt": "T-shirt",
-      "hoodie": "Hoodie",
-      "mug": "Tasse",
-      "mask": "Masque"
+      "tshirtShort": "T-shirt manches courtes",
+      "tshirtLong": "T-shirt manches longues",
+      "hoodie": "Chandail à capuchon",
+      "crewneck": "Chandail à col rond",
+      "cap": "Casquette",
+      "mug": "Tasse / Gobelet",
+      "bottle": "Bouteille isotherme",
+      "other": "Autre (préciser dans les détails)"
+    },
+    "techniques": {
+      "title": "Nos techniques d'impression",
+      "dtf": "DTF (Direct-to-Film)",
+      "dtfDesc": "Impression principale sur la majorité des vêtements. Durable, souple et de haute qualité.",
+      "sublimation": "Sublimation",
+      "sublimationDesc": "Idéal pour tissus blancs ou en polyester. Rendu éclatant et permanent.",
+      "embroidery": "Broderie",
+      "embroideryDesc": "Effet haut de gamme et professionnel. Parfait pour logos d'entreprise.",
+      "vinyl": "Vinyle",
+      "vinylDesc": "Rendu précis pour petites quantités ou designs simples.",
+      "unsure": "Je ne sais pas (nous vous conseillerons)"
     },
     "why": {
       "title": "Pourquoi demander une soumission ?",
