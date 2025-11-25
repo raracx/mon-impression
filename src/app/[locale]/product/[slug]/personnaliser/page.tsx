@@ -50,6 +50,8 @@ export default function PersonnaliserPage({
   const [selectedItem, setSelectedItem] = useState<CanvasItem | null>(null);
   // track pan mode for visual indicator in toolbox
   const [panMode, setPanMode] = useState(false);
+  // track garment color
+  const [garmentColor, setGarmentColor] = useState("#FFFFFF");
 
   useEffect(() => {
     const img = searchParams.get("img");
@@ -126,6 +128,8 @@ export default function PersonnaliserPage({
                 baseImage={base}
                 productId={productId}
                 onSelectionChange={(it) => setSelectedItem(it)}
+                initialGarmentColor={garmentColor}
+                onGarmentColorChange={setGarmentColor}
               />
 
               {/* Title and Action Buttons Below Canvas */}
@@ -252,6 +256,11 @@ export default function PersonnaliserPage({
                   }}
                   panMode={panMode}
                   onExport={download}
+                  onGarmentColor={(color) => {
+                    setGarmentColor(color);
+                    ref.current?.setGarmentColor(color);
+                  }}
+                  garmentColor={garmentColor}
                 />
               </div>
             ) : (

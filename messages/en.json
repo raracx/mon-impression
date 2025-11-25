@@ -275,6 +275,7 @@
   "customizer": {
     "title": "Customize",
     "products": {
+      "tshirt": "T-shirt",
       "tshirtShort": "Short sleeve t-shirt",
       "tshirtLong": "Long sleeve t-shirt",
       "hoodie": "Hoodie",
@@ -284,6 +285,14 @@
       "bottle": "Insulated Bottle",
       "glassBottle": "Glass Bottle",
       "glassware": "Glassware"
+    },
+    "garmentColor": "Garment Color",
+    "colors": {
+      "white": "White",
+      "black": "Black",
+      "navy": "Navy Blue",
+      "darkGray": "Dark Gray",
+      "lightGray": "Light Gray"
     },
     "addToCart": "Add to cart (Stripe)",
     "exportFirst": "Export your design first to enable payment."
@@ -324,6 +333,14 @@
     "layersSection": "Layer Controls",
     "textSection": "Text Properties",
     "viewControls": "View Controls",
+    "garmentColor": "Garment Color",
+    "garmentColors": {
+      "white": "White",
+      "black": "Black",
+      "navy": "Navy",
+      "darkGray": "Dark Gray",
+      "lightGray": "Light Gray"
+    },
     "sides": {
       "front": "Front",
       "back": "Back",

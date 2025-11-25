@@ -118,6 +118,10 @@ export type CustomizerHandle = {
   getSelected: () => CanvasItem | null;
   // update the selected text content
   setSelectedText: (text: string) => void;
+  // set the garment/product color
+  setGarmentColor: (color: string) => void;
+  // get current garment color
+  getGarmentColor: () => string;
 };
 
 type Props = {
@@ -126,6 +130,10 @@ type Props = {
   productId?: string;
   // optional callback when selection changes
   onSelectionChange?: (item: CanvasItem | null) => void;
+  // optional initial garment color
+  initialGarmentColor?: string;
+  // optional callback when garment color changes
+  onGarmentColorChange?: (color: string) => void;
 };
 
 function useContainerSize() {
@@ -146,13 +154,15 @@ function useContainerSize() {
 }
 
 const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
-  function CustomizerCanvas({ baseImage, productId, onSelectionChange }, ref) {
+  function CustomizerCanvas({ baseImage, productId, onSelectionChange, initialGarmentColor, onGarmentColorChange }, ref) {
     const { ref: containerRef, width, height } = useContainerSize();
     const stageRef = useRef<any>(null);
     // allow switching the base depending on the selected side for some products
     const [currentBaseImage, setCurrentBaseImage] = useState<string>(baseImage);
     useEffect(() => setCurrentBaseImage(baseImage), [baseImage]);
     const [base] = useImage(currentBaseImage, "anonymous");
+    // garment color state - default to white (no tint)
+    const [garmentColor, setGarmentColorState] = useState<string>(initialGarmentColor || "#FFFFFF");
 
     const [side, setSide] = useState<
       "front" | "back" | "left-sleeve" | "right-sleeve"
@@ -432,8 +442,13 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             arr.map((i) => (i.id === selectedId ? { ...i, text } : i))
           );
         },
+        setGarmentColor: (color: string) => {
+          setGarmentColorState(color);
+          onGarmentColorChange?.(color);
+        },
+        getGarmentColor: () => garmentColor,
       }),
-      [selectedId, side, printRect, selected]
+      [selectedId, side, printRect, selected, garmentColor, onGarmentColorChange]
     );
 
     // inform parent component about selection changes
@@ -577,6 +592,19 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                     image={base as any}
                     width={width}
                     height={height}
+                    listening={false}
+                  />
+                )}
+                {/* Garment color overlay - uses multiply blend mode to tint the garment */}
+                {garmentColor && garmentColor !== "#FFFFFF" && (
+                  <Rect
+                    x={0}
+                    y={0}
+                    width={width}
+                    height={height}
+                    fill={garmentColor}
+                    opacity={0.85}
+                    globalCompositeOperation="multiply"
                     listening={false}
                   />
                 )}

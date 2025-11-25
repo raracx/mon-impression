@@ -2,6 +2,15 @@
 import React, { useRef } from "react";
 import { useTranslations } from "next-intl";
 
+// Garment color options
+const GARMENT_COLORS = [
+  { id: "white", color: "#FFFFFF", labelKey: "white" },
+  { id: "black", color: "#1a1a1a", labelKey: "black" },
+  { id: "navy", color: "#1e3a5f", labelKey: "navy" },
+  { id: "darkGray", color: "#4a4a4a", labelKey: "darkGray" },
+  { id: "lightGray", color: "#d1d5db", labelKey: "lightGray" },
+];
+
 type Props = {
   onAddText: () => void;
   onUploadImage: (file: File) => void;
@@ -32,6 +41,9 @@ type Props = {
   onTogglePan: () => void;
   panMode?: boolean;
   onExport: () => void;
+  // garment color props
+  onGarmentColor?: (color: string) => void;
+  garmentColor?: string;
 };
 
 export default function Toolbox(props: Props) {
@@ -152,6 +164,43 @@ export default function Toolbox(props: Props) {
           {/* no heart-side */}
         </div>
       </div>
+
+      {/* Garment Color Swatches */}
+      {props.onGarmentColor && (
+        <div>
+          <h3 className="text-sm font-semibold text-slate-900 mb-3">
+            {t("garmentColor")}
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {GARMENT_COLORS.map((colorOption) => (
+              <button
+                key={colorOption.id}
+                onClick={() => props.onGarmentColor?.(colorOption.color)}
+                className="group flex flex-col items-center gap-1 transition-all"
+                title={t(`garmentColors.${colorOption.labelKey}`)}
+              >
+                <div
+                  className={`w-8 h-8 rounded-full border-2 transition-all shadow-sm hover:shadow-md hover:scale-110 ${
+                    props.garmentColor === colorOption.color
+                      ? "border-blue-600 ring-2 ring-blue-300 scale-110"
+                      : "border-slate-300 hover:border-slate-400"
+                  }`}
+                  style={{ backgroundColor: colorOption.color }}
+                />
+                <span
+                  className={`text-[10px] font-medium transition-colors ${
+                    props.garmentColor === colorOption.color
+                      ? "text-blue-600"
+                      : "text-slate-500 group-hover:text-slate-700"
+                  }`}
+                >
+                  {t(`garmentColors.${colorOption.labelKey}`)}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Add Elements */}
       <div>

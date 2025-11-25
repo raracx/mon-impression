@@ -275,6 +275,7 @@
   "customizer": {
     "title": "Personnaliser",
     "products": {
+      "tshirt": "T-shirt",
       "tshirtShort": "t-shirt manches courtes",
       "tshirtLong": "t-shirt manches longues",
       "hoodie": "Chandail à capuchon",
@@ -284,6 +285,14 @@
       "bottle": "Bouteille isotherme",
       "glassBottle": "Bouteille en vitre",
       "glassware": "Verre en vitre"
+    },
+    "garmentColor": "Couleur du vêtement",
+    "colors": {
+      "white": "Blanc",
+      "black": "Noir",
+      "navy": "Bleu marine",
+      "darkGray": "Gris foncé",
+      "lightGray": "Gris clair"
     },
     "addToCart": "Ajouter au panier (Stripe)",
     "exportFirst": "Exportez d'abord votre design pour activer le paiement."
@@ -324,6 +333,14 @@
     "layersSection": "Contrôles de calque",
     "textSection": "Propriétés du texte",
     "viewControls": "Contrôles de vue",
+    "garmentColor": "Couleur du vêtement",
+    "garmentColors": {
+      "white": "Blanc",
+      "black": "Noir",
+      "navy": "Marine",
+      "darkGray": "Gris foncé",
+      "lightGray": "Gris clair"
+    },
     "sides": {
       "front": "Avant",
       "back": "Arrière",
