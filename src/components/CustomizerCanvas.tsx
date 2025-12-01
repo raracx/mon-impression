@@ -412,16 +412,22 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           };
           setRotation(rotations[s] || 0);
 
-          // For t-shirt product, switch the base image to show the selected side
-          if (productId === "tshirt") {
-            const mapping: Record<string, string> = {
-              front: "/Products/TShirtFront.png",
-              back: "/Products/TShirtBack.png",
-              "left-sleeve": "/Products/TShirtLeftSide.png",
-              "right-sleeve": "/Products/TShirtRightSide.png",
-              // use front for heart side as fallback
-              // heart-side removed; left/right will use their dedicated images
-            };
+          // For t-shirt products, switch the base image to show the selected side
+          if (productId === "tshirt" || productId === "black-tshirt") {
+            const mapping: Record<string, string> = 
+              productId === "tshirt"
+                ? {
+                    front: "/Products/TShirtFront.png",
+                    back: "/Products/TShirtBack.png",
+                    "left-sleeve": "/Products/TShirtLeftSide.png",
+                    "right-sleeve": "/Products/TShirtRightSide.png",
+                  }
+                : {
+                    front: "/Products/BlackTShirtFront.png",
+                    back: "/Products/BlackTShirtBack.png",
+                    "left-sleeve": "/Products/BlackTShirtLeftSide.png",
+                    "right-sleeve": "/Products/BlackTShirtRightSide.png",
+                  };
             setCurrentBaseImage(mapping[s] || baseImage);
           }
         },

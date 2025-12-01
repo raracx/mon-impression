@@ -18,23 +18,148 @@ import {
 } from "lucide-react";
 
 const productImages: Record<string, string> = {
-  // use the new TShirt images (front view by default)
-  tshirt: "/Products/TShirtFront.png",
-  hoodie: "/assets/hoodie.jpeg",
-  mug: "/assets/products/mug.svg",
-  mask: "/assets/products/mask.svg",
-  casquette: "/assets/casquetterouge.jpg",
-  "hoodie-noir": "/assets/hoodienoir.jpg",
+  tshirt: "/Products/BlackTShirtFront.png",
+  hoodie: "/Products/BlackHoodieFront.png",
+  cap: "/Products/BlackCap.png",
 };
 
 const products = [
   { id: "tshirt", name: "T-Shirt" },
   { id: "hoodie", name: "Hoodie" },
-  { id: "mug", name: "Mug" },
-  { id: "mask", name: "Mask" },
-  { id: "casquette", name: "Casquette" },
-  { id: "hoodie-noir", name: "Hoodie Noir" },
+  { id: "cap", name: "Casquette" },
 ];
+
+const productColors: Record<
+  string,
+  { id: string; name: string; images: Record<string, string> }[]
+> = {
+  tshirt: [
+    {
+      id: "black",
+      name: "Black",
+      images: {
+        front: "/Products/BlackTShirtFront.png",
+        back: "/Products/BlackTShirtBack.png",
+        "left-sleeve": "/Products/BlackTShirtLeftSide.png",
+        "right-sleeve": "/Products/BlackTShirtRightSide.png",
+      },
+    },
+    {
+      id: "white",
+      name: "White",
+      images: {
+        front: "/Products/WhiteTShirtFront.png",
+        back: "/Products/WhiteTShirtBack.png",
+        "left-sleeve": "/Products/WhiteTShirtLeftSide.png",
+        "right-sleeve": "/Products/WhiteTShirtRightSide.png",
+      },
+    },
+    {
+      id: "gray",
+      name: "Gray",
+      images: {
+        front: "/Products/GrayTShirtFront.png",
+        back: "/Products/GrayTShirtBack.png",
+        "left-sleeve": "/Products/GrayTShirtLeftSide.png",
+        "right-sleeve": "/Products/GrayTShirtRightSide.png",
+      },
+    },
+    {
+      id: "lightgray",
+      name: "Light Gray",
+      images: {
+        front: "/Products/LightGrayTShirtFront.png",
+        back: "/Products/LightGrayTShirtBack.png",
+        "left-sleeve": "/Products/LightGrayTShirtLeftSide.png",
+        "right-sleeve": "/Products/LightGrayTShirtRightSide.png",
+      },
+    },
+    {
+      id: "navy",
+      name: "Navy",
+      images: {
+        front: "/Products/NavyTShirtFront.png",
+        back: "/Products/NavyTShirtBack.png",
+        "left-sleeve": "/Products/NavyTShirtLeftSide.png",
+        "right-sleeve": "/Products/NavyTShirtRightSide.png",
+      },
+    },
+  ],
+  hoodie: [
+    {
+      id: "black",
+      name: "Black",
+      images: {
+        front: "/Products/BlackHoodieFront.png",
+        back: "/Products/BlackHoodieBack.png",
+        "left-sleeve": "/Products/BlackHoodieLeftSide.png",
+        "right-sleeve": "/Products/BlackHoodieRightSide.png",
+      },
+    },
+    {
+      id: "white",
+      name: "White",
+      images: {
+        front: "/Products/WhiteHoodieFront.png",
+        back: "/Products/WhiteHoodieBack.png",
+        "left-sleeve": "/Products/WhiteHoodieLeftSide.png",
+        "right-sleeve": "/Products/WhiteHoodieRightSide.png",
+      },
+    },
+    {
+      id: "lightgray",
+      name: "Light Gray",
+      images: {
+        front: "/Products/LightGrayHoodieFront.png",
+        back: "/Products/LightGrayHoodieBack.png",
+        "left-sleeve": "/Products/LightGrayHoodieLeftSide.png",
+        "right-sleeve": "/Products/LightGrayHoodieRightSide.png",
+      },
+    },
+    {
+      id: "darkgray",
+      name: "Dark Gray",
+      images: {
+        front: "/Products/DarkGrayHoodieFront.png",
+        back: "/Products/DarkGrayHoodieBack.png",
+        "left-sleeve": "/Products/DarkGrayHoodieLeftSide.png",
+        "right-sleeve": "/Products/DarkGrayHoodieRightSide.png",
+      },
+    },
+    {
+      id: "navy",
+      name: "Navy",
+      images: {
+        front: "/Products/NavyHoodieFront.png",
+        back: "/Products/NavyHoodieBack.png",
+        "left-sleeve": "/Products/NavyHoodieLeftSide.png",
+        "right-sleeve": "/Products/NavyHoodieRightSide.png",
+      },
+    },
+  ],
+  cap: [
+    {
+      id: "black",
+      name: "Black",
+      images: {
+        front: "/Products/BlackCap.png",
+        back: "/Products/BlackCap.png",
+        "left-sleeve": "/Products/BlackCap.png",
+        "right-sleeve": "/Products/BlackCap.png",
+      },
+    },
+    {
+      id: "navy",
+      name: "Navy",
+      images: {
+        front: "/Products/NavyCap.png",
+        back: "/Products/NavyCap.png",
+        "left-sleeve": "/Products/NavyCap.png",
+        "right-sleeve": "/Products/NavyCap.png",
+      },
+    },
+  ],
+};
 
 export default function PersonnaliserPage() {
   const t = useTranslations("personnaliser");
@@ -47,9 +172,25 @@ export default function PersonnaliserPage() {
   const [activeTab, setActiveTab] = useState<"tools" | "stickers">("tools");
   const ref = useRef<CustomizerHandle | null>(null);
   const [selectedProduct, setSelectedProduct] = useState("tshirt");
+  const [selectedColor, setSelectedColor] = useState("black");
+  const [activeSide, setActiveSide] = useState("front");
   const [base, setBase] = useState<string>(
-    productImages[selectedProduct] || "/Products/TShirtFront.png"
+    productImages[selectedProduct] || "/Products/BlackTShirtFront.png"
   );
+
+  // Update base image when product or color changes
+  useEffect(() => {
+    const colors = productColors[selectedProduct];
+    if (colors && colors.length > 0) {
+      const currentColor = colors.find(c => c.id === selectedColor) || colors[0];
+      setBase(currentColor.images[activeSide as keyof typeof currentColor.images] || currentColor.images.front);
+      if (!colors.find(c => c.id === selectedColor)) {
+        setSelectedColor(colors[0].id);
+      }
+    } else {
+      setBase(productImages[selectedProduct] || "/Products/BlackTShirtFront.png");
+    }
+  }, [selectedProduct, selectedColor, activeSide]);
 
   // track selected item from canvas so toolbox can show editing UI
   const [selectedItem, setSelectedItem] = useState<CanvasItem | null>(null);
@@ -66,10 +207,8 @@ export default function PersonnaliserPage() {
       } else {
         setBase(img);
       }
-    } else {
-      setBase(productImages[selectedProduct] || "/Products/TShirtFront.png");
     }
-  }, [searchParams, selectedProduct]);
+  }, [searchParams]);
 
   const order = async () => {
     if (!ref.current) return;
@@ -262,14 +401,13 @@ export default function PersonnaliserPage() {
                   }}
                   panMode={panMode}
                   onExport={download}
-                  onGarmentColor={(color) => {
-                    setGarmentColor(color);
-                    ref.current?.setGarmentColor(color);
-                  }}
-                  garmentColor={garmentColor}
                   products={products}
                   selectedProduct={selectedProduct}
                   onProductChange={setSelectedProduct}
+                  productColors={productColors[selectedProduct] || []}
+                  selectedColor={selectedColor}
+                  onColorChange={setSelectedColor}
+                  onSideChange={setActiveSide}
                 />
               </div>
             ) : (
