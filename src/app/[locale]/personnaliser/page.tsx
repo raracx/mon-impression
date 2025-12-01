@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import CustomizerCanvas, {
   type CustomizerHandle,
   type CanvasItem,
@@ -161,7 +161,7 @@ const productColors: Record<
   ],
 };
 
-export default function PersonnaliserPage() {
+function PersonnaliserContent() {
   const t = useTranslations("personnaliser");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -261,59 +261,78 @@ export default function PersonnaliserPage() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-brand-gray-lighter to-white">
+    <div className="bg-gradient-to-br from-brand-gray-lighter to-white min-h-screen">
       {/* Main Content */}
       <div className="relative flex items-start px-4 py-4 gap-4">
-        {/* Canvas Area */}
-        <div className="flex-1">
-          <div className="pb-8">
-            <div className="max-w-5xl mx-auto space-y-6">
-              <CustomizerCanvas
-                ref={ref}
-                baseImage={base}
-                productId={selectedProduct}
-                onSelectionChange={(it) => setSelectedItem(it)}
-                initialGarmentColor={garmentColor}
-                onGarmentColorChange={setGarmentColor}
-              />
+        {/* Left Info Panel */}
+        <div className="w-64 shrink-0 hidden lg:block">
+          <div className="bg-white border border-brand-gray-light rounded-2xl shadow-lg p-5 space-y-4">
+            <div>
+              <h1 className="text-lg font-bold text-brand-black">
+                {t("title", { product: selectedProduct })}
+              </h1>
+              <p className="text-sm text-brand-gray-dark mt-1">
+                {t("subtitle")}
+              </p>
+            </div>
 
-              {/* Title and Action Buttons Below Canvas */}
-              <div className="bg-white border border-brand-gray-light rounded-2xl shadow-lg p-6">
-                <div className="flex items-start justify-between flex-wrap gap-4">
-                  <div className="flex-1">
-                    <h1 className="text-xl md:text-2xl font-bold text-brand-black">
-                      {t("title", { product: selectedProduct })}
-                    </h1>
-                    <p className="text-sm text-brand-gray-dark mt-2">
-                      {t("subtitle")}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={download}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-brand-gray-lighter hover:bg-brand-gray-light text-brand-gray-dark rounded-lg font-medium transition-all"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span className="hidden sm:inline">{t("download")}</span>
-                    </button>
-                    <button
-                      onClick={handleOrderClick}
-                      disabled={!email || loading}
-                      className="inline-flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-navy to-navy-light hover:from-navy-dark hover:to-navy text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <ShoppingCart className="w-4 h-4" />
-                      {loading ? t("loading") : t("orderNow")}
-                    </button>
-                  </div>
-                </div>
+            <div className="border-t border-brand-gray-light pt-4 space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-brand-gray-dark">Zone d'édition</span>
+                <span className="font-medium text-brand-black">560×560 px</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-brand-gray-dark">Vue</span>
+                <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-800 font-semibold text-xs">
+                  {activeSide === "front" && "Avant"}
+                  {activeSide === "back" && "Arrière"}
+                  {activeSide === "left-sleeve" && "Manche gauche"}
+                  {activeSide === "right-sleeve" && "Manche droite"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-brand-gray-dark">Zoom</span>
+                <span className="font-medium text-brand-black">100%</span>
               </div>
             </div>
+
+            <div className="border-t border-brand-gray-light pt-4 space-y-3">
+              <button
+                onClick={download}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-gray-lighter hover:bg-brand-gray-light text-brand-gray-dark rounded-lg font-medium transition-all"
+              >
+                <Download className="w-4 h-4" />
+                {t("download")}
+              </button>
+              <button
+                onClick={handleOrderClick}
+                disabled={!email || loading}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-navy to-navy-light hover:from-navy-dark hover:to-navy text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                {loading ? t("loading") : t("orderNow")}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Canvas Area - Centered */}
+        <div className="flex-1 flex justify-center">
+          <div className="pb-8">
+            <CustomizerCanvas
+              ref={ref}
+              baseImage={base}
+              productId={selectedProduct}
+              onSelectionChange={(it) => setSelectedItem(it)}
+              initialGarmentColor={garmentColor}
+              onGarmentColorChange={setGarmentColor}
+            />
           </div>
         </div>
 
         {/* Right Sidebar - Collapsible */}
         <div
-          className={`sticky top-[96px] self-start h-[calc(100vh-112px)] w-96 bg-white border border-brand-gray-light rounded-2xl shadow-2xl transform transition-transform duration-300 z-20 overflow-hidden flex flex-col shrink-0 ${
+          className={`h-[calc(100vh-112px)] w-96 shrink-0 bg-white border border-brand-gray-light rounded-2xl shadow-2xl transform transition-transform duration-300 z-20 overflow-hidden flex flex-col ${
             rightPanelOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
@@ -446,5 +465,13 @@ export default function PersonnaliserPage() {
         onConfirm={handleTermsConfirm}
       />
     </div>
+  );
+}
+
+export default function PersonnaliserPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-brand-gray-lighter to-white flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy"></div></div>}>
+      <PersonnaliserContent />
+    </Suspense>
   );
 }

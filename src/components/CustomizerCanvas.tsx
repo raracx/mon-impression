@@ -143,11 +143,11 @@ function useContainerSize() {
     if (!ref.current) return;
     const el = ref.current;
     const ro = new ResizeObserver(() => {
-      const w = el.clientWidth;
+      const w = Math.min(el.clientWidth, 560);
       setSize({ width: w, height: w });
     });
     ro.observe(el);
-    setSize({ width: el.clientWidth, height: el.clientWidth });
+    setSize({ width: Math.min(el.clientWidth, 560), height: Math.min(el.clientWidth, 560) });
     return () => ro.disconnect();
   }, []);
   return { ref, ...size } as const;
@@ -174,39 +174,21 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
     const [scale, setScale] = useState(1);
-    const [showGrid, setShowGrid] = useState(true);
+    const [showGrid, setShowGrid] = useState(false);
     const [rotation, setRotation] = useState(0);
     // pan (hand tool) mode
     const [panMode, setPanMode] = useState(false);
     const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
 
     const printRect = useMemo(() => {
-      // Adjust print area based on which side is being customized
-      switch (side) {
-        case "back":
-          return {
-            x: width * 0.28,
-            y: height * 0.2,
-            w: width * 0.44,
-            h: height * 0.5,
-          };
-        case "left-sleeve":
-        case "right-sleeve":
-          return {
-            x: width * 0.35,
-            y: height * 0.15,
-            w: width * 0.3,
-            h: height * 0.3,
-          };
-        default: // front
-          return {
-            x: width * 0.28,
-            y: height * 0.2,
-            w: width * 0.44,
-            h: height * 0.5,
-          };
-      }
-    }, [width, height, side]);
+      // Make the entire image editable area
+      return {
+        x: 0,
+        y: 0,
+        w: width,
+        h: height,
+      };
+    }, [width, height]);
 
     const setItems = (updater: (prev: CanvasItem[]) => CanvasItem[]) => {
       setItemsBySide((map) => ({ ...map, [side]: updater(map[side]) }));
@@ -214,10 +196,11 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
 
     const selected = items.find((i) => i.id === selectedId) || null;
     const clampToPrint = (x: number, y: number, w = 50, h = 20) => {
-      const minX = printRect.x;
-      const minY = printRect.y;
-      const maxX = printRect.x + printRect.w - w;
-      const maxY = printRect.y + printRect.h - h;
+      // Allow placement anywhere on the full image
+      const minX = 0;
+      const minY = 0;
+      const maxX = width - w;
+      const maxY = height - h;
       return {
         x: Math.max(minX, Math.min(maxX, x)),
         y: Math.max(minY, Math.min(maxY, y)),
@@ -485,6 +468,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
     }, [selectedId, items]);
 
     const onDragMove = (id: string, e: any) => {
+      e.cancelBubble = true;
       const node = e.target;
       const w = node.width() * (node.scaleX() || 1);
       const h = node.height() * (node.scaleY() || 1);
@@ -494,6 +478,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
     };
 
     const onDragEnd = (id: string, e: any) => {
+      e.cancelBubble = true;
       const node = e.target;
       setItems((arr) =>
         arr.map((i) => (i.id === id ? { ...i, x: node.x(), y: node.y() } : i))
@@ -545,22 +530,22 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
       const lines = [];
       if (!showGrid) return null;
       const step = 20;
-      for (let x = printRect.x; x <= printRect.x + printRect.w; x += step) {
+      for (let x = 0; x <= width; x += step) {
         lines.push(
           <Line
             key={`vx-${x}`}
-            points={[x, printRect.y, x, printRect.y + printRect.h]}
+            points={[x, 0, x, height]}
             stroke="#e5e7eb"
             strokeWidth={1}
             listening={false}
           />
         );
       }
-      for (let y = printRect.y; y <= printRect.y + printRect.h; y += step) {
+      for (let y = 0; y <= height; y += step) {
         lines.push(
           <Line
             key={`hz-${y}`}
-            points={[printRect.x, y, printRect.x + printRect.w, y]}
+            points={[0, y, width, y]}
             stroke="#e5e7eb"
             strokeWidth={1}
             listening={false}
@@ -571,7 +556,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
     };
 
     return (
-      <div ref={containerRef} className="w-full">
+      <div ref={containerRef} className="flex justify-center">
         <div className="bg-white rounded-2xl shadow-xl ring-1 ring-slate-200 p-3 relative overflow-hidden">
           <div
             className="transition-transform duration-700 ease-in-out"
@@ -586,9 +571,11 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               x={stagePos.x}
               y={stagePos.y}
               draggable={panMode}
-              onDragEnd={(e) => {
-                setStagePos({ x: e.target.x(), y: e.target.y() });
-              }}
+              {...(panMode && {
+                onDragEnd: (e: any) => {
+                  setStagePos({ x: e.target.x(), y: e.target.y() });
+                },
+              })}
               style={{ cursor: panMode ? "grab" : "default" }}
               className="bg-white rounded-md"
             >
@@ -615,19 +602,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                   />
                 )}
                 {/* Print area and grid */}
-                <Group listening={false}>
-                  {drawGrid()}
-                  <Rect
-                    x={printRect.x}
-                    y={printRect.y}
-                    width={printRect.w}
-                    height={printRect.h}
-                    stroke="#ef4444"
-                    dash={[6, 4]}
-                    cornerRadius={6}
-                    opacity={0.7}
-                  />
-                </Group>
+                <Group listening={false}>{drawGrid()}</Group>
 
                 {items.map((it) =>
                   it.type === "image" ? (
@@ -672,21 +647,6 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               </Layer>
             </Stage>
           </div>
-        </div>
-        <div className="mt-2 text-xs text-slate-500 flex items-center justify-between flex-wrap gap-2">
-          <div className="flex items-center gap-2">
-            <span>
-              Zone d'impression {Math.round(printRect.w)}×
-              {Math.round(printRect.h)} px
-            </span>
-            <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-800 font-semibold text-xs">
-              {side === "front" && "Avant"}
-              {side === "back" && "Arrière"}
-              {side === "left-sleeve" && "Manche gauche"}
-              {side === "right-sleeve" && "Manche droite"}
-            </span>
-          </div>
-          <div className="font-medium">Zoom: {Math.round(scale * 100)}%</div>
         </div>
       </div>
     );
