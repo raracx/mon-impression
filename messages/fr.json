@@ -406,7 +406,15 @@
       "inspirational": "Messages inspirants",
       "golf": "Golf",
       "icons": "Icônes",
-      "badges": "Badges"
+      "badges": "Badges",
+      "vehicule": "Véhicules",
+      "chassepeche": "Chasse & Pêche",
+      "ocean": "Océan",
+      "camping": "Camping",
+      "amusant": "Amusant",
+      "penseepositive": "Pensées positives",
+      "noel": "Noël",
+      "ville": "Villes"
     }
   },
   "termsModal": {
