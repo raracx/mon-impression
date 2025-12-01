@@ -346,6 +346,7 @@
   },
   "toolbox": {
     "title": "Outils",
+    "productSection": "Choisir le produit",
     "viewSection": "Sélectionner la vue",
     "addSection": "Ajouter des éléments",
     "layersSection": "Contrôles de calque",

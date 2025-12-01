@@ -415,10 +415,10 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           // For t-shirt product, switch the base image to show the selected side
           if (productId === "tshirt") {
             const mapping: Record<string, string> = {
-              front: "/assets/tshirt/TShirtFront.png",
-              back: "/assets/tshirt/TShirtBack.png",
-              "left-sleeve": "/assets/tshirt/TShirtLeftSide.png",
-              "right-sleeve": "/assets/tshirt/TShirtRightSide.png",
+              front: "/Products/TShirtFront.png",
+              back: "/Products/TShirtBack.png",
+              "left-sleeve": "/Products/TShirtLeftSide.png",
+              "right-sleeve": "/Products/TShirtRightSide.png",
               // use front for heart side as fallback
               // heart-side removed; left/right will use their dedicated images
             };

@@ -19,19 +19,24 @@ import {
 
 const productImages: Record<string, string> = {
   // use the new TShirt images (front view by default)
-  tshirt: "/assets/tshirt/TShirtFront.png",
+  tshirt: "/Products/TShirtFront.png",
   hoodie: "/assets/hoodie.jpeg",
   mug: "/assets/products/mug.svg",
   mask: "/assets/products/mask.svg",
-  casquette: "/assets/casquetterrouge.jpg",
+  casquette: "/assets/casquetterouge.jpg",
   "hoodie-noir": "/assets/hoodienoir.jpg",
 };
 
-export default function PersonnaliserPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+const products = [
+  { id: "tshirt", name: "T-Shirt" },
+  { id: "hoodie", name: "Hoodie" },
+  { id: "mug", name: "Mug" },
+  { id: "mask", name: "Mask" },
+  { id: "casquette", name: "Casquette" },
+  { id: "hoodie-noir", name: "Hoodie Noir" },
+];
+
+export default function PersonnaliserPage() {
   const t = useTranslations("personnaliser");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,9 +46,9 @@ export default function PersonnaliserPage({
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<"tools" | "stickers">("tools");
   const ref = useRef<CustomizerHandle | null>(null);
-  const productId = params.slug;
+  const [selectedProduct, setSelectedProduct] = useState("tshirt");
   const [base, setBase] = useState<string>(
-    productImages[productId] || "/assets/tshirt/TShirtFront.png"
+    productImages[selectedProduct] || "/Products/TShirtFront.png"
   );
 
   // track selected item from canvas so toolbox can show editing UI
@@ -61,9 +66,10 @@ export default function PersonnaliserPage({
       } else {
         setBase(img);
       }
-    } else
-      setBase(productImages[productId] || "/assets/tshirt/TShirtFront.png");
-  }, [searchParams, productId]);
+    } else {
+      setBase(productImages[selectedProduct] || "/Products/TShirtFront.png");
+    }
+  }, [searchParams, selectedProduct]);
 
   const order = async () => {
     if (!ref.current) return;
@@ -77,7 +83,7 @@ export default function PersonnaliserPage({
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId, email, design: dataUrl }),
+        body: JSON.stringify({ productId: selectedProduct, email, design: dataUrl }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || t("errorOrder"));
@@ -85,7 +91,7 @@ export default function PersonnaliserPage({
       const pay = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId, productId }),
+        body: JSON.stringify({ orderId, productId: selectedProduct }),
       });
       const payJson = await pay.json();
       if (!pay.ok) throw new Error(payJson.error || t("errorStripe"));
@@ -111,7 +117,7 @@ export default function PersonnaliserPage({
     if (!url) return;
     const a = document.createElement("a");
     a.href = url;
-    a.download = `design-${productId}.png`;
+    a.download = `design-${selectedProduct}.png`;
     a.click();
   };
 
@@ -126,7 +132,7 @@ export default function PersonnaliserPage({
               <CustomizerCanvas
                 ref={ref}
                 baseImage={base}
-                productId={productId}
+                productId={selectedProduct}
                 onSelectionChange={(it) => setSelectedItem(it)}
                 initialGarmentColor={garmentColor}
                 onGarmentColorChange={setGarmentColor}
@@ -137,7 +143,7 @@ export default function PersonnaliserPage({
                 <div className="flex items-start justify-between flex-wrap gap-4">
                   <div className="flex-1">
                     <h1 className="text-xl md:text-2xl font-bold text-brand-black">
-                      {t("title", { product: productId })}
+                      {t("title", { product: selectedProduct })}
                     </h1>
                     <p className="text-sm text-brand-gray-dark mt-2">
                       {t("subtitle")}
@@ -237,7 +243,7 @@ export default function PersonnaliserPage({
                   onBackward={() => ref.current?.sendBackward()}
                   onToggleGrid={() => ref.current?.toggleGrid()}
                   onSetSide={(s) => ref.current?.setSide(s)}
-                  productId={productId}
+                  productId={selectedProduct}
                   selectedText={
                     selectedItem?.type === "text"
                       ? selectedItem.text || ""
@@ -261,6 +267,9 @@ export default function PersonnaliserPage({
                     ref.current?.setGarmentColor(color);
                   }}
                   garmentColor={garmentColor}
+                  products={products}
+                  selectedProduct={selectedProduct}
+                  onProductChange={setSelectedProduct}
                 />
               </div>
             ) : (

@@ -86,7 +86,7 @@ export default async function HomePage({
               {t("hero.subtitle2")}
             </p>
             <Link
-              href="/product/tshirt/personnaliser"
+              href="/personnaliser"
               className="btn-primary mt-6 inline-flex pulse-glow"
             >
               {t("hero.cta")}

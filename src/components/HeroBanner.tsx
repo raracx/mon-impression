@@ -37,7 +37,7 @@ export default function HeroBanner() {
             className="mt-6 flex flex-wrap gap-3"
           >
             <Link
-              href="/product/tshirt/personnaliser"
+              href="/personnaliser"
               className="btn-primary bg-white text-slate-900 hover:bg-slate-200"
             >
               Personnaliser maintenant

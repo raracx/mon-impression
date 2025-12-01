@@ -18,7 +18,7 @@ type LogoPosition = {
 };
 
 const images: Record<string, string> = {
-  tshirt: "/assets/tshirt/front.png",
+  tshirt: "/Products/front.png",
   hoodie: "/assets/hoodie.jpeg",
   mug: "/assets/products/mug.svg",
   mask: "/assets/products/mask.svg",
@@ -506,7 +506,7 @@ export default function ProductPage() {
                         </svg>
                         <span>{feature}</span>
                       </li>
-                    ),
+                    )
                   )}
                 </ul>
               </div>
@@ -543,7 +543,7 @@ export default function ProductPage() {
               {isFr ? "Terminé" : "Done"}
             </button>
             <Link
-              href={`/product/${slug}/personnaliser?side=${selectedSide}&logo=${encodeURIComponent(logoImage)}&frontText=${encodeURIComponent(frontText)}&backLogo=${encodeURIComponent(backLogoImage)}`}
+              href={`/personnaliser?side=${selectedSide}&logo=${encodeURIComponent(logoImage)}&frontText=${encodeURIComponent(frontText)}&backLogo=${encodeURIComponent(backLogoImage)}`}
               className="w-full text-center text-lg py-4 shadow-md hover:shadow-lg inline-block bg-white border-2 border-slate-300 text-slate-700 hover:bg-slate-50 transition-all rounded-lg font-semibold"
             >
               {tProducts("customize")}

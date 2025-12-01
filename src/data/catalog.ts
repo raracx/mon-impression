@@ -186,8 +186,8 @@ export const GARMENTS: CatalogItem[] = [
     audience: "adult",
     descriptionFr: "Léger et respirant.",
     descriptionEn: "Lightweight and breathable.",
-    imageFront: "/assets/tshirt/front.png",
-    imageBack: "/assets/tshirt/back.png",
+    imageFront: "/Products/front.png",
+    imageBack: "/Products/back.png",
     prices: [
       {
         labelFr: "impression 1 face",

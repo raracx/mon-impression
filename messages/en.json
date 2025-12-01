@@ -346,6 +346,7 @@
   },
   "toolbox": {
     "title": "Tools",
+    "productSection": "Choose Product",
     "viewSection": "Select View",
     "addSection": "Add Elements",
     "layersSection": "Layer Controls",

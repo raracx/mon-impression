@@ -44,6 +44,10 @@ type Props = {
   // garment color props
   onGarmentColor?: (color: string) => void;
   garmentColor?: string;
+  // product selection props
+  products: { id: string; name: string }[];
+  selectedProduct: string;
+  onProductChange: (product: string) => void;
 };
 
 export default function Toolbox(props: Props) {
@@ -78,6 +82,24 @@ export default function Toolbox(props: Props) {
 
   return (
     <div className="space-y-6">
+      {/* Product Selection */}
+      <div>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">
+          {t("productSection")}
+        </h3>
+        <select
+          value={props.selectedProduct}
+          onChange={(e) => props.onProductChange(e.target.value)}
+          className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy"
+        >
+          {props.products.map((product) => (
+            <option key={product.id} value={product.id}>
+              {product.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* View Selection */}
       <div>
         <h3 className="text-sm font-semibold text-slate-900 mb-3">
@@ -96,7 +118,7 @@ export default function Toolbox(props: Props) {
             {isTshirt ? (
               <div className="flex items-center gap-3">
                 <Thumb
-                  src="/assets/tshirt/TShirtFront.png"
+                  src="/Products/TShirtFront.png"
                   label={t("sides.front")}
                 />
               </div>
@@ -115,7 +137,7 @@ export default function Toolbox(props: Props) {
             {isTshirt ? (
               <div className="flex items-center gap-3">
                 <Thumb
-                  src="/assets/tshirt/TShirtBack.png"
+                  src="/Products/TShirtBack.png"
                   label={t("sides.back")}
                 />
               </div>
@@ -134,7 +156,7 @@ export default function Toolbox(props: Props) {
             {isTshirt ? (
               <div className="flex items-center gap-3">
                 <Thumb
-                  src="/assets/tshirt/TShirtLeftSide.png"
+                  src="/Products/TShirtLeftSide.png"
                   label={t("sides.leftSleeve")}
                 />
               </div>
@@ -153,7 +175,7 @@ export default function Toolbox(props: Props) {
             {isTshirt ? (
               <div className="flex items-center gap-3">
                 <Thumb
-                  src="/assets/tshirt/TShirtRightSide.png"
+                  src="/Products/TShirtRightSide.png"
                   label={t("sides.rightSleeve")}
                 />
               </div>

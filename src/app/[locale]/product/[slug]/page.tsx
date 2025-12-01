@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import TermsModal from "@/components/TermsModal";
 
 const images: Record<string, string> = {
-  tshirt: "/assets/tshirt/front.png",
+  tshirt: "/Products/front.png",
   hoodie: "/assets/hoodie.jpeg",
   mug: "/assets/products/mug.svg",
   mask: "/assets/products/mask.svg",

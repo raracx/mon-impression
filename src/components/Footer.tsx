@@ -150,7 +150,7 @@ export default function Footer() {
                 Créez vos designs personnalisés en quelques clics!
               </p>
               <Link
-                href="/product/tshirt/personnaliser"
+                href="/personnaliser"
                 className="inline-flex items-center gap-2 bg-navy hover:bg-navy-light text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors"
               >
                 Personnaliser maintenant
