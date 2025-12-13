@@ -20,14 +20,30 @@ import {
 const productImages: Record<string, string> = {
   tshirt: "/Products/BlackTShirtFront.png",
   hoodie: "/Products/BlackHoodieFront.png",
+  crewneck: "/Products/BlackCrewneckFront.png",
+  longsleeve: "/Products/WhiteLongSleeveFront.png",
   cap: "/Products/BlackCap.png",
+  mug_large: "/Products/front.png",
+  mug_small: "/Products/front.png",
+  mug_frosted: "/Products/front.png",
+  mug_magic: "/Products/front.png",
+  mug_ceramic: "/Products/front.png",
+  mousepad: "/Products/MousePad.jpg",
+  bag: "/Products/ShoppingBag.png",
+  drawstring_bag: "/Products/DrawstringBag.png",
+  shopping_bag: "/Products/ShoppingBag.png",
+  license_plate: "/Products/LicensePlate.png",
+  suction_poster: "/Products/SuctionPoster.png",
 };
 
 const products = [
+  // Clothing
   {
     id: "tshirt",
-    name: "T-Shirt",
+    name: "T-Shirt manches courtes",
+    category: "clothing",
     isClothing: true,
+    availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
     pricing: {
       oneSide: 19.99,
       twoSides: 22.99,
@@ -35,9 +51,23 @@ const products = [
     },
   },
   {
-    id: "hoodie",
-    name: "Hoodie",
+    id: "longsleeve",
+    name: "T-Shirt manches longues",
+    category: "clothing",
     isClothing: true,
+    availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
+    pricing: {
+      oneSide: 21.99,
+      twoSides: 24.99,
+      fullPrint: 27.99,
+    },
+  },
+  {
+    id: "hoodie",
+    name: "Chandail à capuchon (Hoodie)",
+    category: "clothing",
+    isClothing: true,
+    availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
     pricing: {
       oneSide: 29.99,
       twoSides: 34.99,
@@ -45,13 +75,148 @@ const products = [
     },
   },
   {
+    id: "crewneck",
+    name: "Chandail à col rond",
+    category: "clothing",
+    isClothing: true,
+    availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
+    pricing: {
+      oneSide: 27.99,
+      twoSides: 32.99,
+      fullPrint: 37.99,
+    },
+  },
+  // Accessories
+  {
     id: "cap",
     name: "Casquette",
+    category: "accessory",
     isClothing: false,
+    availableSides: ["front"],
     pricing: {
       oneSide: 25.0,
       twoSides: 25.0,
       fullPrint: 25.0,
+    },
+  },
+  {
+    id: "mug_large",
+    name: "Tasse isotherme (Grande - 591ml)",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front"],
+    pricing: {
+      oneSide: 25.0,
+      twoSides: 25.0,
+      fullPrint: 25.0,
+    },
+  },
+  {
+    id: "mug_small",
+    name: "Tasse isotherme (Petite - 355ml)",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front"],
+    pricing: {
+      oneSide: 22.0,
+      twoSides: 22.0,
+      fullPrint: 22.0,
+    },
+  },
+  {
+    id: "mug_frosted",
+    name: "Tasse givrée (473ml)",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front"],
+    pricing: {
+      oneSide: 20.0,
+      twoSides: 20.0,
+      fullPrint: 20.0,
+    },
+  },
+  {
+    id: "mug_magic",
+    name: "Tasse magique noire (325ml)",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front"],
+    pricing: {
+      oneSide: 20.0,
+      twoSides: 20.0,
+      fullPrint: 20.0,
+    },
+  },
+  {
+    id: "mug_ceramic",
+    name: "Tasse céramique blanche (325ml)",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front"],
+    pricing: {
+      oneSide: 15.0,
+      twoSides: 15.0,
+      fullPrint: 15.0,
+    },
+  },
+  {
+    id: "mousepad",
+    name: "Tapis de souris",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front"],
+    pricing: {
+      oneSide: 12.0,
+      twoSides: 12.0,
+      fullPrint: 12.0,
+    },
+  },
+  {
+    id: "shopping_bag",
+    name: "Sac de magasinage",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front", "back"],
+    pricing: {
+      oneSide: 18.0,
+      twoSides: 22.0,
+      fullPrint: 22.0,
+    },
+  },
+  {
+    id: "drawstring_bag",
+    name: "Sac à cordon",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front", "back"],
+    pricing: {
+      oneSide: 15.0,
+      twoSides: 20.0,
+      fullPrint: 20.0,
+    },
+  },
+  {
+    id: "license_plate",
+    name: "Plaque personnalisable pour véhicules",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front"],
+    pricing: {
+      oneSide: 20.0,
+      twoSides: 20.0,
+      fullPrint: 20.0,
+    },
+  },
+  {
+    id: "suction_poster",
+    name: "Affiche avec ventouse",
+    category: "accessory",
+    isClothing: false,
+    availableSides: ["front"],
+    pricing: {
+      oneSide: 18.0,
+      twoSides: 18.0,
+      fullPrint: 18.0,
     },
   },
 ];
@@ -163,6 +328,60 @@ const productColors: Record<
         back: "/Products/NavyHoodieBack.png",
         "left-sleeve": "/Products/NavyHoodieLeftSide.png",
         "right-sleeve": "/Products/NavyHoodieRightSide.png",
+      },
+    },
+  ],
+  crewneck: [
+    {
+      id: "black",
+      name: "Black",
+      images: {
+        front: "/Products/BlackCrewneckFront.png",
+        back: "/Products/BlackCrewneckBack.png",
+        "left-sleeve": "/Products/BlackCrewneckLeftSide.png",
+        "right-sleeve": "/Products/BlackCrewneckRightSide.png",
+      },
+    },
+    {
+      id: "white",
+      name: "White",
+      images: {
+        front: "/Products/WhiteCrewneckFront.png",
+        back: "/Products/WhiteCrewneckBack.png",
+        "left-sleeve": "/Products/WhiteCrewneckLeftSide.png",
+        "right-sleeve": "/Products/WhiteCrewneckRightSide.png",
+      },
+    },
+    {
+      id: "navy",
+      name: "Navy",
+      images: {
+        front: "/Products/NavyCrewneckFront.png",
+        back: "/Products/NavyCrewneckBack.png",
+        "left-sleeve": "/Products/NavyCrewneckLeftSide.png",
+        "right-sleeve": "/Products/NavyCrewneckRightSide.png",
+      },
+    },
+    {
+      id: "lightgray",
+      name: "Light Gray",
+      images: {
+        front: "/Products/LightGrayCrewneckFront.png",
+        back: "/Products/LightGrayCrewneckBack.png",
+        "left-sleeve": "/Products/LightGrayCrewneckLeftSide.png",
+        "right-sleeve": "/Products/LightGrayCrewneckRightSide.png",
+      },
+    },
+  ],
+  longsleeve: [
+    {
+      id: "white",
+      name: "White",
+      images: {
+        front: "/Products/WhiteLongSleeveFront.png",
+        back: "/Products/WhiteLongSleeveBack.png",
+        "left-sleeve": "/Products/WhiteLongSleeveLeftSide.png",
+        "right-sleeve": "/Products/WhiteLongSleeveRightSide.png",
       },
     },
   ],

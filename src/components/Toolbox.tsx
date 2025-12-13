@@ -29,7 +29,7 @@ type Props = {
   onTogglePan: () => void;
   panMode?: boolean;
   onExport: () => void;
-  products: { id: string; name: string }[];
+  products: { id: string; name: string; availableSides?: string[] }[];
   selectedProduct: string;
   onProductChange: (product: string) => void;
   productColors: { id: string; name: string; images: Record<string, string> }[];
@@ -60,6 +60,10 @@ export default function Toolbox(props: Props) {
   const isTshirt = props.selectedProduct === "tshirt";
   const isHoodie = props.selectedProduct === "hoodie";
   const isCap = props.selectedProduct === "cap";
+  
+  // Get available sides for the current product
+  const currentProduct = props.products.find(p => p.id === props.selectedProduct);
+  const availableSides = currentProduct?.availableSides || ["front", "back", "left-sleeve", "right-sleeve"];
 
   const Thumb = ({ src, label }: { src: string; label: string }) => (
     <div className="flex flex-col items-center gap-2 w-full">
@@ -146,107 +150,115 @@ export default function Toolbox(props: Props) {
         </div>
       )}
 
-      {/* View Selection - Hidden for Caps */}
-      {!isCap && (
+      {/* View Selection - Only show available sides for the product */}
+      {availableSides.length > 1 && (
         <div>
           <h3 className="text-sm font-semibold text-slate-900 mb-3">
             {t("viewSection")}
           </h3>
           <div className="grid grid-cols-2 gap-3">
-            <button
-              className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
-                activeSide === "front"
-                  ? "border-navy bg-navy-50 text-navy shadow-sm"
-                  : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
-              }`}
-              onClick={() => handleSetSide("front")}
-            >
-              {(isTshirt || isHoodie) && hasColorOptions ? (
-                <div className="flex items-center gap-3">
-                  <Thumb
-                    src={
-                      props.productColors.find(
-                        (c) => c.id === props.selectedColor
-                      )?.images.front || "/Products/BlackTShirtFront.png"
-                    }
-                    label={t("sides.front")}
-                  />
-                </div>
-              ) : (
-                t("sides.front")
-              )}
-            </button>
-            <button
-              className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
-                activeSide === "back"
-                  ? "border-navy bg-navy-50 text-navy shadow-sm"
-                  : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
-              }`}
-              onClick={() => handleSetSide("back")}
-            >
-              {(isTshirt || isHoodie) && hasColorOptions ? (
-                <div className="flex items-center gap-3">
-                  <Thumb
-                    src={
-                      props.productColors.find(
-                        (c) => c.id === props.selectedColor
-                      )?.images.back || "/Products/BlackTShirtBack.png"
-                    }
-                    label={t("sides.back")}
-                  />
-                </div>
-              ) : (
-                t("sides.back")
-              )}
-            </button>
-            <button
-              className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
-                activeSide === "left-sleeve"
-                  ? "border-navy bg-navy-50 text-navy shadow-sm"
-                  : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
-              }`}
-              onClick={() => handleSetSide("left-sleeve")}
-            >
-              {(isTshirt || isHoodie) && hasColorOptions ? (
-                <div className="flex items-center gap-3">
-                  <Thumb
-                    src={
-                      props.productColors.find(
-                        (c) => c.id === props.selectedColor
-                      )?.images["left-sleeve"] ||
-                      "/Products/BlackTShirtLeftSide.png"
-                    }
-                    label={t("sides.leftSleeve")}
-                  />
-                </div>
-              ) : (
-                t("sides.leftSleeve")
-              )}
-            </button>
-            <button
-              className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
-                activeSide === "right-sleeve"
-                  ? "border-navy bg-navy-50 text-navy shadow-sm"
-                  : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
-              }`}
-              onClick={() => handleSetSide("right-sleeve")}
-            >
-              {(isTshirt || isHoodie) && hasColorOptions ? (
-                <div className="flex items-center gap-3">
-                  <Thumb
-                    src={
-                      props.productColors.find(
-                        (c) => c.id === props.selectedColor
-                      )?.images["right-sleeve"] ||
-                      "/Products/BlackTShirtRightSide.png"
-                    }
-                    label={t("sides.rightSleeve")}
-                  />
-                </div>
-              ) : (
-                t("sides.rightSleeve")
-              )}
-            </button>
+            {availableSides.includes("front") && (
+              <button
+                className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
+                  activeSide === "front"
+                    ? "border-navy bg-navy-50 text-navy shadow-sm"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                }`}
+                onClick={() => handleSetSide("front")}
+              >
+                {(isTshirt || isHoodie) && hasColorOptions ? (
+                  <div className="flex items-center gap-3">
+                    <Thumb
+                      src={
+                        props.productColors.find(
+                          (c) => c.id === props.selectedColor
+                        )?.images.front || "/Products/BlackTShirtFront.png"
+                      }
+                      label={t("sides.front")}
+                    />
+                  </div>
+                ) : (
+                  t("sides.front")
+                )}
+              </button>
+            )}
+            {availableSides.includes("back") && (
+              <button
+                className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
+                  activeSide === "back"
+                    ? "border-navy bg-navy-50 text-navy shadow-sm"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                }`}
+                onClick={() => handleSetSide("back")}
+              >
+                {(isTshirt || isHoodie) && hasColorOptions ? (
+                  <div className="flex items-center gap-3">
+                    <Thumb
+                      src={
+                        props.productColors.find(
+                          (c) => c.id === props.selectedColor
+                        )?.images.back || "/Products/BlackTShirtBack.png"
+                      }
+                      label={t("sides.back")}
+                    />
+                  </div>
+                ) : (
+                  t("sides.back")
+                )}
+              </button>
+            )}
+            {availableSides.includes("left-sleeve") && (
+              <button
+                className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
+                  activeSide === "left-sleeve"
+                    ? "border-navy bg-navy-50 text-navy shadow-sm"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                }`}
+                onClick={() => handleSetSide("left-sleeve")}
+              >
+                {(isTshirt || isHoodie) && hasColorOptions ? (
+                  <div className="flex items-center gap-3">
+                    <Thumb
+                      src={
+                        props.productColors.find(
+                          (c) => c.id === props.selectedColor
+                        )?.images["left-sleeve"] ||
+                        "/Products/BlackTShirtLeftSide.png"
+                      }
+                      label={t("sides.leftSleeve")}
+                    />
+                  </div>
+                ) : (
+                  t("sides.leftSleeve")
+                )}
+              </button>
+            )}
+            {availableSides.includes("right-sleeve") && (
+              <button
+                className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
+                  activeSide === "right-sleeve"
+                    ? "border-navy bg-navy-50 text-navy shadow-sm"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                }`}
+                onClick={() => handleSetSide("right-sleeve")}
+              >
+                {(isTshirt || isHoodie) && hasColorOptions ? (
+                  <div className="flex items-center gap-3">
+                    <Thumb
+                      src={
+                        props.productColors.find(
+                          (c) => c.id === props.selectedColor
+                        )?.images["right-sleeve"] ||
+                        "/Products/BlackTShirtRightSide.png"
+                      }
+                      label={t("sides.rightSleeve")}
+                    />
+                  </div>
+                ) : (
+                  t("sides.rightSleeve")
+                )}
+              </button>
+            )}
           </div>
         </div>
       )}
