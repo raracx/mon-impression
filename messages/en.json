@@ -78,17 +78,31 @@
     }
   },
   "products": {
+    "tshirt": "Short sleeve t-shirt",
+    "longsleeve": "Long sleeve t-shirt",
     "hoodie": "Hoodie",
     "crewneck": "Crewneck Sweatshirt",
     "teeShort": "Short sleeve t-shirt",
     "teeLong": "Long sleeve t-shirt",
     "teeShortKid": "Short sleeve t-shirt (Kids)",
+    "cap": "Cap",
     "truckerCap": "Cap",
+    "mugInsulated": "Insulated Mug",
+    "mugFrosted": "Frosted Glass",
+    "mugMagic": "Magic Black Mug",
+    "mugCeramic": "White Ceramic Mug",
+    "mousepad": "Mouse Pad",
+    "shoppingBag": "Shopping Bag",
+    "drawstringBag": "Drawstring Bag",
+    "licensePlate": "Customizable License Plate",
+    "suctionPoster": "Suction Cup Poster",
     "customize": "Customize",
     "mug": "Mug",
     "bottle": "Insulated Bottle",
     "glassBottle": "Glass Bottle",
-    "glassware": "Glassware"
+    "glassware": "Glassware",
+    "clothingCategory": "Clothing",
+    "accessoriesCategory": "Accessories"
   },
   "common": {
     "price": "Price",
@@ -163,6 +177,7 @@
       "selectProduct": "Select a product",
       "quantity": "Quantity",
       "technique": "Preferred printing technique",
+      "uploadImage": "Upload your logo or design",
       "message": "Project details (colors, areas, timelines, etc.)",
       "submit": "Send request",
       "sending": "Sending…",
@@ -317,7 +332,7 @@
     "exportFirst": "Export your design first to enable payment."
   },
   "personnaliser": {
-    "title": "Customize — {product}",
+    "title": "{product}",
     "subtitle": "Add text, import an image, apply your styles, then order.",
     "emailPlaceholder": "Your email",
     "emailLabel": "Email Address",

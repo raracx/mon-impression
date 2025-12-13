@@ -23,8 +23,7 @@ const productImages: Record<string, string> = {
   crewneck: "/Products/BlackCrewneckFront.png",
   longsleeve: "/Products/WhiteLongSleeveFront.png",
   cap: "/Products/BlackCap.png",
-  mug_large: "/Products/front.png",
-  mug_small: "/Products/front.png",
+  mug_insulated: "/Products/front.png",
   mug_frosted: "/Products/front.png",
   mug_magic: "/Products/front.png",
   mug_ceramic: "/Products/front.png",
@@ -40,7 +39,7 @@ const products = [
   // Clothing
   {
     id: "tshirt",
-    name: "T-Shirt manches courtes",
+    nameKey: "tshirt",
     category: "clothing",
     isClothing: true,
     availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
@@ -52,7 +51,7 @@ const products = [
   },
   {
     id: "longsleeve",
-    name: "T-Shirt manches longues",
+    nameKey: "longsleeve",
     category: "clothing",
     isClothing: true,
     availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
@@ -64,7 +63,7 @@ const products = [
   },
   {
     id: "hoodie",
-    name: "Chandail à capuchon (Hoodie)",
+    nameKey: "hoodie",
     category: "clothing",
     isClothing: true,
     availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
@@ -76,7 +75,7 @@ const products = [
   },
   {
     id: "crewneck",
-    name: "Chandail à col rond",
+    nameKey: "crewneck",
     category: "clothing",
     isClothing: true,
     availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
@@ -89,7 +88,7 @@ const products = [
   // Accessories
   {
     id: "cap",
-    name: "Casquette",
+    nameKey: "cap",
     category: "accessory",
     isClothing: false,
     availableSides: ["front"],
@@ -100,34 +99,29 @@ const products = [
     },
   },
   {
-    id: "mug_large",
-    name: "Tasse isotherme (Grande - 591ml)",
+    id: "mug_insulated",
+    nameKey: "mugInsulated",
     category: "accessory",
     isClothing: false,
+    hasSize: true,
+    sizeOptions: [
+      { id: "large", label: "Grande (591ml)", price: 25.0 },
+      { id: "small", label: "Petite (355ml)", price: 22.0 },
+    ],
     availableSides: ["front"],
     pricing: {
       oneSide: 25.0,
       twoSides: 25.0,
       fullPrint: 25.0,
-    },
-  },
-  {
-    id: "mug_small",
-    name: "Tasse isotherme (Petite - 355ml)",
-    category: "accessory",
-    isClothing: false,
-    availableSides: ["front"],
-    pricing: {
-      oneSide: 22.0,
-      twoSides: 22.0,
-      fullPrint: 22.0,
     },
   },
   {
     id: "mug_frosted",
-    name: "Tasse givrée (473ml)",
+    nameKey: "mugFrosted",
     category: "accessory",
     isClothing: false,
+    hasSize: true,
+    sizeOptions: [{ id: "473ml", label: "473ml", price: 20.0 }],
     availableSides: ["front"],
     pricing: {
       oneSide: 20.0,
@@ -137,9 +131,11 @@ const products = [
   },
   {
     id: "mug_magic",
-    name: "Tasse magique noire (325ml)",
+    nameKey: "mugMagic",
     category: "accessory",
     isClothing: false,
+    hasSize: true,
+    sizeOptions: [{ id: "325ml", label: "325ml", price: 20.0 }],
     availableSides: ["front"],
     pricing: {
       oneSide: 20.0,
@@ -149,9 +145,11 @@ const products = [
   },
   {
     id: "mug_ceramic",
-    name: "Tasse céramique blanche (325ml)",
+    nameKey: "mugCeramic",
     category: "accessory",
     isClothing: false,
+    hasSize: true,
+    sizeOptions: [{ id: "325ml", label: "325ml", price: 15.0 }],
     availableSides: ["front"],
     pricing: {
       oneSide: 15.0,
@@ -161,7 +159,7 @@ const products = [
   },
   {
     id: "mousepad",
-    name: "Tapis de souris",
+    nameKey: "mousepad",
     category: "accessory",
     isClothing: false,
     availableSides: ["front"],
@@ -173,7 +171,7 @@ const products = [
   },
   {
     id: "shopping_bag",
-    name: "Sac de magasinage",
+    nameKey: "shoppingBag",
     category: "accessory",
     isClothing: false,
     availableSides: ["front", "back"],
@@ -185,7 +183,7 @@ const products = [
   },
   {
     id: "drawstring_bag",
-    name: "Sac à cordon",
+    nameKey: "drawstringBag",
     category: "accessory",
     isClothing: false,
     availableSides: ["front", "back"],
@@ -197,7 +195,7 @@ const products = [
   },
   {
     id: "license_plate",
-    name: "Plaque personnalisable pour véhicules",
+    nameKey: "licensePlate",
     category: "accessory",
     isClothing: false,
     availableSides: ["front"],
@@ -209,7 +207,7 @@ const products = [
   },
   {
     id: "suction_poster",
-    name: "Affiche avec ventouse",
+    nameKey: "suctionPoster",
     category: "accessory",
     isClothing: false,
     availableSides: ["front"],
@@ -411,6 +409,7 @@ const productColors: Record<
 
 function PersonnaliserContent() {
   const t = useTranslations("personnaliser");
+  const tProducts = useTranslations("products");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -449,6 +448,18 @@ function PersonnaliserContent() {
     }
   }, [selectedProduct, selectedColor, activeSide]);
 
+  // Reset size when product changes
+  useEffect(() => {
+    const product = products.find((p) => p.id === selectedProduct);
+    if (product?.hasSize && product.sizeOptions) {
+      // Set to first size option for products with size variants
+      setSelectedSize((product.sizeOptions as any[])[0].id);
+    } else if (product?.isClothing) {
+      // Set to M for clothing
+      setSelectedSize("M");
+    }
+  }, [selectedProduct]);
+
   // track selected item from canvas so toolbox can show editing UI
   const [selectedItem, setSelectedItem] = useState<CanvasItem | null>(null);
   // track pan mode for visual indicator in toolbox
@@ -461,6 +472,15 @@ function PersonnaliserContent() {
     const product = products.find((p) => p.id === selectedProduct);
     if (!product) return 0;
 
+    // If product has size-based pricing (like insulated mugs)
+    if (product.hasSize && product.sizeOptions) {
+      const sizeOption = (product.sizeOptions as any[]).find(
+        (opt: any) => opt.id === selectedSize
+      );
+      return sizeOption ? sizeOption.price : product.pricing.oneSide;
+    }
+
+    // Standard pricing based on customized sides
     if (customizedSidesCount === 0 || customizedSidesCount === 1) {
       return product.pricing.oneSide;
     } else if (customizedSidesCount === 2) {
@@ -577,7 +597,12 @@ function PersonnaliserContent() {
           <div className="bg-white border border-brand-gray-light rounded-2xl shadow-lg p-5 space-y-4">
             <div>
               <h1 className="text-lg font-bold text-brand-black">
-                {t("title", { product: selectedProduct })}
+                {t("title", {
+                  product: tProducts(
+                    products.find((p) => p.id === selectedProduct)
+                      ?.nameKey as any
+                  ),
+                })}
               </h1>
               <p className="text-sm text-brand-gray-dark mt-1">
                 {t("subtitle")}
@@ -607,6 +632,28 @@ function PersonnaliserContent() {
                     (p) => p.id === selectedProduct
                   );
                   if (!product) return null;
+
+                  // Show size-based pricing for products with size options
+                  if (product.hasSize && product.sizeOptions) {
+                    return (
+                      <div className="text-xs text-brand-gray-dark bg-brand-gray-lighter p-2 rounded">
+                        <div className="font-medium mb-1">
+                          Formats disponibles:
+                        </div>
+                        {(product.sizeOptions as any[]).map((sizeOpt: any) => (
+                          <div
+                            key={sizeOpt.id}
+                            className="flex justify-between"
+                          >
+                            <span>{sizeOpt.label}:</span>
+                            <span>${sizeOpt.price.toFixed(2)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+
+                  // Show customization-based pricing for other products
                   return (
                     <div className="text-xs text-brand-gray-dark bg-brand-gray-lighter p-2 rounded">
                       <div className="font-medium mb-1">Tarifs:</div>
@@ -631,30 +678,62 @@ function PersonnaliserContent() {
             {/* Size and Quantity Selection */}
             <div className="border-t border-brand-gray-light pt-4">
               <div className="flex gap-2">
-                {/* Size Selection for Clothing */}
-                {products.find((p) => p.id === selectedProduct)?.isClothing && (
-                  <div className="flex-1">
-                    <label className="block text-xs font-medium text-brand-gray-dark mb-2">
-                      Taille:
-                    </label>
-                    <select
-                      value={selectedSize}
-                      onChange={(e) => setSelectedSize(e.target.value)}
-                      className="w-full border border-brand-gray-light rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                    >
-                      {clothingSizes.map((size) => (
-                        <option key={size} value={size}>
-                          {size}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
+                {/* Size Selection for Clothing or Accessories with sizes */}
+                {(() => {
+                  const currentProduct = products.find(
+                    (p) => p.id === selectedProduct
+                  );
+                  if (currentProduct?.isClothing) {
+                    return (
+                      <div className="flex-1">
+                        <label className="block text-xs font-medium text-brand-gray-dark mb-2">
+                          Taille:
+                        </label>
+                        <select
+                          value={selectedSize}
+                          onChange={(e) => setSelectedSize(e.target.value)}
+                          className="w-full border border-brand-gray-light rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                        >
+                          {clothingSizes.map((size) => (
+                            <option key={size} value={size}>
+                              {size}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  } else if (
+                    currentProduct?.hasSize &&
+                    currentProduct?.sizeOptions
+                  ) {
+                    return (
+                      <div className="flex-1">
+                        <label className="block text-xs font-medium text-brand-gray-dark mb-2">
+                          Format:
+                        </label>
+                        <select
+                          value={selectedSize}
+                          onChange={(e) => setSelectedSize(e.target.value)}
+                          className="w-full border border-brand-gray-light rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                        >
+                          {currentProduct.sizeOptions.map((sizeOpt: any) => (
+                            <option key={sizeOpt.id} value={sizeOpt.id}>
+                              {sizeOpt.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
 
                 {/* Quantity Selection */}
                 <div
                   className={
-                    products.find((p) => p.id === selectedProduct)?.isClothing
+                    products.find((p) => p.id === selectedProduct)
+                      ?.isClothing ||
+                    products.find((p) => p.id === selectedProduct)?.hasSize
                       ? "w-28"
                       : "flex-1"
                   }
@@ -846,7 +925,10 @@ function PersonnaliserContent() {
                   }}
                   panMode={panMode}
                   onExport={download}
-                  products={products}
+                  products={products.map((p) => ({
+                    ...p,
+                    name: tProducts(p.nameKey as any),
+                  }))}
                   selectedProduct={selectedProduct}
                   onProductChange={setSelectedProduct}
                   productColors={productColors[selectedProduct] || []}

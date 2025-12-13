@@ -5,6 +5,89 @@ const stickers: {
   categoryKey: string;
   items: { src: string; label: string }[];
 }[] = [
+  // Priority categories (as requested)
+  {
+    categoryKey: "vehicule",
+    items: [
+      { src: "/Designs/auto1_vehicule.png", label: "Auto 1" },
+      { src: "/Designs/auto2_vehicule.png", label: "Auto 2" },
+      { src: "/Designs/auto_vehicule.PNG", label: "Auto" },
+      { src: "/Designs/monster_vehicule.png", label: "Monster" },
+      { src: "/Designs/trucks_vehicule.png", label: "Trucks" },
+    ],
+  },
+  {
+    categoryKey: "camping",
+    items: [
+      { src: "/Designs/best_camping.png", label: "Best Camping" },
+      { src: "/Designs/feux_camping.png", label: "Feux" },
+      { src: "/Designs/mode_camping.png", label: "Mode Camping" },
+      { src: "/Designs/smore_camping.png", label: "S'more" },
+    ],
+  },
+  {
+    categoryKey: "chassepeche",
+    items: [
+      { src: "/Designs/bass_chasse&peche.png", label: "Bass" },
+      { src: "/Designs/canard_chasse&peche.png", label: "Canard" },
+      { src: "/Designs/cerf1_chasse&peche.png", label: "Cerf 1" },
+      { src: "/Designs/cerf_chasse&peche.png", label: "Cerf" },
+      { src: "/Designs/chien_chasse&peche.png", label: "Chien" },
+      { src: "/Designs/orignal_chasse&peche.jpg", label: "Orignal" },
+      { src: "/Designs/peche_chasse&peche.png", label: "Pêche" },
+    ],
+  },
+  {
+    categoryKey: "ocean",
+    items: [
+      { src: "/Designs/beach_ocean.png", label: "Beach" },
+      { src: "/Designs/summer_ocean.jpg", label: "Summer" },
+      { src: "/Designs/tortue1_ocean.png", label: "Tortue 1" },
+      { src: "/Designs/tortue_ocean.png", label: "Tortue" },
+      { src: "/Designs/vague_ocean.jpg", label: "Vague" },
+    ],
+  },
+  {
+    categoryKey: "amusant",
+    items: [
+      { src: "/Designs/better_amusant.png", label: "Better" },
+      { src: "/Designs/bro_amusant.png", label: "Bro" },
+      { src: "/Designs/play_amusant.png", label: "Play" },
+      { src: "/Designs/rush_amusant.png", label: "Rush" },
+      { src: "/Designs/tacos_amusant.png", label: "Tacos" },
+    ],
+  },
+  {
+    categoryKey: "penseepositive",
+    items: [
+      { src: "/Designs/courage_pensée-positive.png", label: "Courage" },
+      { src: "/Designs/day_pensée-positive.png", label: "Day" },
+      { src: "/Designs/focus_pensée-positive.png", label: "Focus" },
+      { src: "/Designs/love_pensée-positive.png", label: "Love" },
+      { src: "/Designs/positiv_pensée-positive.png", label: "Positive" },
+    ],
+  },
+  {
+    categoryKey: "noel",
+    items: [
+      { src: "/Designs/calories_noel.png", label: "Calories" },
+      { src: "/Designs/jesus_noel.png", label: "Jesus" },
+      { src: "/Designs/joyeux_Noel.png", label: "Joyeux Noël" },
+      { src: "/Designs/merry_noel.png", label: "Merry" },
+      { src: "/Designs/noel_noel.png", label: "Noël" },
+    ],
+  },
+  {
+    categoryKey: "ville",
+    items: [
+      { src: "/Designs/newyork2_ville.png", label: "New York 2" },
+      { src: "/Designs/newyork_ville.jpg", label: "New York" },
+      { src: "/Designs/new_york3_ville.png", label: "New York 3" },
+      { src: "/Designs/paris1_ville.png", label: "Paris 1" },
+      { src: "/Designs/paris2_ville.png", label: "Paris 2" },
+      { src: "/Designs/paris_ville.png", label: "Paris" },
+    ],
+  },
   {
     categoryKey: "inspirational",
     items: [
@@ -47,65 +130,7 @@ const stickers: {
       },
     ],
   },
-  {
-    categoryKey: "golf",
-    items: [
-      {
-        src: "/Designs/born to golf forced to work.jpg",
-        label: "Born to golf",
-      },
-      {
-        src: "/Designs/born to golf forced to work1.jpg",
-        label: "Born to golf v2",
-      },
-      {
-        src: "/Designs/born to golf forced to work2.jpg",
-        label: "Born to golf v3",
-      },
-      {
-        src: "/Designs/born to play golf with daddy.jpg",
-        label: "Golf with daddy",
-      },
-      { src: "/Designs/golf dad.jpg", label: "Golf dad" },
-      { src: "/Designs/golf guy.jpg", label: "Golf guy" },
-      { src: "/Designs/golf mom.jpg", label: "Golf mom" },
-      { src: "/Designs/golf mom1.jpg", label: "Golf mom v2" },
-      {
-        src: "/Designs/it takes a lot of balls to golf like I do.jpg",
-        label: "Lot of balls",
-      },
-      { src: "/Designs/let's par-tee.jpg", label: "Let's par-tee" },
-      { src: "/Designs/life is short swing hard.jpg", label: "Life is short" },
-      { src: "/Designs/love to golf.jpg", label: "Love to golf" },
-      { src: "/Designs/love to golf1.jpg", label: "Love to golf v2" },
-      {
-        src: "/Designs/may the course be with you.jpg",
-        label: "May the course",
-      },
-      {
-        src: "/Designs/may the course be with you1.jpg",
-        label: "May the course v2",
-      },
-      {
-        src: "/Designs/the most important shot in golf is the next one.jpg",
-        label: "Next shot",
-      },
-      { src: "/Designs/this girl's got drive.jpg", label: "Girl's got drive" },
-      {
-        src: "/Designs/this girl's got drive1.jpg",
-        label: "Girl's got drive v2",
-      },
-      {
-        src: "/Designs/weapons of grass destruction.jpg",
-        label: "Grass destruction",
-      },
-      {
-        src: "/Designs/weekend forecast golf with a chance of beer.jpg",
-        label: "Weekend forecast",
-      },
-      { src: "/Designs/8.png", label: "Golf design" },
-    ],
-  },
+  // Other categories
   {
     categoryKey: "icons",
     items: [
@@ -129,88 +154,6 @@ const stickers: {
       { src: "/Designs/badge-rounded.svg", label: "Badge" },
       { src: "/Designs/coffee.svg", label: "Coffee" },
       { src: "/Designs/gift.svg", label: "Gift" },
-    ],
-  },
-  {
-    categoryKey: "vehicule",
-    items: [
-      { src: "/Designs/auto1_vehicule.png", label: "Auto 1" },
-      { src: "/Designs/auto2_vehicule.png", label: "Auto 2" },
-      { src: "/Designs/auto_vehicule.PNG", label: "Auto" },
-      { src: "/Designs/monster_vehicule.png", label: "Monster" },
-      { src: "/Designs/trucks_vehicule.png", label: "Trucks" },
-    ],
-  },
-  {
-    categoryKey: "chassepeche",
-    items: [
-      { src: "/Designs/bass_chasse&peche.png", label: "Bass" },
-      { src: "/Designs/canard_chasse&peche.png", label: "Canard" },
-      { src: "/Designs/cerf1_chasse&peche.png", label: "Cerf 1" },
-      { src: "/Designs/cerf_chasse&peche.png", label: "Cerf" },
-      { src: "/Designs/chien_chasse&peche.png", label: "Chien" },
-      { src: "/Designs/orignal_chasse&peche.jpg", label: "Orignal" },
-      { src: "/Designs/peche_chasse&peche.png", label: "Pêche" },
-    ],
-  },
-  {
-    categoryKey: "ocean",
-    items: [
-      { src: "/Designs/beach_ocean.png", label: "Beach" },
-      { src: "/Designs/summer_ocean.jpg", label: "Summer" },
-      { src: "/Designs/tortue1_ocean.png", label: "Tortue 1" },
-      { src: "/Designs/tortue_ocean.png", label: "Tortue" },
-      { src: "/Designs/vague_ocean.jpg", label: "Vague" },
-    ],
-  },
-  {
-    categoryKey: "camping",
-    items: [
-      { src: "/Designs/best_camping.png", label: "Best Camping" },
-      { src: "/Designs/feux_camping.png", label: "Feux" },
-      { src: "/Designs/mode_camping.png", label: "Mode Camping" },
-      { src: "/Designs/smore_camping.png", label: "S'more" },
-    ],
-  },
-  {
-    categoryKey: "amusant",
-    items: [
-      { src: "/Designs/better_amusant.png", label: "Better" },
-      { src: "/Designs/bro_amusant.png", label: "Bro" },
-      { src: "/Designs/play_amusant.png", label: "Play" },
-      { src: "/Designs/rush_amusant.png", label: "Rush" },
-      { src: "/Designs/tacos_amusant.png", label: "Tacos" },
-    ],
-  },
-  {
-    categoryKey: "penseepositive",
-    items: [
-      { src: "/Designs/courage_pensée-positive.png", label: "Courage" },
-      { src: "/Designs/day_pensée-positive.png", label: "Day" },
-      { src: "/Designs/focus_pensée-positive.png", label: "Focus" },
-      { src: "/Designs/love_pensée-positive.png", label: "Love" },
-      { src: "/Designs/positiv_pensée-positive.png", label: "Positive" },
-    ],
-  },
-  {
-    categoryKey: "noel",
-    items: [
-      { src: "/Designs/calories_noel.png", label: "Calories" },
-      { src: "/Designs/jesus_noel.png", label: "Jesus" },
-      { src: "/Designs/joyeux_Noel.png", label: "Joyeux Noël" },
-      { src: "/Designs/merry_noel.png", label: "Merry" },
-      { src: "/Designs/noel_noel.png", label: "Noël" },
-    ],
-  },
-  {
-    categoryKey: "ville",
-    items: [
-      { src: "/Designs/newyork2_ville.png", label: "New York 2" },
-      { src: "/Designs/newyork_ville.jpg", label: "New York" },
-      { src: "/Designs/new_york3_ville.png", label: "New York 3" },
-      { src: "/Designs/paris1_ville.png", label: "Paris 1" },
-      { src: "/Designs/paris2_ville.png", label: "Paris 2" },
-      { src: "/Designs/paris_ville.png", label: "Paris" },
     ],
   },
 ];

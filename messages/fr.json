@@ -78,17 +78,31 @@
     }
   },
   "products": {
+    "tshirt": "T-shirt manches courtes",
+    "longsleeve": "T-shirt manches longues",
     "hoodie": "Chandail à capuchon",
     "crewneck": "Chandail à col rond",
     "teeShort": "t-shirt manches courtes",
     "teeLong": "t-shirt manches longues",
     "teeShortKid": "t-shirt manches courtes (enfant)",
+    "cap": "Casquette",
     "truckerCap": "Casquette",
+    "mugInsulated": "Tasse isotherme",
+    "mugFrosted": "Tasse givrée",
+    "mugMagic": "Tasse magique noire",
+    "mugCeramic": "Tasse céramique blanche",
+    "mousepad": "Tapis de souris",
+    "shoppingBag": "Sac de magasinage",
+    "drawstringBag": "Sac à cordon",
+    "licensePlate": "Plaque personnalisable pour véhicules",
+    "suctionPoster": "Affiche avec ventouse",
     "customize": "Personnaliser",
     "mug": "Tasse",
     "bottle": "Bouteille isotherme",
     "glassBottle": "Bouteille en vitre",
-    "glassware": "Verre en vitre"
+    "glassware": "Verre en vitre",
+    "clothingCategory": "Vêtements",
+    "accessoriesCategory": "Accessoires"
   },
   "common": {
     "price": "Prix",
@@ -163,6 +177,7 @@
       "selectProduct": "Sélectionnez un produit",
       "quantity": "Quantité",
       "technique": "Technique d'impression souhaitée",
+      "uploadImage": "Téléverser votre logo ou design",
       "message": "Détails du projet (couleurs, zones, délais, etc.)",
       "submit": "Envoyer la demande",
       "sending": "Envoi…",
@@ -317,7 +332,7 @@
     "exportFirst": "Exportez d'abord votre design pour activer le paiement."
   },
   "personnaliser": {
-    "title": "Personnaliser — {product}",
+    "title": "{product}",
     "subtitle": "Ajoutez du texte, importez une image, appliquez vos styles, puis commandez.",
     "emailPlaceholder": "Votre email",
     "emailLabel": "Adresse email",

@@ -29,7 +29,7 @@ type Props = {
   onTogglePan: () => void;
   panMode?: boolean;
   onExport: () => void;
-  products: { id: string; name: string; availableSides?: string[] }[];
+  products: { id: string; name: string; nameKey?: string; availableSides?: string[] }[];
   selectedProduct: string;
   onProductChange: (product: string) => void;
   productColors: { id: string; name: string; images: Record<string, string> }[];
