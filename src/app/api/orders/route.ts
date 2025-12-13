@@ -27,8 +27,21 @@ export async function PATCH(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { productId, email, design, size, description, name } =
-      await req.json();
+    const { 
+      productId, 
+      email, 
+      design,  // Legacy support - single design
+      designs, // New - multiple designs per side
+      customizedSides,
+      size, 
+      quantity,
+      color,
+      price,
+      sidesCount,
+      description, 
+      name 
+    } = await req.json();
+    
     if (
       !process.env.NEXT_PUBLIC_SUPABASE_URL ||
       !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -41,28 +54,42 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
-    if (!email || !productId || !design) {
+    
+    // Support both old (design) and new (designs) format
+    if (!email || !productId || (!design && !designs)) {
       return NextResponse.json(
-        { error: "Champs manquants: email, productId, design" },
+        { error: "Champs manquants: email, productId, design/designs" },
         { status: 400 }
       );
     }
 
-    // find product price (fallback if table absente)
-    const { data: product, error: productErr } = await supabase
-      .from("products")
-      .select("*")
-      .eq("slug", productId)
-      .maybeSingle();
-    if (productErr && productErr.message) {
-      // table peut ne pas exister: laisser un montant par défaut mais reporter l'avertissement
-      console.warn("Supabase products error:", productErr.message);
+    // Use provided price or fallback to database/default
+    let amount = price ? Math.round(price * 100) : null; // Convert to cents
+    
+    if (!amount) {
+      const { data: product, error: productErr } = await supabase
+        .from("products")
+        .select("*")
+        .eq("slug", productId)
+        .maybeSingle();
+      if (productErr && productErr.message) {
+        console.warn("Supabase products error:", productErr.message);
+      }
+      amount = product?.price ?? 2500;
     }
-    const amount = product?.price ?? 2500;
 
+    // Create comprehensive design data
     const designData = JSON.stringify({
-      image: design,
+      // New multi-side format
+      designs: designs || { front: design }, // If old format, convert to new
+      customizedSides: customizedSides || ["front"],
+      sidesCount: sidesCount || 1,
+      // Product details
+      productId,
       size: size || "",
+      quantity: quantity || 1,
+      color: color || "black",
+      // Legacy fields
       description: description || "",
       name: name || "",
     });

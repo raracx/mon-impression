@@ -122,6 +122,10 @@ export type CustomizerHandle = {
   setGarmentColor: (color: string) => void;
   // get current garment color
   getGarmentColor: () => string;
+  // get which sides have been customized
+  getCustomizedSides: () => ("front" | "back" | "left-sleeve" | "right-sleeve")[];
+  // export all customized sides
+  exportAllSides: () => Promise<Record<string, string>>;
 };
 
 type Props = {
@@ -385,15 +389,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
         setSide: (s) => {
           setSide(s);
           setSelectedId(null);
-          // Animate rotation based on side
-          const rotations = {
-            front: 0,
-            back: 180,
-            // avoid rotating 90deg which makes the canvas edge-on and invisible — keep 0 for sleeves
-            "left-sleeve": 0,
-            "right-sleeve": 0,
-          };
-          setRotation(rotations[s] || 0);
+          // Don't use CSS rotation - base image switching handles the view changes
+          setRotation(0);
 
           // For t-shirt products, switch the base image to show the selected side
           if (productId === "tshirt" || productId === "black-tshirt") {
@@ -436,8 +433,42 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           onGarmentColorChange?.(color);
         },
         getGarmentColor: () => garmentColor,
+        getCustomizedSides: () => {
+          // Return array of sides that have items
+          const customizedSides: ("front" | "back" | "left-sleeve" | "right-sleeve")[] = [];
+          (Object.keys(itemsBySide) as ("front" | "back" | "left-sleeve" | "right-sleeve")[]).forEach((s) => {
+            if (itemsBySide[s].length > 0) {
+              customizedSides.push(s);
+            }
+          });
+          return customizedSides;
+        },
+        exportAllSides: async () => {
+          // Export design for all customized sides
+          const exports: Record<string, string> = {};
+          const currentSide = side;
+          const customizedSides = (Object.keys(itemsBySide) as ("front" | "back" | "left-sleeve" | "right-sleeve")[]).filter(
+            (s) => itemsBySide[s].length > 0
+          );
+          
+          for (const s of customizedSides) {
+            // Switch to the side
+            setSide(s);
+            // Wait for state update
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            // Export the design
+            const dataUrl = stageRef.current?.toDataURL({ pixelRatio: 2 });
+            if (dataUrl) {
+              exports[s] = dataUrl;
+            }
+          }
+          
+          // Switch back to original side
+          setSide(currentSide);
+          return exports;
+        },
       }),
-      [selectedId, side, printRect, selected, garmentColor, onGarmentColorChange]
+      [selectedId, side, printRect, selected, garmentColor, onGarmentColorChange, itemsBySide]
     );
 
     // inform parent component about selection changes

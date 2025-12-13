@@ -24,10 +24,39 @@ const productImages: Record<string, string> = {
 };
 
 const products = [
-  { id: "tshirt", name: "T-Shirt" },
-  { id: "hoodie", name: "Hoodie" },
-  { id: "cap", name: "Casquette" },
+  {
+    id: "tshirt",
+    name: "T-Shirt",
+    isClothing: true,
+    pricing: {
+      oneSide: 19.99,
+      twoSides: 22.99,
+      fullPrint: 25.99,
+    },
+  },
+  {
+    id: "hoodie",
+    name: "Hoodie",
+    isClothing: true,
+    pricing: {
+      oneSide: 29.99,
+      twoSides: 34.99,
+      fullPrint: 39.99,
+    },
+  },
+  {
+    id: "cap",
+    name: "Casquette",
+    isClothing: false,
+    pricing: {
+      oneSide: 25.0,
+      twoSides: 25.0,
+      fullPrint: 25.0,
+    },
+  },
 ];
+
+const clothingSizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
 
 const productColors: Record<
   string,
@@ -174,6 +203,9 @@ function PersonnaliserContent() {
   const [selectedProduct, setSelectedProduct] = useState("tshirt");
   const [selectedColor, setSelectedColor] = useState("black");
   const [activeSide, setActiveSide] = useState("front");
+  const [selectedSize, setSelectedSize] = useState("M");
+  const [quantity, setQuantity] = useState(1);
+  const [customizedSidesCount, setCustomizedSidesCount] = useState(0);
   const [base, setBase] = useState<string>(
     productImages[selectedProduct] || "/Products/BlackTShirtFront.png"
   );
@@ -182,13 +214,19 @@ function PersonnaliserContent() {
   useEffect(() => {
     const colors = productColors[selectedProduct];
     if (colors && colors.length > 0) {
-      const currentColor = colors.find(c => c.id === selectedColor) || colors[0];
-      setBase(currentColor.images[activeSide as keyof typeof currentColor.images] || currentColor.images.front);
-      if (!colors.find(c => c.id === selectedColor)) {
+      const currentColor =
+        colors.find((c) => c.id === selectedColor) || colors[0];
+      setBase(
+        currentColor.images[activeSide as keyof typeof currentColor.images] ||
+          currentColor.images.front
+      );
+      if (!colors.find((c) => c.id === selectedColor)) {
         setSelectedColor(colors[0].id);
       }
     } else {
-      setBase(productImages[selectedProduct] || "/Products/BlackTShirtFront.png");
+      setBase(
+        productImages[selectedProduct] || "/Products/BlackTShirtFront.png"
+      );
     }
   }, [selectedProduct, selectedColor, activeSide]);
 
@@ -198,6 +236,30 @@ function PersonnaliserContent() {
   const [panMode, setPanMode] = useState(false);
   // track garment color
   const [garmentColor, setGarmentColor] = useState("#FFFFFF");
+
+  // Calculate price based on number of customized sides
+  const calculatePrice = () => {
+    const product = products.find((p) => p.id === selectedProduct);
+    if (!product) return 0;
+
+    if (customizedSidesCount === 0 || customizedSidesCount === 1) {
+      return product.pricing.oneSide;
+    } else if (customizedSidesCount === 2) {
+      return product.pricing.twoSides;
+    } else {
+      return product.pricing.fullPrint;
+    }
+  };
+
+  const currentPrice = calculatePrice();
+
+  // Update customized sides count when canvas changes
+  const updateCustomizedSides = () => {
+    if (ref.current) {
+      const sides = ref.current.getCustomizedSides();
+      setCustomizedSidesCount(sides.length);
+    }
+  };
 
   useEffect(() => {
     const img = searchParams.get("img");
@@ -210,19 +272,46 @@ function PersonnaliserContent() {
     }
   }, [searchParams]);
 
+  // Update customized sides count periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateCustomizedSides();
+    }, 500);
+    return () => clearInterval(interval);
+  }, [selectedProduct, activeSide]);
+
   const order = async () => {
     if (!ref.current) return;
     setLoading(true);
-    const dataUrl = ref.current.exportDesign();
-    if (!dataUrl) {
-      setLoading(false);
-      return;
-    }
+
     try {
+      // Export all customized sides
+      const customizedSides = ref.current.getCustomizedSides();
+      if (customizedSides.length === 0) {
+        alert("Veuillez personnaliser au moins un côté du produit");
+        setLoading(false);
+        return;
+      }
+
+      const allDesigns = await ref.current.exportAllSides();
+
+      const product = products.find((p) => p.id === selectedProduct);
+      const orderData = {
+        productId: selectedProduct,
+        email,
+        designs: allDesigns, // Now sending all sides
+        customizedSides: customizedSides, // Which sides were customized
+        size: product?.isClothing ? selectedSize : undefined,
+        quantity,
+        color: selectedColor,
+        price: currentPrice, // Dynamic price based on sides
+        sidesCount: customizedSides.length,
+      };
+
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId: selectedProduct, email, design: dataUrl }),
+        body: JSON.stringify(orderData),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || t("errorOrder"));
@@ -265,7 +354,7 @@ function PersonnaliserContent() {
       {/* Main Content */}
       <div className="relative flex items-start px-4 py-4 gap-4">
         {/* Left Info Panel */}
-        <div className="w-64 shrink-0 hidden lg:block">
+        <div className="w-80 shrink-0 hidden lg:block">
           <div className="bg-white border border-brand-gray-light rounded-2xl shadow-lg p-5 space-y-4">
             <div>
               <h1 className="text-lg font-bold text-brand-black">
@@ -276,26 +365,126 @@ function PersonnaliserContent() {
               </p>
             </div>
 
-            <div className="border-t border-brand-gray-light pt-4 space-y-3">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-brand-gray-dark">Zone d'édition</span>
-                <span className="font-medium text-brand-black">560×560 px</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-brand-gray-dark">Vue</span>
-                <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-800 font-semibold text-xs">
-                  {activeSide === "front" && "Avant"}
-                  {activeSide === "back" && "Arrière"}
-                  {activeSide === "left-sleeve" && "Manche gauche"}
-                  {activeSide === "right-sleeve" && "Manche droite"}
+            {/* Product Price */}
+            <div className="border-t border-brand-gray-light pt-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-medium text-brand-gray-dark">
+                  Prix:
+                </span>
+                <span className="text-xl font-bold text-navy">
+                  ${currentPrice.toFixed(2)}
                 </span>
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-brand-gray-dark">Zoom</span>
-                <span className="font-medium text-brand-black">100%</span>
+              <div className="space-y-1">
+                <p className="text-xs text-brand-gray-dark">
+                  {customizedSidesCount === 0 && "Aucune personnalisation"}
+                  {customizedSidesCount === 1 && "✓ 1 face personnalisée"}
+                  {customizedSidesCount === 2 && "✓ 2 faces personnalisées"}
+                  {customizedSidesCount >= 3 &&
+                    "✓ Impression complète (3+ faces)"}
+                </p>
+                {(() => {
+                  const product = products.find(
+                    (p) => p.id === selectedProduct
+                  );
+                  if (!product) return null;
+                  return (
+                    <div className="text-xs text-brand-gray-dark bg-brand-gray-lighter p-2 rounded">
+                      <div className="font-medium mb-1">Tarifs:</div>
+                      <div className="flex justify-between">
+                        <span>1 face:</span>
+                        <span>${product.pricing.oneSide.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>2 faces:</span>
+                        <span>${product.pricing.twoSides.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Complète:</span>
+                        <span>${product.pricing.fullPrint.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
 
+            {/* Size and Quantity Selection */}
+            <div className="border-t border-brand-gray-light pt-4">
+              <div className="flex gap-2">
+                {/* Size Selection for Clothing */}
+                {products.find((p) => p.id === selectedProduct)?.isClothing && (
+                  <div className="flex-1">
+                    <label className="block text-xs font-medium text-brand-gray-dark mb-2">
+                      Taille:
+                    </label>
+                    <select
+                      value={selectedSize}
+                      onChange={(e) => setSelectedSize(e.target.value)}
+                      className="w-full border border-brand-gray-light rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                    >
+                      {clothingSizes.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {/* Quantity Selection */}
+                <div
+                  className={
+                    products.find((p) => p.id === selectedProduct)?.isClothing
+                      ? "w-28"
+                      : "flex-1"
+                  }
+                >
+                  <label className="block text-xs font-medium text-brand-gray-dark mb-2">
+                    Qté:
+                  </label>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-7 h-9 flex items-center justify-center border border-brand-gray-light rounded-lg hover:bg-navy-50 transition-colors text-sm font-semibold"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      min="1"
+                      value={quantity}
+                      onChange={(e) =>
+                        setQuantity(Math.max(1, parseInt(e.target.value) || 1))
+                      }
+                      className="w-12 text-center border border-brand-gray-light rounded-lg px-1 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy"
+                    />
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-7 h-9 flex items-center justify-center border border-brand-gray-light rounded-lg hover:bg-navy-50 transition-colors text-sm font-semibold"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Email Input */}
+            <div className="border-t border-brand-gray-light pt-4">
+              <label className="block text-sm font-medium text-brand-gray-dark mb-2">
+                {t("emailLabel")}
+              </label>
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                placeholder={t("emailPlaceholder")}
+                className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+              />
+            </div>
+
+            {/* Action Buttons */}
             <div className="border-t border-brand-gray-light pt-4 space-y-3">
               <button
                 onClick={download}
@@ -312,6 +501,9 @@ function PersonnaliserContent() {
                 <ShoppingCart className="w-4 h-4" />
                 {loading ? t("loading") : t("orderNow")}
               </button>
+              <p className="text-xs text-brand-gray-dark leading-relaxed text-center">
+                {t("paymentNote")}
+              </p>
             </div>
           </div>
         </div>
@@ -385,10 +577,19 @@ function PersonnaliserContent() {
             {activeTab === "tools" ? (
               <div className="p-4">
                 <Toolbox
-                  onAddText={() => ref.current?.addText()}
-                  onUploadImage={(f) => ref.current?.addImage(f)}
+                  onAddText={() => {
+                    ref.current?.addText();
+                    setTimeout(updateCustomizedSides, 100);
+                  }}
+                  onUploadImage={(f) => {
+                    ref.current?.addImage(f);
+                    setTimeout(updateCustomizedSides, 100);
+                  }}
                   onColor={(c) => ref.current?.setColor(c)}
-                  onDelete={() => ref.current?.deleteSelected()}
+                  onDelete={() => {
+                    ref.current?.deleteSelected();
+                    setTimeout(updateCustomizedSides, 100);
+                  }}
                   onFontFamily={(f) => ref.current?.setFontFamily(f)}
                   onFontSize={(s) => ref.current?.setFontSize(s)}
                   onBold={() => ref.current?.toggleBold()}
@@ -396,11 +597,17 @@ function PersonnaliserContent() {
                   onAlign={(a) => ref.current?.alignText(a)}
                   onStroke={(c) => ref.current?.setStroke(c)}
                   onStrokeWidth={(w) => ref.current?.setStrokeWidth(w)}
-                  onDuplicate={() => ref.current?.duplicateSelected()}
+                  onDuplicate={() => {
+                    ref.current?.duplicateSelected();
+                    setTimeout(updateCustomizedSides, 100);
+                  }}
                   onForward={() => ref.current?.bringForward()}
                   onBackward={() => ref.current?.sendBackward()}
                   onToggleGrid={() => ref.current?.toggleGrid()}
-                  onSetSide={(s) => ref.current?.setSide(s)}
+                  onSetSide={(s) => {
+                    ref.current?.setSide(s);
+                    setTimeout(updateCustomizedSides, 100);
+                  }}
                   productId={selectedProduct}
                   selectedText={
                     selectedItem?.type === "text"
@@ -432,28 +639,26 @@ function PersonnaliserContent() {
             ) : (
               <div className="p-4">
                 <StickersPanel
-                  onPick={(url) => ref.current?.addImageFromUrl(url)}
+                  onPick={(url) => {
+                    ref.current?.addImageFromUrl(url);
+                    setTimeout(updateCustomizedSides, 100);
+                  }}
                 />
               </div>
             )}
           </div>
 
-          {/* Order Section - Fixed at Bottom */}
-          <div className="border-t border-brand-gray-light bg-white p-4 space-y-3 shadow-lg">
-            <div>
-              <label className="block text-xs font-medium text-brand-gray-dark mb-2">
-                {t("emailLabel")}
-              </label>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                placeholder={t("emailPlaceholder")}
-                className="w-full border border-brand-gray-light rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-              />
-            </div>
+          {/* Help Section - Fixed at Bottom */}
+          <div className="border-t border-brand-gray-light bg-navy-50 p-4 space-y-2">
+            <h4 className="text-sm font-semibold text-navy mb-2">
+              💡 Besoin d'aide ?
+            </h4>
             <p className="text-xs text-brand-gray-dark leading-relaxed">
-              {t("paymentNote")}
+              • Téléversez votre propre image
+              <br />
+              • Choisissez un design dans l'onglet "Designs"
+              <br />• Besoin de modifications ? Contactez-nous à
+              contact@monimpression.com
             </p>
           </div>
         </div>
