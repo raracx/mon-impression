@@ -19,7 +19,7 @@
   "footer": {
     "company": "Mon Impression",
     "address": "Saint-Lin–Laurentides, QC",
-    "phone": "514-677-2809",
+    "phone": "514-677-2809 | 514-659-1137",
     "email": "contact@monimpression.com",
     "facebook": "Notre page Facebook",
     "information": "Informations",
@@ -28,6 +28,9 @@
     "privacy": "Politique de Confidentialité",
     "terms": "Conditions d'utilisation",
     "myAccount": "Mon Compte",
+    "contact": "Contact",
+    "phone1": "514-677-2809",
+    "phone2": "514-659-1137",
     "login": "Se connecter",
     "orders": "Mes commandes",
     "helpSupport": "Aide & Support",
@@ -137,11 +140,11 @@
       },
       "printingTypes": {
         "q": "Quels sont vos types d'impression ?",
-        "a": "Chez Mon Impression, nous utilisons plusieurs techniques selon le type de produit : DTF (Direct-to-Film) pour impression principale sur la majorité des vêtements (durable et de haute qualité), Vinyle utilisée également sur certains tissus pour un rendu précis, Broderie (sur demande) pour un effet haut de gamme et professionnel, Sublimation (sur demande et surtout pour tissus blancs ou en polyester). Pour les tasses : impressions faites principalement en sublimation, mais le vinyle est aussi possible selon le modèle."
+        "a": "Chez Mon Impression, nous utilisons plusieurs techniques selon le type de produit : DTF (Direct-to-Film) pour vêtements coton, hoodies et vêtements foncés (durable et de haute qualité), Sublimation pour vêtements pâles et tous les autres articles comme les tasses et accessoires (rendu éclatant et permanent), Vinyle pour certains tissus pour un rendu précis, Broderie (sur demande) pour un effet haut de gamme et professionnel."
       },
       "productionTime": {
         "q": "Quels sont les délais de production ?",
-        "a": "Nos commandes sont produites rapidement et habituellement expédiées entre 2 et 5 jours ouvrables, selon le type d'article, la disponibilité et la quantité."
+        "a": "Nos commandes sont expédiées dans les 7 jours ouvrables, selon le type d'article, la disponibilité et la quantité."
       },
       "quote": {
         "q": "Puis-je obtenir une soumission avant de commander ?",
@@ -154,7 +157,7 @@
     "subtitle": "Vêtements personnalisés unisexes – Adultes et enfants",
     "colors": "Couleurs: {colors}",
     "sizes": "Tailles Adultes: {adult} — Enfants: {kids}",
-    "method": "Procédé DTF par défaut. Sublimation et broderie sur demande.",
+    "method": "DTF pour vêtements coton/foncés. Sublimation pour vêtements pâles et accessoires.",
     "details": "details",
     "customizeModel": "Personnaliser ce modèle",
     "shippingTitle": "Livraison et entretien",
@@ -197,9 +200,9 @@
     "techniques": {
       "title": "Nos techniques d'impression",
       "dtf": "DTF (Direct-to-Film)",
-      "dtfDesc": "Impression principale sur la majorité des vêtements. Durable, souple et de haute qualité.",
+      "dtfDesc": "Pour vêtements coton, hoodies et vêtements foncés. Durable, souple et de haute qualité.",
       "sublimation": "Sublimation",
-      "sublimationDesc": "Idéal pour tissus blancs ou en polyester. Rendu éclatant et permanent.",
+      "sublimationDesc": "Pour vêtements pâles et tous les autres articles (tasses, accessoires, etc.). Rendu éclatant et permanent.",
       "embroidery": "Broderie",
       "embroideryDesc": "Effet haut de gamme et professionnel. Parfait pour logos d'entreprise.",
       "vinyl": "Vinyle",
@@ -215,7 +218,7 @@
   },
   "contact": {
     "title": "Contactez-nous",
-    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 — contact@monimpression.com",
+    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 | 514-659-1137 — contact@monimpression.com",
     "mapTitle": "Carte",
     "form": {
       "name": "Nom complet",
@@ -262,7 +265,7 @@
       "title": "6. Cookies",
       "content": "Notre site utilise des cookies pour améliorer votre expérience de navigation et analyser l'utilisation du site. Vous pouvez désactiver les cookies dans les paramètres de votre navigateur."
     },
-    "contact": "Pour toute question concernant cette politique, contactez-nous à contact@monimpression.com ou au 514-677-2809."
+    "contact": "Pour toute question concernant cette politique, contactez-nous à contact@monimpression.com ou au 514-677-2809 | 514-659-1137."
   },
   "terms": {
     "title": "Conditions d'utilisation",
@@ -281,7 +284,7 @@
     },
     "section4": {
       "title": "4. Production et Délais",
-      "content": "Nos commandes sont habituellement expédiées entre 2 et 5 jours ouvrables. Les délais peuvent varier selon le type d'article, la disponibilité et la quantité commandée."
+      "content": "Nos commandes sont expédiées dans les 7 jours ouvrables. Les délais peuvent varier selon le type d'article, la disponibilité et la quantité commandée."
     },
     "section5": {
       "title": "5. Politique de Retour et Remboursement",
@@ -295,7 +298,7 @@
       "title": "7. Limitation de Responsabilité",
       "content": "Mon Impression n'est pas responsable des délais de livraison causés par des transporteurs tiers, des événements hors de notre contrôle, ou des erreurs dans les informations de livraison fournies par le client."
     },
-    "contact": "Pour toute question concernant ces conditions, contactez-nous à contact@monimpression.com ou par téléphone au 514-677-2809."
+    "contact": "Pour toute question concernant ces conditions, contactez-nous à contact@monimpression.com ou par téléphone au 514-677-2809 | 514-659-1137."
   },
   "success": {
     "title": "Merci pour votre achat!",

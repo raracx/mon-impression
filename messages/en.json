@@ -19,7 +19,7 @@
   "footer": {
     "company": "Mon Impression",
     "address": "Saint-Lin–Laurentides, QC",
-    "phone": "514-677-2809",
+    "phone": "514-677-2809 | 514-659-1137",
     "email": "contact@monimpression.com",
     "facebook": "Our Facebook Page",
     "information": "Information",
@@ -28,6 +28,9 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Use",
     "myAccount": "My Account",
+    "contact": "Contact",
+    "phone1": "514-677-2809",
+    "phone2": "514-659-1137",
     "login": "Sign In",
     "orders": "My Orders",
     "helpSupport": "Help & Support",
@@ -137,11 +140,11 @@
       },
       "printingTypes": {
         "q": "What are your printing methods?",
-        "a": "At Mon Impression, we use several techniques depending on the product type: DTF (Direct-to-Film) for main printing on most garments (durable and high quality), Vinyl also used on certain fabrics for precise rendering, Embroidery (on request) for a premium and professional effect, Sublimation (on request, especially for white or polyester fabrics). For mugs: prints are mainly done in sublimation, but vinyl is also possible depending on the model."
+        "a": "At Mon Impression, we use several techniques depending on the product type: DTF (Direct-to-Film) for cotton clothing, hoodies and dark garments (durable and high quality), Sublimation for light-colored clothing and all other items like mugs and accessories (vibrant and permanent results), Vinyl for certain fabrics for precise rendering, Embroidery (on request) for a premium and professional effect."
       },
       "productionTime": {
         "q": "What are the production times?",
-        "a": "Our orders are produced quickly and usually shipped within 2 to 5 business days, depending on the type of item, availability and quantity."
+        "a": "Our orders are shipped within 7 business days, depending on the type of item, availability and quantity."
       },
       "quote": {
         "q": "Can I get a quote before ordering?",
@@ -154,7 +157,7 @@
     "subtitle": "Custom unisex apparel – Adults and kids",
     "colors": "Colors: {colors}",
     "sizes": "Adult sizes: {adult} — Kids: {kids}",
-    "method": "DTF by default. Sublimation and embroidery on request.",
+    "method": "DTF for cotton/dark clothing. Sublimation for light clothing and accessories.",
     "details": "Details",
     "customizeModel": "Customize this model",
     "shippingTitle": "Shipping and care",
@@ -197,9 +200,9 @@
     "techniques": {
       "title": "Our printing techniques",
       "dtf": "DTF (Direct-to-Film)",
-      "dtfDesc": "Main printing method for most garments. Durable, flexible and high quality.",
+      "dtfDesc": "For cotton clothing, hoodies and dark garments. Durable, flexible and high quality.",
       "sublimation": "Sublimation",
-      "sublimationDesc": "Ideal for white or polyester fabrics. Vibrant and permanent results.",
+      "sublimationDesc": "For light-colored clothing and all other items (mugs, accessories, etc.). Vibrant and permanent results.",
       "embroidery": "Embroidery",
       "embroideryDesc": "Premium and professional effect. Perfect for company logos.",
       "vinyl": "Vinyl",
@@ -215,7 +218,7 @@
   },
   "contact": {
     "title": "Contact us",
-    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 — contact@monimpression.com",
+    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 | 514-659-1137 — contact@monimpression.com",
     "mapTitle": "Map",
     "form": {
       "name": "Full name",
@@ -262,7 +265,7 @@
       "title": "6. Cookies",
       "content": "Our site uses cookies to improve your browsing experience and analyze site usage. You can disable cookies in your browser settings."
     },
-    "contact": "For any questions regarding this policy, contact us at contact@monimpression.com or at 514-677-2809."
+    "contact": "For any questions regarding this policy, contact us at contact@monimpression.com or at 514-677-2809 | 514-659-1137."
   },
   "terms": {
     "title": "Terms of Use",
@@ -281,7 +284,7 @@
     },
     "section4": {
       "title": "4. Production and Timelines",
-      "content": "Our orders are usually shipped within 2 to 5 business days. Timelines may vary depending on the type of item, availability, and quantity ordered."
+      "content": "Our orders are shipped within 7 business days. Timelines may vary depending on the type of item, availability, and quantity ordered."
     },
     "section5": {
       "title": "5. Return and Refund Policy",
@@ -295,7 +298,7 @@
       "title": "7. Limitation of Liability",
       "content": "Mon Impression is not responsible for delivery delays caused by third-party carriers, events beyond our control, or errors in delivery information provided by the customer."
     },
-    "contact": "For any questions regarding these terms, contact us at contact@monimpression.com or by phone at 514-677-2809."
+    "contact": "For any questions regarding these terms, contact us at contact@monimpression.com or by phone at 514-677-2809 | 514-659-1137."
   },
   "success": {
     "title": "Thank you for your purchase!",

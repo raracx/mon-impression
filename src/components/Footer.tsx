@@ -28,40 +28,9 @@ export default function Footer() {
                   className="h-14 w-auto object-contain"
                 />
               </div>
-              <p className="text-gray-300 text-sm leading-relaxed mb-6">
+              <p className="text-gray-300 text-sm leading-relaxed">
                 {t("address")}
               </p>
-              <div className="space-y-3">
-                <a
-                  href={`tel:${t("phone")}`}
-                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
-                >
-                  <span className="w-8 h-8 bg-navy rounded-full flex items-center justify-center group-hover:bg-navy-light transition-colors">
-                    <FaPhone className="text-xs text-white" />
-                  </span>
-                  <span className="text-sm">{t("phone")}</span>
-                </a>
-                <a
-                  href={`mailto:${t("email")}`}
-                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
-                >
-                  <span className="w-8 h-8 bg-navy rounded-full flex items-center justify-center group-hover:bg-navy-light transition-colors">
-                    <FaEnvelope className="text-xs text-white" />
-                  </span>
-                  <span className="text-sm">{t("email")}</span>
-                </a>
-                <a
-                  href="https://www.facebook.com/share/16gq2T7tHK/?mibextid=wwXIfr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
-                >
-                  <span className="w-8 h-8 bg-navy rounded-full flex items-center justify-center group-hover:bg-navy-light transition-colors">
-                    <FaFacebook className="text-sm text-white" />
-                  </span>
-                  <span className="text-sm">{t("facebook")}</span>
-                </a>
-              </div>
             </div>
 
             {/* Information Column */}
@@ -132,34 +101,52 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Newsletter / CTA Column */}
+            {/* Contact Column */}
             <div>
               <h4 className="font-bold text-white text-lg mb-6 relative">
-                {t("myAccount")}
+                {t("contact")}
                 <span className="absolute bottom-0 left-0 w-8 h-0.5 bg-navy -mb-2"></span>
               </h4>
-              <p className="text-gray-300 text-sm mb-4">
-                Créez vos designs personnalisés en quelques clics!
-              </p>
-              <Link
-                href="/personnaliser"
-                className="inline-flex items-center gap-2 bg-navy hover:bg-navy-light text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors"
-              >
-                Personnaliser maintenant
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <div className="space-y-3">
+                <a
+                  href={`tel:${t("phone1")}`}
+                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </Link>
+                  <span className="w-8 h-8 bg-navy rounded-full flex items-center justify-center group-hover:bg-navy-light transition-colors">
+                    <FaPhone className="text-xs text-white" />
+                  </span>
+                  <span className="text-sm">{t("phone1")}</span>
+                </a>
+                <a
+                  href={`tel:${t("phone2")}`}
+                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
+                >
+                  <span className="w-8 h-8 bg-navy rounded-full flex items-center justify-center group-hover:bg-navy-light transition-colors">
+                    <FaPhone className="text-xs text-white" />
+                  </span>
+                  <span className="text-sm">{t("phone2")}</span>
+                </a>
+                <a
+                  href={`mailto:${t("email")}`}
+                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
+                >
+                  <span className="w-8 h-8 bg-navy rounded-full flex items-center justify-center group-hover:bg-navy-light transition-colors">
+                    <FaEnvelope className="text-xs text-white" />
+                  </span>
+                  <span className="text-sm">{t("email")}</span>
+                </a>
+                <a
+                  href="https://www.facebook.com/share/16gq2T7tHK/?mibextid=wwXIfr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
+                >
+                  <span className="w-8 h-8 bg-navy rounded-full flex items-center justify-center group-hover:bg-navy-light transition-colors">
+                    <FaFacebook className="text-sm text-white" />
+                  </span>
+                  <span className="text-sm">{t("facebook")}</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
