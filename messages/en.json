@@ -47,6 +47,27 @@
     },
     "popularProducts": "Popular Products",
     "viewAll": "View All",
+    "services": {
+      "title": "Start your project your way",
+      "subtitle": "Pick the fastest path: design it yourself, get guided pricing, or browse ready-to-customize ideas.",
+      "items": {
+        "studio": {
+          "title": "Online studio",
+          "description": "Customize a model, add your visuals and order with a real-time preview.",
+          "cta": "Open the studio"
+        },
+        "quote": {
+          "title": "Guided quote",
+          "description": "Tell us about quantities, deadlines and needs; we reply quickly with clear pricing.",
+          "cta": "Request a quote"
+        },
+        "catalog": {
+          "title": "Ideas & models",
+          "description": "Browse the catalog to see what we print: hoodies, tees, mugs and more.",
+          "cta": "View catalog"
+        }
+      }
+    },
     "features": {
       "fast": "Fast Delivery",
       "quality": "Guaranteed Quality",

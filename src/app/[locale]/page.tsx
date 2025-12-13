@@ -1,51 +1,15 @@
 import Reviews from "@/components/Reviews";
 import FeaturesBar from "@/components/FeaturesBar";
-import ProductCard, { type Product } from "@/components/ProductCard";
-import { GARMENTS } from "@/data/catalog";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 
-const pick = (slug: string) => GARMENTS.find((g) => g.slug === slug);
-const popularBase: Omit<Product, "name">[] = [
-  {
-    id: "hoodie",
-    slug: "hoodie",
-    price: 29.99,
-    image: pick("hoodie")?.image || "/assets/products/hoodie.svg",
-  },
-  {
-    id: "crewneck",
-    slug: "crewneck",
-    price: 27.99,
-    image: pick("crewneck")?.image || "/assets/products/tshirt.svg",
-  },
-  {
-    id: "tee-short",
-    slug: "tee-short",
-    price: 19.99,
-    image: pick("tee-short")?.image || "/assets/products/tshirt.svg",
-  },
-  {
-    id: "tee-long",
-    slug: "tee-long",
-    price: 21.99,
-    image: pick("tee-long")?.image || "/assets/products/tshirt.svg",
-  },
-  {
-    id: "tee-short-kid",
-    slug: "tee-short-kid",
-    price: 19.99,
-    image: pick("tee-short-kid")?.image || "/assets/products/tshirt.svg",
-  },
-  {
-    id: "trucker-cap",
-    slug: "trucker-cap",
-    price: 25.0,
-    image: pick("trucker-cap")?.image || "/assets/casquetterrouge.jpg",
-  },
-];
+const serviceCards = [
+  { key: "studio", href: "/personnaliser", border: "border-navy" },
+  { key: "quote", href: "/soumission", border: "border-navy-light" },
+  { key: "catalog", href: "/catalogue", border: "border-brand-gray-dark" },
+] as const;
 
 export default async function HomePage({
   params,
@@ -56,7 +20,6 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   const t = await getTranslations("home");
-  const tProducts = await getTranslations("products");
 
   return (
     <div>
@@ -97,47 +60,38 @@ export default async function HomePage({
       <FeaturesBar />
 
       <section className="container-page mt-16">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <div className="accent-bar mb-3"></div>
-            <h2 className="text-3xl font-bold gradient-text">
-              {t("popularProducts")}
-            </h2>
-          </div>
-          <Link
-            href="/catalogue"
-            className="animated-underline text-sm font-semibold text-navy hover:text-navy-dark flex items-center gap-2"
-          >
-            {t("viewAll")}
-            <span className="transition-transform group-hover:translate-x-1">
-              →
-            </span>
-          </Link>
+        <div className="max-w-3xl mb-8">
+          <div className="accent-bar mb-3"></div>
+          <h2 className="text-3xl font-bold gradient-text">
+            {t("services.title")}
+          </h2>
+          <p className="mt-2 text-brand-gray-dark leading-relaxed">
+            {t("services.subtitle")}
+          </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {popularBase.map((p) => {
-            const nameKey =
-              p.id === "tee-short"
-                ? "teeShort"
-                : p.id === "tee-long"
-                  ? "teeLong"
-                  : p.id === "tee-short-kid"
-                    ? "teeShortKid"
-                    : p.id === "trucker-cap"
-                      ? "truckerCap"
-                      : p.id;
-            const product: Product = {
-              ...(p as any),
-              name: tProducts(nameKey as any),
-            };
-            return (
-              <ProductCard
-                key={p.id}
-                product={product}
-                ctaLabel={tProducts("customize")}
-              />
-            );
-          })}
+        <div className="grid md:grid-cols-3 gap-6">
+          {serviceCards.map((card) => (
+            <div
+              key={card.key}
+              className={`group card h-full p-6 border-t-4 ${card.border} hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}
+            >
+              <h3 className="text-xl font-semibold text-navy">
+                {t(`services.items.${card.key}.title`)}
+              </h3>
+              <p className="mt-3 text-brand-gray-dark">
+                {t(`services.items.${card.key}.description`)}
+              </p>
+              <Link
+                href={card.href}
+                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:text-navy-dark"
+              >
+                {t(`services.items.${card.key}.cta`)}
+                <span className="transition-transform group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+            </div>
+          ))}
         </div>
       </section>
 

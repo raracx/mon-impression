@@ -47,6 +47,27 @@
     },
     "popularProducts": "Produits populaires",
     "viewAll": "Voir tout",
+    "services": {
+      "title": "Lancez votre projet à votre façon",
+      "subtitle": "Choisissez l'option qui correspond le mieux à votre besoin : création autonome, accompagnement ou idées prêtes à personnaliser.",
+      "items": {
+        "studio": {
+          "title": "Studio en ligne",
+          "description": "Personnalisez un modèle, ajoutez vos visuels et commandez avec un aperçu en temps réel.",
+          "cta": "Ouvrir le studio"
+        },
+        "quote": {
+          "title": "Soumission guidée",
+          "description": "Expliquez-nous votre projet (quantités, délais, besoins) et nous revenons avec un prix détaillé.",
+          "cta": "Demander une soumission"
+        },
+        "catalog": {
+          "title": "Idées et modèles",
+          "description": "Parcourez le catalogue pour voir ce que nous imprimons : hoodies, t-shirts, tasses et plus.",
+          "cta": "Voir le catalogue"
+        }
+      }
+    },
     "features": {
       "fast": "Livraison rapide",
       "quality": "Qualité garantie",
