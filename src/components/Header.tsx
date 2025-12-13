@@ -6,8 +6,8 @@ import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const navLinks = [
+  { key: "home", href: "/" },
   { key: "customize", href: "/personnaliser" },
-  { key: "catalog", href: "/catalogue" },
   { key: "faq", href: "/faq" },
   { key: "submission", href: "/soumission" },
   { key: "contact", href: "/contact" },

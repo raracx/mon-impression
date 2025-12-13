@@ -21,7 +21,7 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <div className="mb-6">
                 <Image
-                  src="/Logo.png"
+                  src="/LogoWhite.png"
                   alt="Mon Impression"
                   width={180}
                   height={60}
@@ -119,14 +119,6 @@ export default function Footer() {
                     className="text-gray-300 hover:text-white hover:pl-2 transition-all text-sm"
                   >
                     FAQ
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/catalogue"
-                    className="text-gray-300 hover:text-white hover:pl-2 transition-all text-sm"
-                  >
-                    Catalogue
                   </Link>
                 </li>
                 <li>

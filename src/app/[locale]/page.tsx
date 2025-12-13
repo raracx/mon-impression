@@ -142,13 +142,17 @@ export default async function HomePage({
       </section>
 
       <section className="container-page grid md:grid-cols-2 gap-10 mt-14">
-        <div className="card p-6 border-t-4 border-navy">
+        <div className="card p-6 border-t-4 border-navy hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-navy-light">
           <h3 className="section-title">{t("section1.title")}</h3>
-          <p className="mt-3 text-brand-gray-dark">{t("section1.description")}</p>
+          <p className="mt-3 text-brand-gray-dark">
+            {t("section1.description")}
+          </p>
         </div>
-        <div className="card p-6 border-t-4 border-brand-gray-dark">
+        <div className="card p-6 border-t-4 border-brand-gray-dark hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-navy">
           <h3 className="section-title">{t("section2.title")}</h3>
-          <p className="mt-3 text-brand-gray-dark">{t("section2.description")}</p>
+          <p className="mt-3 text-brand-gray-dark">
+            {t("section2.description")}
+          </p>
           <div className="mt-4 card p-6 overflow-hidden grid place-items-center bg-navy-50">
             <img
               src="/assets/proudly-canadian.svg"
@@ -160,15 +164,17 @@ export default async function HomePage({
       </section>
 
       <section className="container-page grid md:grid-cols-2 gap-10 mt-14">
-        <div className="card p-6 bg-gradient-to-br from-navy-50 to-white border-l-4 border-navy">
-          <h3 className="section-title mb-2 text-navy">{t("whyChoose.title")}</h3>
+        <div className="card p-6 bg-gradient-to-br from-navy-50 to-white border-l-4 border-navy hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-navy-light">
+          <h3 className="section-title mb-2 text-navy">
+            {t("whyChoose.title")}
+          </h3>
           <ul className="list-disc ml-5 text-brand-gray-dark space-y-2">
             <li>{t("whyChoose.reason1")}</li>
             <li>{t("whyChoose.reason2")}</li>
             <li>{t("whyChoose.reason3")}</li>
           </ul>
         </div>
-        <div className="card p-6 bg-gradient-to-br from-brand-gray-lighter to-white border-l-4 border-brand-gray-dark">
+        <div className="card p-6 bg-gradient-to-br from-brand-gray-lighter to-white border-l-4 border-brand-gray-dark hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-navy">
           <h3 className="section-title mb-2">{t("whyCustom.title")}</h3>
           <ul className="list-disc ml-5 text-brand-gray-dark space-y-2">
             <li>{t("whyCustom.reason1")}</li>
@@ -179,8 +185,10 @@ export default async function HomePage({
       </section>
 
       <section className="container-page mt-14">
-        <div className="card-navy p-8">
-          <h3 className="text-xl md:text-2xl font-semibold mb-4 text-white">{t("advantages.title")}</h3>
+        <div className="card-navy p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <h3 className="text-xl md:text-2xl font-semibold mb-4 text-white">
+            {t("advantages.title")}
+          </h3>
           <ul className="grid md:grid-cols-3 gap-4 text-white/90">
             <li className="flex items-start gap-3">
               <span className="text-brand-gray-light text-xl">✓</span>

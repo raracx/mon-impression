@@ -5,6 +5,7 @@
   },
   "header": {
     "nav": {
+      "home": "Accueil",
       "customize": "Personnaliser",
       "catalog": "Catalogue",
       "faq": "FAQ",
@@ -71,7 +72,7 @@
     },
     "advantages": {
       "title": "Avantage de la boutique Mon Impression VS compétiteurs",
-      "advantage1": "Service local à Lanaudière + Boutique ouverte 7 jours",
+      "advantage1": "Service local à Lanaudière + Boutique ouverte 6j/7",
       "advantage2": "Personnalisation en direct avec aperçu en temps réel",
       "advantage3": "Surprise aucune sur la qualité et garantie de nos chandails"
     }

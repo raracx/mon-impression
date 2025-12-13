@@ -5,6 +5,7 @@
   },
   "header": {
     "nav": {
+      "home": "Home",
       "customize": "Customize",
       "catalog": "Catalog",
       "faq": "FAQ",
@@ -71,7 +72,7 @@
     },
     "advantages": {
       "title": "Advantage of Mon Impression shop VS competitors",
-      "advantage1": "Local service in Lanaudière + Shop open 7 days",
+      "advantage1": "Local service in Lanaudière + Shop open 6/7 days",
       "advantage2": "Live customization with real-time preview",
       "advantage3": "No surprises on quality and guarantee of our shirts"
     }
