@@ -123,7 +123,12 @@ export type CustomizerHandle = {
   // get current garment color
   getGarmentColor: () => string;
   // get which sides have been customized
-  getCustomizedSides: () => ("front" | "back" | "left-sleeve" | "right-sleeve")[];
+  getCustomizedSides: () => (
+    | "front"
+    | "back"
+    | "left-sleeve"
+    | "right-sleeve"
+  )[];
   // export all customized sides
   exportAllSides: () => Promise<Record<string, string>>;
 };
@@ -151,14 +156,26 @@ function useContainerSize() {
       setSize({ width: w, height: w });
     });
     ro.observe(el);
-    setSize({ width: Math.min(el.clientWidth, 560), height: Math.min(el.clientWidth, 560) });
+    setSize({
+      width: Math.min(el.clientWidth, 560),
+      height: Math.min(el.clientWidth, 560),
+    });
     return () => ro.disconnect();
   }, []);
   return { ref, ...size } as const;
 }
 
 const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
-  function CustomizerCanvas({ baseImage, productId, onSelectionChange, initialGarmentColor, onGarmentColorChange }, ref) {
+  function CustomizerCanvas(
+    {
+      baseImage,
+      productId,
+      onSelectionChange,
+      initialGarmentColor,
+      onGarmentColorChange,
+    },
+    ref,
+  ) {
     const { ref: containerRef, width, height } = useContainerSize();
     const stageRef = useRef<any>(null);
     // allow switching the base depending on the selected side for some products
@@ -166,7 +183,9 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
     useEffect(() => setCurrentBaseImage(baseImage), [baseImage]);
     const [base] = useImage(currentBaseImage, "anonymous");
     // garment color state - default to white (no tint)
-    const [garmentColor, setGarmentColorState] = useState<string>(initialGarmentColor || "#FFFFFF");
+    const [garmentColor, setGarmentColorState] = useState<string>(
+      initialGarmentColor || "#FFFFFF",
+    );
 
     const [side, setSide] = useState<
       "front" | "back" | "left-sleeve" | "right-sleeve"
@@ -228,7 +247,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               fontSize: 28,
               align: "left",
               fontStyle: "normal",
-            })
+            }),
           );
           setSelectedId(id);
         },
@@ -245,7 +264,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                 y: printRect.y + 40,
                 width: 180,
                 height: 180,
-              })
+              }),
             );
             setSelectedId(id);
           };
@@ -266,7 +285,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               y: printRect.y + 40,
               width: 180,
               height: 180,
-            })
+            }),
           );
           setSelectedId(id);
         },
@@ -275,8 +294,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, fill: color }
-                : i
-            )
+                : i,
+            ),
           );
         },
         setFontFamily: (family: string) =>
@@ -284,16 +303,16 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, fontFamily: family }
-                : i
-            )
+                : i,
+            ),
           ),
         setFontSize: (size: number) =>
           setItems((arr) =>
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, fontSize: size }
-                : i
-            )
+                : i,
+            ),
           ),
         toggleBold: () =>
           setItems((arr) =>
@@ -309,8 +328,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                         ? "bold italic"
                         : "bold",
                   }
-                : i
-            )
+                : i,
+            ),
           ),
         toggleItalic: () =>
           setItems((arr) =>
@@ -326,30 +345,30 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                         ? "bold italic"
                         : "italic",
                   }
-                : i
-            )
+                : i,
+            ),
           ),
         alignText: (align) =>
           setItems((arr) =>
             arr.map((i) =>
-              i.id === selectedId && i.type === "text" ? { ...i, align } : i
-            )
+              i.id === selectedId && i.type === "text" ? { ...i, align } : i,
+            ),
           ),
         setStroke: (color: string) =>
           setItems((arr) =>
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, stroke: color }
-                : i
-            )
+                : i,
+            ),
           ),
         setStrokeWidth: (w: number) =>
           setItems((arr) =>
             arr.map((i) =>
               i.id === selectedId && i.type === "text"
                 ? { ...i, strokeWidth: w }
-                : i
-            )
+                : i,
+            ),
           ),
         duplicateSelected: () => {
           if (!selected) return;
@@ -360,7 +379,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               id,
               x: (selected.x || 0) + 20,
               y: (selected.y || 0) + 20,
-            })
+            }),
           );
           setSelectedId(id);
         },
@@ -394,7 +413,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
 
           // For t-shirt products, switch the base image to show the selected side
           if (productId === "tshirt" || productId === "black-tshirt") {
-            const mapping: Record<string, string> = 
+            const mapping: Record<string, string> =
               productId === "tshirt"
                 ? {
                     front: "/Products/TShirtFront.png",
@@ -425,7 +444,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
         setSelectedText: (text: string) => {
           if (!selected || selected.type !== "text") return;
           setItems((arr) =>
-            arr.map((i) => (i.id === selectedId ? { ...i, text } : i))
+            arr.map((i) => (i.id === selectedId ? { ...i, text } : i)),
           );
         },
         setGarmentColor: (color: string) => {
@@ -435,8 +454,20 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
         getGarmentColor: () => garmentColor,
         getCustomizedSides: () => {
           // Return array of sides that have items
-          const customizedSides: ("front" | "back" | "left-sleeve" | "right-sleeve")[] = [];
-          (Object.keys(itemsBySide) as ("front" | "back" | "left-sleeve" | "right-sleeve")[]).forEach((s) => {
+          const customizedSides: (
+            | "front"
+            | "back"
+            | "left-sleeve"
+            | "right-sleeve"
+          )[] = [];
+          (
+            Object.keys(itemsBySide) as (
+              | "front"
+              | "back"
+              | "left-sleeve"
+              | "right-sleeve"
+            )[]
+          ).forEach((s) => {
             if (itemsBySide[s].length > 0) {
               customizedSides.push(s);
             }
@@ -447,10 +478,15 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           // Export design for all customized sides
           const exports: Record<string, string> = {};
           const currentSide = side;
-          const customizedSides = (Object.keys(itemsBySide) as ("front" | "back" | "left-sleeve" | "right-sleeve")[]).filter(
-            (s) => itemsBySide[s].length > 0
-          );
-          
+          const customizedSides = (
+            Object.keys(itemsBySide) as (
+              | "front"
+              | "back"
+              | "left-sleeve"
+              | "right-sleeve"
+            )[]
+          ).filter((s) => itemsBySide[s].length > 0);
+
           for (const s of customizedSides) {
             // Switch to the side
             setSide(s);
@@ -462,13 +498,21 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               exports[s] = dataUrl;
             }
           }
-          
+
           // Switch back to original side
           setSide(currentSide);
           return exports;
         },
       }),
-      [selectedId, side, printRect, selected, garmentColor, onGarmentColorChange, itemsBySide]
+      [
+        selectedId,
+        side,
+        printRect,
+        selected,
+        garmentColor,
+        onGarmentColorChange,
+        itemsBySide,
+      ],
     );
 
     // inform parent component about selection changes
@@ -500,7 +544,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           if (s) {
             const id = crypto.randomUUID();
             setItems((arr) =>
-              arr.concat({ ...s, id, x: (s.x || 0) + 20, y: (s.y || 0) + 20 })
+              arr.concat({ ...s, id, x: (s.x || 0) + 20, y: (s.y || 0) + 20 }),
             );
             setSelectedId(id);
           }
@@ -524,7 +568,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
       e.cancelBubble = true;
       const node = e.target;
       setItems((arr) =>
-        arr.map((i) => (i.id === id ? { ...i, x: node.x(), y: node.y() } : i))
+        arr.map((i) => (i.id === id ? { ...i, x: node.x(), y: node.y() } : i)),
       );
     };
 
@@ -547,8 +591,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                 height,
                 rotation: node.rotation(),
               }
-            : i
-        )
+            : i,
+        ),
       );
     };
 
@@ -581,7 +625,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             stroke="#e5e7eb"
             strokeWidth={1}
             listening={false}
-          />
+          />,
         );
       }
       for (let y = 0; y <= height; y += step) {
@@ -592,7 +636,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             stroke="#e5e7eb"
             strokeWidth={1}
             listening={false}
-          />
+          />,
         );
       }
       return lines;
@@ -684,7 +728,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                       onDragEnd={(e) => onDragEnd(it.id, e)}
                       onTransformEnd={(e) => onTransformEnd(it.id, e.target)}
                     />
-                  )
+                  ),
                 )}
                 {selectedId && <SelectedTransformer />}
               </Layer>
@@ -693,7 +737,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export default CustomizerCanvas;

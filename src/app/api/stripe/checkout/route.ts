@@ -4,14 +4,38 @@ import { supabase } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
-    const { orderId, productId, cancel_url } = await req.json();
-    const { data: product } = await supabase
-      .from("products")
+    const { orderId, cancel_url } = await req.json();
+    const { data: order } = await supabase
+      .from("orders")
       .select("*")
-      .eq("slug", productId)
+      .eq("id", orderId)
       .single();
-    const amount = product?.price ?? 2500;
-    const name = product?.name ?? "Produit personnalisé";
+
+    if (!order) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
+
+    const amount = order.amount ?? 2500;
+
+    // Parse design_url to get order details
+    let orderDetails: any = {};
+    try {
+      orderDetails = JSON.parse(order.design_url || "{}");
+    } catch (e) {
+      console.error("Failed to parse design_url:", e);
+    }
+
+    const productId = orderDetails.productId || "product";
+    const quantity = orderDetails.quantity || 1;
+    const size = orderDetails.size || "";
+    const color = orderDetails.color || "";
+    const sidesCount = orderDetails.sidesCount || 1;
+
+    // Build descriptive product name
+    let productName = `Custom ${productId.replace(/_/g, " ")}`;
+    if (size) productName += ` (${size})`;
+    if (color) productName += ` - ${color}`;
+    if (sidesCount > 1) productName += ` - ${sidesCount} sides`;
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -22,14 +46,18 @@ export async function POST(req: NextRequest) {
         {
           price_data: {
             currency: "cad",
-            product_data: { name },
-            unit_amount: amount,
+            product_data: {
+              name: productName,
+              description: `Customized ${productId} with ${sidesCount} side(s)`,
+            },
+            unit_amount: Math.round(amount / quantity),
           },
-          quantity: 1,
+          quantity: quantity,
         },
       ],
       metadata: { orderId },
     });
+
     return NextResponse.json({ url: session.url });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });

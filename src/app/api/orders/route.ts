@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { z } from "zod";
+import { calculatePrice, ProductId } from "@/lib/product-pricing";
 
 export async function GET() {
   const { data, error } = await supabase
@@ -25,23 +27,62 @@ export async function PATCH(req: NextRequest) {
   return NextResponse.json({ order: data });
 }
 
+const orderSchema = z.object({
+  productId: z.string().min(1, "Product ID is required"),
+  email: z.string().email("Valid email is required"),
+  designs: z.record(z.string()), // { front: "data:image...", back: "data:image..." }
+  customizedSides: z.array(z.string()).optional(),
+  size: z.string().optional(),
+  quantity: z.number().int().positive().optional(),
+  color: z.string().optional(),
+  selectedTariff: z.enum(["oneSide", "twoSides", "fullPrint"]).optional(),
+  sidesCount: z.number().int().positive().optional(),
+  description: z.string().optional(),
+  name: z.string().optional(),
+  shipping: z
+    .object({
+      address: z.string().min(1, "Address is required"),
+      city: z.string().min(1, "City is required"),
+      province: z.string().min(1, "Province is required"),
+      postalCode: z.string().min(1, "Postal code is required"),
+      country: z.string().min(1, "Country is required"),
+      notes: z.string().optional(),
+    })
+    .optional(),
+});
+
 export async function POST(req: NextRequest) {
   try {
-    const { 
-      productId, 
-      email, 
-      design,  // Legacy support - single design
-      designs, // New - multiple designs per side
+    const body = await req.json();
+
+    // Validate request body with Zod
+    const validationResult = orderSchema.safeParse(body);
+
+    if (!validationResult.success) {
+      return NextResponse.json(
+        {
+          error: "Validation error",
+          details: validationResult.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      );
+    }
+
+    const {
+      productId,
+      email,
+      designs,
       customizedSides,
-      size, 
+      size,
       quantity,
       color,
-      price,
+      selectedTariff,
       sidesCount,
-      description, 
-      name 
-    } = await req.json();
-    
+      description,
+      name,
+      shipping,
+    } = validationResult.data;
+
     if (
       !process.env.NEXT_PUBLIC_SUPABASE_URL ||
       !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -51,37 +92,24 @@ export async function POST(req: NextRequest) {
           error:
             "Supabase non configuré. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY dans .env.local",
         },
-        { status: 500 }
-      );
-    }
-    
-    // Support both old (design) and new (designs) format
-    if (!email || !productId || (!design && !designs)) {
-      return NextResponse.json(
-        { error: "Champs manquants: email, productId, design/designs" },
-        { status: 400 }
+        { status: 500 },
       );
     }
 
-    // Use provided price or fallback to database/default
-    let amount = price ? Math.round(price * 100) : null; // Convert to cents
-    
-    if (!amount) {
-      const { data: product, error: productErr } = await supabase
-        .from("products")
-        .select("*")
-        .eq("slug", productId)
-        .maybeSingle();
-      if (productErr && productErr.message) {
-        console.warn("Supabase products error:", productErr.message);
-      }
-      amount = product?.price ?? 2500;
-    }
+    // Calculate price on backend for security
+    const calculatedPrice = calculatePrice({
+      productId: productId as ProductId,
+      selectedTariff,
+      selectedSize: size,
+      customizedSidesCount: sidesCount || customizedSides?.length || 1,
+      quantity: quantity || 1,
+    });
+
+    const amount = Math.round(calculatedPrice * 100); // Convert to cents
 
     // Create comprehensive design data
     const designData = JSON.stringify({
-      // New multi-side format
-      designs: designs || { front: design }, // If old format, convert to new
+      designs,
       customizedSides: customizedSides || ["front"],
       sidesCount: sidesCount || 1,
       // Product details
@@ -94,6 +122,9 @@ export async function POST(req: NextRequest) {
       name: name || "",
     });
 
+    // Create shipping data
+    const shippingData = shipping ? JSON.stringify(shipping) : null;
+
     const { data, error } = await supabase
       .from("orders")
       .insert({
@@ -102,6 +133,7 @@ export async function POST(req: NextRequest) {
         amount,
         currency: "cad",
         design_url: designData,
+        shipping_address: shippingData,
       })
       .select("id, amount")
       .single();

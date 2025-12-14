@@ -1,5 +1,6 @@
 "use client";
-import { Suspense, useEffect, useRef, useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import CustomizerCanvas, {
   type CustomizerHandle,
   type CanvasItem,
@@ -409,13 +410,19 @@ const productColors: Record<
 
 type TariffOption = "oneSide" | "twoSides" | "fullPrint";
 
-function PersonnaliserContent() {
+export default function PersonnaliserPage() {
   const t = useTranslations("personnaliser");
   const tProducts = useTranslations("products");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingCity, setShippingCity] = useState("");
+  const [shippingProvince, setShippingProvince] = useState("");
+  const [shippingPostalCode, setShippingPostalCode] = useState("");
+  const [shippingCountry, setShippingCountry] = useState("Canada");
+  const [shippingNotes, setShippingNotes] = useState("");
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<"tools" | "stickers">("tools");
@@ -428,7 +435,7 @@ function PersonnaliserContent() {
   const [customizedSidesCount, setCustomizedSidesCount] = useState(0);
   const [selectedTariff, setSelectedTariff] = useState<TariffOption>("oneSide");
   const [base, setBase] = useState<string>(
-    productImages[selectedProduct] || "/Products/BlackTShirtFront.png"
+    productImages[selectedProduct] || "/Products/BlackTShirtFront.png",
   );
 
   // Update base image when product or color changes
@@ -439,14 +446,14 @@ function PersonnaliserContent() {
         colors.find((c) => c.id === selectedColor) || colors[0];
       setBase(
         currentColor.images[activeSide as keyof typeof currentColor.images] ||
-          currentColor.images.front
+          currentColor.images.front,
       );
       if (!colors.find((c) => c.id === selectedColor)) {
         setSelectedColor(colors[0].id);
       }
     } else {
       setBase(
-        productImages[selectedProduct] || "/Products/BlackTShirtFront.png"
+        productImages[selectedProduct] || "/Products/BlackTShirtFront.png",
       );
     }
   }, [selectedProduct, selectedColor, activeSide]);
@@ -487,29 +494,32 @@ function PersonnaliserContent() {
     const product = products.find((p) => p.id === selectedProduct);
     if (!product) return 0;
 
+    let basePrice = 0;
+
     // Explicit tariff selection for eligible products
     if (shouldUseTariffSelection(product)) {
-      if (selectedTariff === "twoSides") return product.pricing.twoSides;
-      if (selectedTariff === "fullPrint") return product.pricing.fullPrint;
-      return product.pricing.oneSide;
+      if (selectedTariff === "twoSides") basePrice = product.pricing.twoSides;
+      else if (selectedTariff === "fullPrint")
+        basePrice = product.pricing.fullPrint;
+      else basePrice = product.pricing.oneSide;
     }
-
     // If product has size-based pricing (like insulated mugs)
-    if (product.hasSize && product.sizeOptions) {
+    else if (product.hasSize && product.sizeOptions) {
       const sizeOption = (product.sizeOptions as any[]).find(
-        (opt: any) => opt.id === selectedSize
+        (opt: any) => opt.id === selectedSize,
       );
-      return sizeOption ? sizeOption.price : product.pricing.oneSide;
+      basePrice = sizeOption ? sizeOption.price : product.pricing.oneSide;
+    }
+    // Standard pricing based on customized sides
+    else if (customizedSidesCount === 0 || customizedSidesCount === 1) {
+      basePrice = product.pricing.oneSide;
+    } else if (customizedSidesCount === 2) {
+      basePrice = product.pricing.twoSides;
+    } else {
+      basePrice = product.pricing.fullPrint;
     }
 
-    // Standard pricing based on customized sides
-    if (customizedSidesCount === 0 || customizedSidesCount === 1) {
-      return product.pricing.oneSide;
-    } else if (customizedSidesCount === 2) {
-      return product.pricing.twoSides;
-    } else {
-      return product.pricing.fullPrint;
-    }
+    return basePrice * quantity;
   };
 
   const currentPrice = calculatePrice();
@@ -550,7 +560,6 @@ function PersonnaliserContent() {
       const customizedSides = ref.current.getCustomizedSides();
       if (customizedSides.length === 0) {
         alert("Veuillez personnaliser au moins un côté du produit");
-        setLoading(false);
         return;
       }
 
@@ -565,8 +574,16 @@ function PersonnaliserContent() {
         size: product?.isClothing ? selectedSize : undefined,
         quantity,
         color: selectedColor,
-        price: currentPrice, // Dynamic price based on sides
+        selectedTariff: selectedTariff,
         sidesCount: customizedSides.length,
+        shipping: {
+          address: shippingAddress,
+          city: shippingCity,
+          province: shippingProvince,
+          postalCode: shippingPostalCode,
+          country: shippingCountry,
+          notes: shippingNotes,
+        },
       };
 
       const res = await fetch("/api/orders", {
@@ -577,6 +594,8 @@ function PersonnaliserContent() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || t("errorOrder"));
       const { orderId } = json;
+
+      // if payment is successful, redirect to payment page
       const pay = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -584,11 +603,11 @@ function PersonnaliserContent() {
       });
       const payJson = await pay.json();
       if (!pay.ok) throw new Error(payJson.error || t("errorStripe"));
-      setLoading(false);
       router.push(payJson.url);
     } catch (e: any) {
-      setLoading(false);
       alert(e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -622,7 +641,7 @@ function PersonnaliserContent() {
                 {t("title", {
                   product: tProducts(
                     products.find((p) => p.id === selectedProduct)
-                      ?.nameKey as any
+                      ?.nameKey as any,
                   ),
                 })}
               </h1>
@@ -651,7 +670,7 @@ function PersonnaliserContent() {
                 </p>
                 {(() => {
                   const product = products.find(
-                    (p) => p.id === selectedProduct
+                    (p) => p.id === selectedProduct,
                   );
                   if (!product) return null;
 
@@ -681,14 +700,25 @@ function PersonnaliserContent() {
                   // Show customization-based pricing
                   return (
                     <div className="text-xs text-brand-gray-dark bg-brand-gray-lighter p-2 rounded">
-                      <div className="font-medium mb-2">{t("pricing.title")}:</div>
+                      <div className="font-medium mb-2">
+                        {t("pricing.title")}:
+                      </div>
                       {showTariffSelector ? (
                         <div className="space-y-2">
                           {(
                             [
-                              { id: "oneSide", label: "pricing.options.oneSide" },
-                              { id: "twoSides", label: "pricing.options.twoSides" },
-                              { id: "fullPrint", label: "pricing.options.fullPrint" },
+                              {
+                                id: "oneSide",
+                                label: "pricing.options.oneSide",
+                              },
+                              {
+                                id: "twoSides",
+                                label: "pricing.options.twoSides",
+                              },
+                              {
+                                id: "fullPrint",
+                                label: "pricing.options.fullPrint",
+                              },
                             ] as { id: TariffOption; label: string }[]
                           ).map((opt) => (
                             <button
@@ -743,7 +773,7 @@ function PersonnaliserContent() {
                 {/* Size Selection for Clothing or Accessories with sizes */}
                 {(() => {
                   const currentProduct = products.find(
-                    (p) => p.id === selectedProduct
+                    (p) => p.id === selectedProduct,
                   );
                   if (currentProduct?.isClothing) {
                     return (
@@ -830,18 +860,115 @@ function PersonnaliserContent() {
               </div>
             </div>
 
-            {/* Email Input */}
-            <div className="border-t border-brand-gray-light pt-4">
-              <label className="block text-sm font-medium text-brand-gray-dark mb-2">
-                {t("emailLabel")}
-              </label>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                placeholder={t("emailPlaceholder")}
-                className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-              />
+            {/* Contact & Shipping Information */}
+            <div className="border-t border-brand-gray-light pt-4 space-y-4">
+              <h3 className="text-sm font-semibold text-brand-gray-dark mb-3">
+                Contact & Shipping Details
+              </h3>
+
+              {/* Email */}
+              <div>
+                <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                  Email *
+                </label>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  placeholder="your@email.com"
+                  required
+                  className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                />
+              </div>
+
+              {/* Address */}
+              <div>
+                <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                  Street Address *
+                </label>
+                <input
+                  value={shippingAddress}
+                  onChange={(e) => setShippingAddress(e.target.value)}
+                  type="text"
+                  placeholder="123 Main Street"
+                  required
+                  className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                />
+              </div>
+
+              {/* City and Province */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                    City *
+                  </label>
+                  <input
+                    value={shippingCity}
+                    onChange={(e) => setShippingCity(e.target.value)}
+                    type="text"
+                    placeholder="Toronto"
+                    required
+                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                    Province *
+                  </label>
+                  <input
+                    value={shippingProvince}
+                    onChange={(e) => setShippingProvince(e.target.value)}
+                    type="text"
+                    placeholder="ON"
+                    required
+                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                  />
+                </div>
+              </div>
+
+              {/* Postal Code and Country */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                    Postal Code *
+                  </label>
+                  <input
+                    value={shippingPostalCode}
+                    onChange={(e) => setShippingPostalCode(e.target.value)}
+                    type="text"
+                    placeholder="A1A 1A1"
+                    required
+                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                    Country *
+                  </label>
+                  <input
+                    value={shippingCountry}
+                    onChange={(e) => setShippingCountry(e.target.value)}
+                    type="text"
+                    placeholder="Canada"
+                    required
+                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                  />
+                </div>
+              </div>
+
+              {/* Additional Notes */}
+              <div>
+                <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                  Delivery Notes (Optional)
+                </label>
+                <textarea
+                  value={shippingNotes}
+                  onChange={(e) => setShippingNotes(e.target.value)}
+                  placeholder="Apartment number, special instructions, etc."
+                  rows={2}
+                  className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow resize-none"
+                />
+              </div>
             </div>
 
             {/* Action Buttons */}
@@ -855,11 +982,21 @@ function PersonnaliserContent() {
               </button>
               <button
                 onClick={handleOrderClick}
-                disabled={!email || loading}
+                disabled={
+                  !email ||
+                  !shippingAddress ||
+                  !shippingCity ||
+                  !shippingProvince ||
+                  !shippingPostalCode ||
+                  !shippingCountry ||
+                  loading
+                }
                 className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-navy to-navy-light hover:from-navy-dark hover:to-navy text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShoppingCart className="w-4 h-4" />
-                {loading ? t("loading") : t("orderNow")}
+                {loading
+                  ? t("loading")
+                  : `${t("orderNow")} - $${currentPrice.toFixed(2)}`}
               </button>
               <p className="text-xs text-brand-gray-dark leading-relaxed text-center">
                 {t("paymentNote")}
@@ -1033,13 +1170,5 @@ function PersonnaliserContent() {
         onConfirm={handleTermsConfirm}
       />
     </div>
-  );
-}
-
-export default function PersonnaliserPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-brand-gray-lighter to-white flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy"></div></div>}>
-      <PersonnaliserContent />
-    </Suspense>
   );
 }
