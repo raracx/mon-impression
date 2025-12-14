@@ -309,7 +309,7 @@
     },
     "section5": {
       "title": "5. Politique de Retour et Remboursement",
-      "content": "Les produits personnalisés sont fabriqués sur mesure selon vos spécifications et ne sont pas remboursables sauf en cas de défaut de fabrication ou d'erreur de notre part. Si vous recevez un produit défectueux, contactez-nous dans les 7 jours suivant la réception."
+      "content": "Les produits personnalisés sont fabriqués sur mesure selon vos spécifications et ne sont pas remboursables sauf en cas de défaut de fabrication ou d'erreur de notre part. Si vous recevez un produit défectueux, contactez-nous dans les 24 heures suivant la réception."
     },
     "section6": {
       "title": "6. Qualité d'impression",
@@ -367,7 +367,16 @@
     "designsTab": "Designs",
     "paymentNote": "Le paiement est traité par Stripe. Un aperçu de votre design sera envoyé avec la commande.",
     "errorOrder": "Erreur lors de la création de la commande",
-    "errorStripe": "Erreur Stripe"
+    "errorStripe": "Erreur Stripe",
+    "pricing": {
+      "title": "Tarifs",
+      "choose": "Choisissez l'option",
+      "options": {
+        "oneSide": "1 face",
+        "twoSides": "2 faces",
+        "fullPrint": "Complète"
+      }
+    }
   },
   "admin": {
     "title": "Admin — Commandes",

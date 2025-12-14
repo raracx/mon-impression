@@ -23,10 +23,10 @@ const productImages: Record<string, string> = {
   crewneck: "/Products/BlackCrewneckFront.png",
   longsleeve: "/Products/WhiteLongSleeveFront.png",
   cap: "/Products/BlackCap.png",
-  mug_insulated: "/Products/front.png",
-  mug_frosted: "/Products/front.png",
-  mug_magic: "/Products/front.png",
-  mug_ceramic: "/Products/front.png",
+  mug_insulated: "/tasses/tasseisothermegrande.png",
+  mug_frosted: "/tasses/givre.png",
+  mug_magic: "/tasses/tassemagiquenoir.png",
+  mug_ceramic: "/tasses/tasseblancheclassiqueenceramique.png",
   mousepad: "/Products/MousePad.jpg",
   bag: "/Products/ShoppingBag.png",
   drawstring_bag: "/Products/DrawstringBag.png",
@@ -407,6 +407,8 @@ const productColors: Record<
   ],
 };
 
+type TariffOption = "oneSide" | "twoSides" | "fullPrint";
+
 function PersonnaliserContent() {
   const t = useTranslations("personnaliser");
   const tProducts = useTranslations("products");
@@ -424,6 +426,7 @@ function PersonnaliserContent() {
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
   const [customizedSidesCount, setCustomizedSidesCount] = useState(0);
+  const [selectedTariff, setSelectedTariff] = useState<TariffOption>("oneSide");
   const [base, setBase] = useState<string>(
     productImages[selectedProduct] || "/Products/BlackTShirtFront.png"
   );
@@ -458,6 +461,8 @@ function PersonnaliserContent() {
       // Set to M for clothing
       setSelectedSize("M");
     }
+    // Reset tariff choice when switching products
+    setSelectedTariff("oneSide");
   }, [selectedProduct]);
 
   // track selected item from canvas so toolbox can show editing UI
@@ -467,10 +472,27 @@ function PersonnaliserContent() {
   // track garment color
   const [garmentColor, setGarmentColor] = useState("#FFFFFF");
 
-  // Calculate price based on number of customized sides
+  const hasVariablePricing = (product: (typeof products)[number]) =>
+    product.pricing.oneSide !== product.pricing.twoSides ||
+    product.pricing.oneSide !== product.pricing.fullPrint;
+
+  const tariffSelectionOverrides = new Set(["license_plate"]);
+
+  const shouldUseTariffSelection = (product: (typeof products)[number]) =>
+    !product.hasSize &&
+    (hasVariablePricing(product) || tariffSelectionOverrides.has(product.id));
+
+  // Calculate price based on number of customized sides or explicit selection
   const calculatePrice = () => {
     const product = products.find((p) => p.id === selectedProduct);
     if (!product) return 0;
+
+    // Explicit tariff selection for eligible products
+    if (shouldUseTariffSelection(product)) {
+      if (selectedTariff === "twoSides") return product.pricing.twoSides;
+      if (selectedTariff === "fullPrint") return product.pricing.fullPrint;
+      return product.pricing.oneSide;
+    }
 
     // If product has size-based pricing (like insulated mugs)
     if (product.hasSize && product.sizeOptions) {
@@ -653,22 +675,62 @@ function PersonnaliserContent() {
                     );
                   }
 
-                  // Show customization-based pricing for other products
+                  const variablePricing = hasVariablePricing(product);
+                  const showTariffSelector = shouldUseTariffSelection(product);
+
+                  // Show customization-based pricing
                   return (
                     <div className="text-xs text-brand-gray-dark bg-brand-gray-lighter p-2 rounded">
-                      <div className="font-medium mb-1">Tarifs:</div>
-                      <div className="flex justify-between">
-                        <span>1 face:</span>
-                        <span>${product.pricing.oneSide.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>2 faces:</span>
-                        <span>${product.pricing.twoSides.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Complète:</span>
-                        <span>${product.pricing.fullPrint.toFixed(2)}</span>
-                      </div>
+                      <div className="font-medium mb-2">{t("pricing.title")}:</div>
+                      {showTariffSelector ? (
+                        <div className="space-y-2">
+                          {(
+                            [
+                              { id: "oneSide", label: "pricing.options.oneSide" },
+                              { id: "twoSides", label: "pricing.options.twoSides" },
+                              { id: "fullPrint", label: "pricing.options.fullPrint" },
+                            ] as { id: TariffOption; label: string }[]
+                          ).map((opt) => (
+                            <button
+                              key={opt.id}
+                              type="button"
+                              onClick={() => setSelectedTariff(opt.id)}
+                              className={`w-full flex items-center justify-between rounded-md border px-3 py-2 text-left transition-all ${
+                                selectedTariff === opt.id
+                                  ? "border-navy bg-white shadow-sm"
+                                  : "border-brand-gray-light hover:border-navy-light hover:bg-white"
+                              }`}
+                            >
+                              <span>{t(opt.label as any)}</span>
+                              <span className="font-semibold">
+                                $
+                                {product.pricing[
+                                  opt.id === "oneSide"
+                                    ? "oneSide"
+                                    : opt.id === "twoSides"
+                                      ? "twoSides"
+                                      : "fullPrint"
+                                ].toFixed(2)}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex justify-between">
+                            <span>{t("pricing.options.oneSide")}:</span>
+                            <span>${product.pricing.oneSide.toFixed(2)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>{t("pricing.options.twoSides")}:</span>
+                            <span>${product.pricing.twoSides.toFixed(2)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>{t("pricing.options.fullPrint")}:</span>
+                            <span>${product.pricing.fullPrint.toFixed(2)}</span>
+                          </div>
+                        </>
+                      )}
                     </div>
                   );
                 })()}

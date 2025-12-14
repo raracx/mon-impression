@@ -309,7 +309,7 @@
     },
     "section5": {
       "title": "5. Return and Refund Policy",
-      "content": "Custom products are made to order according to your specifications and are non-refundable except in case of manufacturing defect or error on our part. If you receive a defective product, contact us within 7 days of receipt."
+      "content": "Custom products are made to order according to your specifications and are non-refundable except in case of manufacturing defect or error on our part. If you receive a defective product, contact us within 24 hours of receipt."
     },
     "section6": {
       "title": "6. Print Quality",
@@ -367,7 +367,16 @@
     "designsTab": "Designs",
     "paymentNote": "Payment is processed by Stripe. A preview of your design will be sent with the order.",
     "errorOrder": "Error creating order",
-    "errorStripe": "Stripe error"
+    "errorStripe": "Stripe error",
+    "pricing": {
+      "title": "Pricing",
+      "choose": "Choose an option",
+      "options": {
+        "oneSide": "1 side",
+        "twoSides": "2 sides",
+        "fullPrint": "Full print"
+      }
+    }
   },
   "admin": {
     "title": "Admin — Orders",

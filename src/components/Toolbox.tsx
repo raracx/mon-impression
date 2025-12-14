@@ -340,7 +340,11 @@ export default function Toolbox(props: Props) {
             </label>
             <input
               value={editingText}
-              onChange={(e) => setEditingText(e.target.value)}
+              onChange={(e) => {
+                const next = e.target.value;
+                setEditingText(next);
+                props.onEditText?.(next);
+              }}
               onBlur={() => props.onEditText?.(editingText)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {

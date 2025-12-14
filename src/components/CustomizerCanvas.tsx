@@ -478,6 +478,18 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
 
     useEffect(() => {
       const onKey = (e: KeyboardEvent) => {
+        const target = e.target as HTMLElement | null;
+        const tag = target?.tagName;
+        const isEditingField =
+          tag === "INPUT" ||
+          tag === "TEXTAREA" ||
+          tag === "SELECT" ||
+          tag === "OPTION" ||
+          target?.isContentEditable;
+
+        // Avoid deleting the entire text block when user is typing in an input/textarea
+        if (isEditingField) return;
+
         if (e.key === "Delete" || e.key === "Backspace") {
           setItems((arr) => arr.filter((i) => i.id !== selectedId));
           setSelectedId(null);
