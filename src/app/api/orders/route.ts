@@ -33,6 +33,24 @@ const orderSchema = z.object({
   email: z.string().email("Valid email is required"),
   designs: z.record(z.string()), // { front: "data:image...", back: "data:image..." }
   customizedSides: z.array(z.string()).optional(),
+  rawAssets: z
+    .object({
+      userUploads: z.array(
+        z.object({
+          id: z.string(),
+          src: z.string(),
+          side: z.string(),
+        }),
+      ),
+      libraryAssets: z.array(
+        z.object({
+          id: z.string(),
+          src: z.string(),
+          side: z.string(),
+        }),
+      ),
+    })
+    .optional(),
   size: z.string().optional(),
   quantity: z.number().int().positive().optional(),
   color: z.string().optional(),
@@ -40,6 +58,7 @@ const orderSchema = z.object({
   sidesCount: z.number().int().positive().optional(),
   description: z.string().optional(),
   name: z.string().optional(),
+  locale: z.enum(["en", "fr"]).optional(),
   delivery: z.object({
     type: z.enum(["delivery", "pickup"]),
     address: z
@@ -77,6 +96,7 @@ export async function POST(req: NextRequest) {
       email,
       designs,
       customizedSides,
+      rawAssets,
       size,
       quantity,
       color,
@@ -84,6 +104,7 @@ export async function POST(req: NextRequest) {
       sidesCount,
       description,
       name,
+      locale,
       delivery,
     } = validationResult.data;
 
@@ -127,11 +148,13 @@ export async function POST(req: NextRequest) {
       designs,
       customizedSides: customizedSides || ["front"],
       sidesCount: sidesCount || 1,
+      rawAssets: rawAssets || { userUploads: [], libraryAssets: [] },
       // Product details
       productId,
       size: size || "",
       quantity: quantity || 1,
       color: color || "black",
+      locale: locale || "en",
       // Legacy fields
       description: description || "",
       name: name || "",

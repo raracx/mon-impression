@@ -91,6 +91,7 @@ export default function ProductPage() {
           size: specifications.size,
           description: specifications.description,
           name: specifications.name,
+          locale,
         }),
       });
       const json = await res.json();

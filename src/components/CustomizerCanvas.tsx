@@ -18,6 +18,113 @@ import {
   Line,
 } from "react-konva";
 import useImage from "use-image";
+import Konva from "konva";
+import { products } from "@/data/products";
+
+// Helper function to load image from URL or data URL
+const loadImage = (src: string): Promise<HTMLImageElement> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+};
+
+// Render a specific side to image without UI state changes
+const renderSideToImage = async (
+  sideName: string,
+  items: CanvasItem[],
+  baseImage: string,
+  width: number,
+  height: number,
+  garmentColor: string,
+): Promise<string> => {
+  // Create an offscreen stage
+  const offscreenStage = new Konva.Stage({
+    container: document.createElement("div"),
+    width: width,
+    height: height,
+  });
+
+  const layer = new Konva.Layer();
+  offscreenStage.add(layer);
+
+  // Load and add base image
+  try {
+    const baseImg = await loadImage(baseImage);
+    const baseKonvaImage = new Konva.Image({
+      image: baseImg,
+      width: width,
+      height: height,
+      listening: false,
+    });
+    layer.add(baseKonvaImage);
+  } catch (error) {
+    console.error("Failed to load base image:", error);
+  }
+
+  // Add garment color overlay if not white
+  if (garmentColor && garmentColor !== "#FFFFFF") {
+    const colorOverlay = new Konva.Rect({
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
+      fill: garmentColor,
+      globalCompositeOperation: "source-atop",
+      listening: false,
+    });
+    layer.add(colorOverlay);
+  }
+
+  // Add all items (images and text) for this side
+  for (const item of items) {
+    if (item.type === "image" && item.src) {
+      try {
+        const img = await loadImage(item.src);
+        const konvaImage = new Konva.Image({
+          image: img,
+          x: item.x,
+          y: item.y,
+          width: item.width || 180,
+          height: item.height || 180,
+          rotation: item.rotation || 0,
+          listening: false,
+        });
+        layer.add(konvaImage);
+      } catch (error) {
+        console.error(`Failed to load image for item ${item.id}:`, error);
+      }
+    } else if (item.type === "text") {
+      const konvaText = new Konva.Text({
+        x: item.x,
+        y: item.y,
+        text: item.text || "",
+        fontSize: item.fontSize || 28,
+        fontFamily: item.fontFamily || "Poppins",
+        fill: item.fill || "#111827",
+        align: item.align || "left",
+        rotation: item.rotation || 0,
+        fontStyle: item.fontStyle || "normal",
+        stroke: item.stroke,
+        strokeWidth: item.strokeWidth || 0,
+        listening: false,
+      });
+      layer.add(konvaText);
+    }
+  }
+
+  // Draw and export
+  layer.draw();
+  const dataUrl = offscreenStage.toDataURL({ pixelRatio: 2 });
+
+  // Cleanup
+  offscreenStage.destroy();
+
+  return dataUrl;
+};
 
 // Separate component to handle image loading with useImage hook
 type CanvasImageProps = {
@@ -88,6 +195,7 @@ export type CanvasItem = {
   strokeWidth?: number;
   // image
   src?: string;
+  source?: "upload" | "library"; // Track if image is user upload or platform library
 };
 
 export type CustomizerHandle = {
@@ -129,14 +237,21 @@ export type CustomizerHandle = {
     | "left-sleeve"
     | "right-sleeve"
   )[];
-  // export all customized sides
+  // export all sides that have been customized, keyed by side
   exportAllSides: () => Promise<Record<string, string>>;
+  // get all raw assets used (separate user uploads from library assets)
+  getRawAssets: () => {
+    userUploads: Array<{ id: string; src: string; side: string }>;
+    libraryAssets: Array<{ id: string; src: string; side: string }>;
+  };
 };
 
 type Props = {
   baseImage: string;
   // optional product id so the canvas can switch base images when changing sides
   productId?: string;
+  // optional selected color id for the product
+  selectedColor?: string;
   // optional callback when selection changes
   onSelectionChange?: (item: CanvasItem | null) => void;
   // optional initial garment color
@@ -170,6 +285,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
     {
       baseImage,
       productId,
+      selectedColor,
       onSelectionChange,
       initialGarmentColor,
       onGarmentColorChange,
@@ -260,6 +376,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                 id,
                 type: "image",
                 src: reader.result as string,
+                source: "upload", // Mark as user upload
                 x: printRect.x + 40,
                 y: printRect.y + 40,
                 width: 180,
@@ -281,6 +398,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               id,
               type: "image",
               src: safe,
+              source: "library", // Mark as library asset
               x: printRect.x + 40,
               y: printRect.y + 40,
               width: 180,
@@ -411,23 +529,20 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           // Don't use CSS rotation - base image switching handles the view changes
           setRotation(0);
 
-          // For t-shirt products, switch the base image to show the selected side
-          if (productId === "tshirt" || productId === "black-tshirt") {
-            const mapping: Record<string, string> =
-              productId === "tshirt"
-                ? {
-                    front: "/Products/TShirtFront.png",
-                    back: "/Products/TShirtBack.png",
-                    "left-sleeve": "/Products/TShirtLeftSide.png",
-                    "right-sleeve": "/Products/TShirtRightSide.png",
-                  }
-                : {
-                    front: "/Products/BlackTShirtFront.png",
-                    back: "/Products/BlackTShirtBack.png",
-                    "left-sleeve": "/Products/BlackTShirtLeftSide.png",
-                    "right-sleeve": "/Products/BlackTShirtRightSide.png",
-                  };
-            setCurrentBaseImage(mapping[s] || baseImage);
+          // Switch the base image to show the selected side using products data
+          if (productId) {
+            const product = products.find((p) => p.id === productId);
+            if (product && product.colors && product.colors.length > 0) {
+              const color =
+                product.colors.find((c) => c.id === selectedColor) ||
+                product.colors[0];
+              const sideImage =
+                color.images[s] || color.images.front || baseImage;
+              setCurrentBaseImage(sideImage);
+            } else {
+              // Fallback for products without colors
+              setCurrentBaseImage(baseImage);
+            }
           }
         },
         toggleGrid: () => setShowGrid((v) => !v),
@@ -475,9 +590,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           return customizedSides;
         },
         exportAllSides: async () => {
-          // Export design for all customized sides
+          // Export design for all customized sides by rendering directly
           const exports: Record<string, string> = {};
-          const currentSide = side;
           const customizedSides = (
             Object.keys(itemsBySide) as (
               | "front"
@@ -487,21 +601,88 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             )[]
           ).filter((s) => itemsBySide[s].length > 0);
 
+          // Get base image for each side from products data
+          const getBaseImageForSide = (
+            sideName: "front" | "back" | "left-sleeve" | "right-sleeve",
+          ): string => {
+            if (productId) {
+              const product = products.find((p) => p.id === productId);
+              if (product && product.colors && product.colors.length > 0) {
+                const color =
+                  product.colors.find((c) => c.id === selectedColor) ||
+                  product.colors[0];
+                return (
+                  color.images[sideName] || color.images.front || baseImage
+                );
+              } else if (product) {
+                // Fallback for products without colors - use defaultImage
+                return product.defaultImage || baseImage;
+              }
+            }
+            return baseImage;
+          };
+
           for (const s of customizedSides) {
-            // Switch to the side
-            setSide(s);
-            // Wait for state update
-            await new Promise((resolve) => setTimeout(resolve, 100));
-            // Export the design
-            const dataUrl = stageRef.current?.toDataURL({ pixelRatio: 2 });
-            if (dataUrl) {
-              exports[s] = dataUrl;
+            try {
+              const sideBaseImage = getBaseImageForSide(s);
+              const dataUrl = await renderSideToImage(
+                s,
+                itemsBySide[s],
+                sideBaseImage,
+                width,
+                height,
+                garmentColor,
+              );
+              if (dataUrl) {
+                exports[s] = dataUrl;
+              }
+            } catch (error) {
+              console.error(`Failed to export side ${s}:`, error);
             }
           }
 
-          // Switch back to original side
-          setSide(currentSide);
           return exports;
+        },
+        getRawAssets: () => {
+          const userUploads: Array<{ id: string; src: string; side: string }> =
+            [];
+          const libraryAssets: Array<{
+            id: string;
+            src: string;
+            side: string;
+          }> = [];
+
+          // Iterate through all sides
+          (
+            Object.keys(itemsBySide) as (
+              | "front"
+              | "back"
+              | "left-sleeve"
+              | "right-sleeve"
+            )[]
+          ).forEach((sideName) => {
+            const items = itemsBySide[sideName];
+            items.forEach((item) => {
+              if (item.type === "image" && item.src) {
+                const asset = { id: item.id, src: item.src, side: sideName };
+                if (item.source === "upload") {
+                  userUploads.push(asset);
+                } else if (item.source === "library") {
+                  libraryAssets.push(asset);
+                } else {
+                  // If source is not set, try to determine from src
+                  // Data URLs are user uploads, paths are library assets
+                  if (item.src.startsWith("data:")) {
+                    userUploads.push(asset);
+                  } else {
+                    libraryAssets.push(asset);
+                  }
+                }
+              }
+            });
+          });
+
+          return { userUploads, libraryAssets };
         },
       }),
       [
@@ -512,6 +693,11 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
         garmentColor,
         onGarmentColorChange,
         itemsBySide,
+        baseImage,
+        width,
+        height,
+        productId,
+        selectedColor,
       ],
     );
 

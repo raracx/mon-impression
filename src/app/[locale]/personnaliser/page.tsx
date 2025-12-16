@@ -9,7 +9,7 @@ import Toolbox from "@/components/Toolbox";
 import StickersPanel from "@/components/StickersPanel";
 import TermsModal from "@/components/TermsModal";
 import { useRouter } from "@/i18n/navigation";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { products, clothingSizes, SizeOption } from "@/data/products";
 import { DELIVERY_CONFIG } from "@/data/catalog";
@@ -27,6 +27,8 @@ export default function PersonnaliserPage() {
   const tProducts = useTranslations("products");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const params = useParams();
+  const locale = params.locale as string;
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [deliveryType, setDeliveryType] = useState<"delivery" | "pickup">(
@@ -210,18 +212,23 @@ export default function PersonnaliserPage() {
 
       const allDesigns = await ref.current.exportAllSides();
 
+      // Get raw assets (user uploads and library assets)
+      const rawAssets = ref.current.getRawAssets();
+
       const product = products.find((p) => p.id === selectedProduct);
       const orderData = {
         productId: selectedProduct,
         email,
         designs: allDesigns, // Now sending all sides
         customizedSides: customizedSides, // Which sides were customized
+        rawAssets: rawAssets, // Include raw assets (user uploads and library assets)
         size:
           product?.isClothing || product?.hasSize ? selectedSize : undefined,
         quantity,
         color: selectedColor,
         selectedTariff: selectedTariff,
         sidesCount: customizedSides.length,
+        locale,
         delivery: {
           type: deliveryType,
           address:
@@ -747,6 +754,7 @@ export default function PersonnaliserPage() {
               ref={ref}
               baseImage={base}
               productId={selectedProduct}
+              selectedColor={selectedColor}
               onSelectionChange={(it) => setSelectedItem(it)}
               initialGarmentColor={garmentColor}
               onGarmentColorChange={setGarmentColor}

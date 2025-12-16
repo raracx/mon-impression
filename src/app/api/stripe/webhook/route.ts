@@ -73,6 +73,10 @@ export async function POST(req: NextRequest) {
         console.error("Failed to parse design_url:", e);
       }
 
+      // Extract locale, default to 'en'
+      const locale =
+        typeof orderDetails.locale === "string" ? orderDetails.locale : "en";
+
       // Parse delivery information
       let deliveryInfo: Record<string, unknown> | undefined = undefined;
       try {
@@ -105,6 +109,14 @@ export async function POST(req: NextRequest) {
         orderDetails.designs !== null
           ? (orderDetails.designs as Record<string, string>)
           : {};
+      const rawAssets =
+        typeof orderDetails.rawAssets === "object" &&
+        orderDetails.rawAssets !== null
+          ? (orderDetails.rawAssets as {
+              userUploads: Array<{ id: string; src: string; side: string }>;
+              libraryAssets: Array<{ id: string; src: string; side: string }>;
+            })
+          : { userUploads: [], libraryAssets: [] };
 
       // Build product name
       let productName = `Custom ${productId.replace(/_/g, " ")}`;
@@ -119,7 +131,6 @@ export async function POST(req: NextRequest) {
           productName,
           quantity,
           amount: order.amount,
-          designs,
           customizedSides,
           delivery: deliveryInfo as {
             type: "pickup" | "delivery";
@@ -133,6 +144,7 @@ export async function POST(req: NextRequest) {
               notes?: string;
             };
           },
+          locale: locale as "en" | "fr",
         });
         console.log("Customer confirmation email sent to:", order.email);
       } catch (emailError) {
@@ -150,8 +162,10 @@ export async function POST(req: NextRequest) {
           amount: order.amount,
           designs,
           customizedSides,
+          rawAssets,
           size,
           color,
+          paymentStatus: order.status || "paid",
           delivery: deliveryInfo as {
             type: "pickup" | "delivery";
             price: number;
@@ -164,6 +178,7 @@ export async function POST(req: NextRequest) {
               notes?: string;
             };
           },
+          locale: locale as "en" | "fr",
         });
         console.log("Admin notification email sent");
       } catch (emailError) {
