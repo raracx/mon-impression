@@ -87,103 +87,344 @@ export async function POST(req: NextRequest) {
         console.error("Failed to parse delivery info:", e);
       }
 
-      const productId =
-        typeof orderDetails.productId === "string"
-          ? orderDetails.productId
-          : "product";
-      const quantity =
-        typeof orderDetails.quantity === "number" ? orderDetails.quantity : 1;
-      const size =
-        typeof orderDetails.size === "string" ? orderDetails.size : "";
-      const color =
-        typeof orderDetails.color === "string" ? orderDetails.color : "";
-      const sidesCount =
-        typeof orderDetails.sidesCount === "number"
-          ? orderDetails.sidesCount
-          : 1;
-      const customizedSides = Array.isArray(orderDetails.customizedSides)
-        ? orderDetails.customizedSides
-        : ["front"];
-      const designs =
-        typeof orderDetails.designs === "object" &&
-        orderDetails.designs !== null
-          ? (orderDetails.designs as Record<string, string>)
-          : {};
-      const rawAssets =
-        typeof orderDetails.rawAssets === "object" &&
-        orderDetails.rawAssets !== null
-          ? (orderDetails.rawAssets as {
-              userUploads: Array<{ id: string; src: string; side: string }>;
-              libraryAssets: Array<{ id: string; src: string; side: string }>;
-            })
-          : { userUploads: [], libraryAssets: [] };
+      // Check if this is a multi-item order (new format) or single item (legacy)
+      if (orderDetails.items && Array.isArray(orderDetails.items)) {
+        // New format: multiple items - consolidate all designs
+        const allDesigns: Record<string, string> = {};
+        const allCustomizedSides: string[] = [];
+        const allRawAssets: {
+          userUploads: Array<{ id: string; src: string; side: string }>;
+          libraryAssets: Array<{ id: string; src: string; side: string }>;
+        } = { userUploads: [], libraryAssets: [] };
 
-      // Build product name
-      let productName = `Custom ${productId.replace(/_/g, " ")}`;
-      if (size) productName += ` (${size})`;
-      if (color) productName += ` - ${color}`;
-      if (sidesCount > 1) productName += ` - ${sidesCount} sides`;
+        let productNames: string[] = [];
+        let totalQuantity = 0;
 
-      // Send confirmation email to customer
-      try {
-        await sendOrderConfirmationEmail(order.email, {
-          orderId: order.id,
-          productName,
-          quantity,
-          amount: order.amount,
-          customizedSides,
-          delivery: deliveryInfo as {
-            type: "pickup" | "delivery";
-            price: number;
-            address?: {
-              street: string;
-              city: string;
-              province: string;
-              postalCode: string;
-              country: string;
-              notes?: string;
+        // Aggregate all items data
+        for (
+          let itemIndex = 0;
+          itemIndex < orderDetails.items.length;
+          itemIndex++
+        ) {
+          const item = orderDetails.items[itemIndex];
+          const productName = item.name || "Custom Product";
+          productNames.push(`${productName} (x${item.quantity})`);
+          totalQuantity += item.quantity || 1;
+
+          if (item.customization) {
+            // Get sides with content
+            if (
+              item.customization.sides &&
+              typeof item.customization.sides === "object"
+            ) {
+              const sides = Object.keys(item.customization.sides).filter(
+                (side) =>
+                  Array.isArray(item.customization.sides[side]) &&
+                  item.customization.sides[side].length > 0,
+              );
+              sides.forEach((side) => {
+                const sideKey = `item${itemIndex + 1}-${side}`;
+                if (!allCustomizedSides.includes(sideKey)) {
+                  allCustomizedSides.push(sideKey);
+                }
+              });
+            }
+
+            // Get exported designs with item prefix
+            if (
+              item.customization.designs &&
+              typeof item.customization.designs === "object"
+            ) {
+              Object.entries(item.customization.designs).forEach(
+                ([side, dataUrl]) => {
+                  allDesigns[`item${itemIndex + 1}-${side}`] =
+                    dataUrl as string;
+                },
+              );
+            }
+
+            // Get uploaded assets with their specific side information
+            if (
+              item.customization.uploadedAssets &&
+              Array.isArray(item.customization.uploadedAssets)
+            ) {
+              const uploads = item.customization.uploadedAssets.map(
+                (asset: any, index: number) => ({
+                  id: asset.id || `item${itemIndex + 1}-upload-${index}`,
+                  src: asset.dataUrl || asset.src || "",
+                  side: asset.side
+                    ? `item${itemIndex + 1}-${asset.side}`
+                    : `item${itemIndex + 1}`,
+                }),
+              );
+              allRawAssets.userUploads.push(...uploads);
+              console.log(
+                `Item ${itemIndex + 1}: Collected ${uploads.length} user uploads`,
+              );
+            }
+
+            // Extract library assets from canvas items in sides
+            if (
+              item.customization.sides &&
+              typeof item.customization.sides === "object"
+            ) {
+              Object.entries(item.customization.sides).forEach(
+                ([sideName, canvasItems]: [string, any]) => {
+                  if (Array.isArray(canvasItems)) {
+                    canvasItems.forEach((canvasItem: any, index: number) => {
+                      if (
+                        canvasItem.type === "image" &&
+                        canvasItem.src &&
+                        canvasItem.source === "library"
+                      ) {
+                        allRawAssets.libraryAssets.push({
+                          id:
+                            canvasItem.id ||
+                            `item${itemIndex + 1}-library-${sideName}-${index}`,
+                          src: canvasItem.src,
+                          side: `item${itemIndex + 1}-${sideName}`,
+                        });
+                      }
+                    });
+                  }
+                },
+              );
+            }
+          }
+        }
+
+        console.log(
+          `Total raw assets collected - User uploads: ${allRawAssets.userUploads.length}, Library assets: ${allRawAssets.libraryAssets.length}`,
+        );
+        console.log("User uploads:", JSON.stringify(allRawAssets.userUploads));
+        console.log(
+          "Library assets:",
+          JSON.stringify(allRawAssets.libraryAssets),
+        );
+
+        const consolidatedProductName = productNames.join(", ");
+
+        // Prepare detailed items for customer email
+        const detailedItems = orderDetails.items.map(
+          (item: any, index: number) => {
+            const itemSides = Object.keys(item.customization?.sides || {})
+              .filter(
+                (side) =>
+                  Array.isArray(item.customization.sides[side]) &&
+                  item.customization.sides[side].length > 0,
+              )
+              .map((side) => `item${index + 1}-${side}`);
+
+            return {
+              name: item.name || "Custom Product",
+              quantity: item.quantity || 1,
+              price: item.price || 0,
+              color: item.customization?.color,
+              sides: itemSides,
+              designs: item.customization?.designs
+                ? Object.fromEntries(
+                    Object.entries(item.customization.designs).map(
+                      ([side, dataUrl]) => [
+                        `item${index + 1}-${side}`,
+                        dataUrl as string,
+                      ],
+                    ),
+                  )
+                : undefined,
             };
           },
-          locale: locale as "en" | "fr",
-        });
-        console.log("Customer confirmation email sent to:", order.email);
-      } catch (emailError) {
-        console.error("Error sending customer email:", emailError);
-        // Don't fail the webhook if email fails
-      }
+        );
 
-      // Send notification email to admin
-      try {
-        await sendAdminNotificationEmail({
-          orderId: order.id,
-          customerEmail: order.email,
-          productName,
+        // Calculate subtotal and delivery fee
+        const subtotal = orderDetails.items.reduce(
+          (sum: number, item: any) =>
+            sum + (item.price || 0) * (item.quantity || 1),
+          0,
+        );
+        const deliveryFee =
+          typeof deliveryInfo === "object" && deliveryInfo !== null
+            ? (deliveryInfo.price as number) || 0
+            : 0;
+
+        // Send single confirmation email to customer
+        try {
+          await sendOrderConfirmationEmail(order.email, {
+            orderId: order.id,
+            productName: consolidatedProductName,
+            quantity: totalQuantity,
+            amount: order.amount,
+            customizedSides: allCustomizedSides,
+            delivery: deliveryInfo as {
+              type: "pickup" | "delivery";
+              price: number;
+              address?: {
+                street: string;
+                city: string;
+                province: string;
+                postalCode: string;
+                country: string;
+                notes?: string;
+              };
+            },
+            locale: locale as "en" | "fr",
+            items: detailedItems,
+            subtotal,
+            deliveryFee,
+          });
+          console.log("Customer confirmation email sent to:", order.email);
+        } catch (emailError) {
+          console.error("Error sending customer email:", emailError);
+        }
+
+        // Send single consolidated notification email to admin
+        try {
+          await sendAdminNotificationEmail({
+            orderId: order.id,
+            customerEmail: order.email,
+            productName: consolidatedProductName,
+            quantity: totalQuantity,
+            amount: order.amount,
+            designs: allDesigns,
+            customizedSides: allCustomizedSides,
+            rawAssets: allRawAssets,
+            size: "",
+            color: "",
+            paymentStatus: order.status || "paid",
+            delivery: deliveryInfo as {
+              type: "pickup" | "delivery";
+              price: number;
+              address?: {
+                street: string;
+                city: string;
+                province: string;
+                postalCode: string;
+                country: string;
+                notes?: string;
+              };
+            },
+            locale: locale as "en" | "fr",
+          });
+          console.log("Admin notification email sent");
+        } catch (emailError) {
+          console.error("Error sending admin email:", emailError);
+        }
+      } else {
+        // Legacy format: single item
+        const productId =
+          typeof orderDetails.productId === "string"
+            ? orderDetails.productId
+            : "product";
+        const quantity =
+          typeof orderDetails.quantity === "number" ? orderDetails.quantity : 1;
+        const size =
+          typeof orderDetails.size === "string" ? orderDetails.size : "";
+        const color =
+          typeof orderDetails.color === "string" ? orderDetails.color : "";
+        const sidesCount =
+          typeof orderDetails.sidesCount === "number"
+            ? orderDetails.sidesCount
+            : 1;
+        const customizedSides = Array.isArray(orderDetails.customizedSides)
+          ? orderDetails.customizedSides
+          : ["front"];
+        const designs =
+          typeof orderDetails.designs === "object" &&
+          orderDetails.designs !== null
+            ? (orderDetails.designs as Record<string, string>)
+            : {};
+        const rawAssets =
+          typeof orderDetails.rawAssets === "object" &&
+          orderDetails.rawAssets !== null
+            ? (orderDetails.rawAssets as {
+                userUploads: Array<{ id: string; src: string; side: string }>;
+                libraryAssets: Array<{ id: string; src: string; side: string }>;
+              })
+            : { userUploads: [], libraryAssets: [] };
+
+        // Build product name
+        let productName = `Custom ${productId.replace(/_/g, " ")}`;
+        if (size) productName += ` (${size})`;
+        if (color) productName += ` - ${color}`;
+        if (sidesCount > 1) productName += ` - ${sidesCount} sides`;
+
+        // Prepare detailed item for customer email (legacy format as single item)
+        const legacyItem = {
+          name: productName,
           quantity,
-          amount: order.amount,
-          designs,
-          customizedSides,
-          rawAssets,
-          size,
-          color,
-          paymentStatus: order.status || "paid",
-          delivery: deliveryInfo as {
-            type: "pickup" | "delivery";
-            price: number;
-            address?: {
-              street: string;
-              city: string;
-              province: string;
-              postalCode: string;
-              country: string;
-              notes?: string;
-            };
-          },
-          locale: locale as "en" | "fr",
-        });
-        console.log("Admin notification email sent");
-      } catch (emailError) {
-        console.error("Error sending admin email:", emailError);
-        // Don't fail the webhook if email fails
+          price: order.amount / 100,
+          color: color || undefined,
+          sides: customizedSides,
+          designs: Object.keys(designs).length > 0 ? designs : undefined,
+        };
+
+        // Calculate delivery fee from deliveryInfo
+        const deliveryFee =
+          typeof deliveryInfo === "object" && deliveryInfo !== null
+            ? (deliveryInfo.price as number) || 0
+            : 0;
+
+        // Send confirmation email to customer
+        try {
+          await sendOrderConfirmationEmail(order.email, {
+            orderId: order.id,
+            productName,
+            quantity,
+            amount: order.amount,
+            customizedSides,
+            delivery: deliveryInfo as {
+              type: "pickup" | "delivery";
+              price: number;
+              address?: {
+                street: string;
+                city: string;
+                province: string;
+                postalCode: string;
+                country: string;
+                notes?: string;
+              };
+            },
+            locale: locale as "en" | "fr",
+            items: [legacyItem],
+            subtotal: order.amount / 100 - deliveryFee,
+            deliveryFee,
+          });
+          console.log("Customer confirmation email sent to:", order.email);
+        } catch (emailError) {
+          console.error("Error sending customer email:", emailError);
+        }
+
+        // Send notification email to admin
+        try {
+          await sendAdminNotificationEmail({
+            orderId: order.id,
+            customerEmail: order.email,
+            productName,
+            quantity,
+            amount: order.amount,
+            designs,
+            customizedSides,
+            rawAssets,
+            size,
+            color,
+            paymentStatus: order.status || "paid",
+            delivery: deliveryInfo as {
+              type: "pickup" | "delivery";
+              price: number;
+              address?: {
+                street: string;
+                city: string;
+                province: string;
+                postalCode: string;
+                country: string;
+                notes?: string;
+              };
+            },
+            locale: locale as "en" | "fr",
+          });
+          console.log("Admin notification email sent");
+        } catch (emailError) {
+          console.error("Error sending admin email:", emailError);
+        }
       }
 
       return NextResponse.json({

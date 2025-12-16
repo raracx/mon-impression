@@ -27,6 +27,9 @@ function getOrderConfirmationHtml(
     customizedSides,
     delivery,
     locale,
+    items,
+    subtotal,
+    deliveryFee,
   } = details;
   const texts =
     locale === "fr"
@@ -38,7 +41,15 @@ function getOrderConfirmationHtml(
           productLabel: "Produit :",
           quantityLabel: "Quantité :",
           customizedSidesLabel: "Côtés personnalisés :",
+          numberOfDesigns: "Nombre de designs :",
           totalLabel: "Total :",
+          itemsLabel: "Articles commandés :",
+          itemLabel: "Article",
+          priceLabel: "Prix :",
+          colorLabel: "Couleur :",
+          sidesLabel: "Côtés :",
+          designPreviewsLabel: "Aperçus des designs :",
+          subtotalLabel: "Sous-total :",
           deliveryInfo: "Informations de livraison",
           deliveryTypeLabel: "Type de livraison :",
           pickup: "📦 Ramassage (Gratuit)",
@@ -73,7 +84,15 @@ function getOrderConfirmationHtml(
           productLabel: "Product:",
           quantityLabel: "Quantity:",
           customizedSidesLabel: "Customized Sides:",
+          numberOfDesigns: "Number of Designs:",
           totalLabel: "Total:",
+          itemsLabel: "Ordered Items:",
+          itemLabel: "Item",
+          priceLabel: "Price:",
+          colorLabel: "Color:",
+          sidesLabel: "Sides:",
+          designPreviewsLabel: "Design Previews:",
+          subtotalLabel: "Subtotal:",
           deliveryInfo: "Delivery Information",
           deliveryTypeLabel: "Delivery Type:",
           pickup: "📦 Pickup (Free)",
@@ -116,6 +135,16 @@ function getOrderConfirmationHtml(
       .total { font-size: 1.25rem; font-weight: bold; color: #1e3a8a; }
       .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 0.875rem; }
       .button { display: inline-block; background: #1e3a8a; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin-top: 20px; }
+      .item-card { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin: 15px 0; }
+      .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid #e5e7eb; }
+      .item-title { font-size: 1.1rem; font-weight: bold; color: #1e3a8a; }
+      .item-price { font-size: 1.1rem; font-weight: bold; color: #059669; }
+      .item-details { font-size: 0.9rem; color: #6b7280; margin: 5px 0; }
+      .design-previews { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px; }
+      .design-preview { text-align: center; }
+      .design-preview img { max-width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 4px; }
+      .design-label { font-size: 0.85rem; color: #6b7280; margin-top: 5px; text-transform: capitalize; }
+      .summary-section { background: #f0f9ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 15px; margin-top: 20px; }
     </style>
   </head>
   <body>
@@ -129,8 +158,65 @@ function getOrderConfirmationHtml(
         <div class="order-details">
           <div class="detail-row">
             <span class="detail-label">${texts.orderIdLabel}</span>
-            <span class="detail-value">${orderId}</span>
+            <span class="detail-value"><strong>${orderId}</strong></span>
           </div>
+        </div>
+
+        ${
+          items && items.length > 0
+            ? `
+        <h2 style="margin-top: 30px;">${texts.itemsLabel}</h2>
+        ${items
+          .map(
+            (item, index) => `
+          <div class="item-card">
+            <div class="item-header">
+              <span class="item-title">${texts.itemLabel} ${index + 1}: ${item.name}</span>
+              <span class="item-price">$${item.price.toFixed(2)}</span>
+            </div>
+            <div class="item-details">
+              <strong>${texts.quantityLabel}</strong> ${item.quantity}
+            </div>
+            ${
+              item.color
+                ? `
+            <div class="item-details">
+              <strong>${texts.colorLabel}</strong> <span style="text-transform: capitalize;">${item.color}</span>
+            </div>
+            `
+                : ""
+            }
+            <div class="item-details">
+              <strong>${texts.sidesLabel}</strong> ${item.sides.map((s) => s.replace(/item\d+-/, "").toUpperCase()).join(", ")}
+            </div>
+            ${
+              item.designs && Object.keys(item.designs).length > 0
+                ? `
+            <div style="margin-top: 15px;">
+              <strong style="color: #1e3a8a;">${texts.designPreviewsLabel}</strong>
+              <div class="design-previews">
+                ${Object.entries(item.designs)
+                  .map(
+                    ([side, dataUrl]) => `
+                  <div class="design-preview">
+                    <img src="cid:design-${side}@order" alt="${side}" />
+                    <div class="design-label">${side.replace(/item\d+-/, "")}</div>
+                  </div>
+                `,
+                  )
+                  .join("")}
+              </div>
+            </div>
+            `
+                : ""
+            }
+          </div>
+        `,
+          )
+          .join("")}
+        `
+            : `
+        <div class="order-details">
           <div class="detail-row">
             <span class="detail-label">${texts.productLabel}</span>
             <span class="detail-value">${productName}</span>
@@ -144,6 +230,35 @@ function getOrderConfirmationHtml(
             <span class="detail-value">${customizedSides.join(", ")}</span>
           </div>
           <div class="detail-row">
+            <span class="detail-label">${texts.numberOfDesigns}</span>
+            <span class="detail-value"><strong>${customizedSides.length}</strong></span>
+          </div>
+        </div>
+        `
+        }
+
+        <div class="summary-section">
+          ${
+            subtotal !== undefined
+              ? `
+          <div class="detail-row" style="border: none;">
+            <span class="detail-label">${texts.subtotalLabel}</span>
+            <span class="detail-value"><strong>$${subtotal.toFixed(2)} CAD</strong></span>
+          </div>
+          `
+              : ""
+          }
+          ${
+            deliveryFee !== undefined && deliveryFee > 0
+              ? `
+          <div class="detail-row" style="border: none;">
+            <span class="detail-label">${texts.deliveryFeeLabel}</span>
+            <span class="detail-value"><strong>$${deliveryFee.toFixed(2)} CAD</strong></span>
+          </div>
+          `
+              : ""
+          }
+          <div class="detail-row" style="border: none;">
             <span class="detail-label">${texts.totalLabel}</span>
             <span class="detail-value total">$${(amount / 100).toFixed(2)} CAD</span>
           </div>
@@ -238,6 +353,7 @@ function getAdminNotificationHtml(
     amount,
     designs,
     customizedSides,
+    rawAssets,
     size,
     color,
     paymentStatus,
@@ -259,6 +375,14 @@ function getAdminNotificationHtml(
           colorLabel: "Couleur :",
           customizedSidesLabel: "Côtés personnalisés :",
           totalAmountLabel: "Montant total :",
+          designDetailsLabel: "Détails des designs :",
+          numberOfDesigns: "Nombre de designs :",
+          designsIncluded: "Designs inclus :",
+          rawAssetsTitle: "Fichiers bruts joints",
+          userUploadsLabel: "Téléchargements utilisateur :",
+          libraryAssetsLabel: "Assets de bibliothèque :",
+          rawAssetsNote:
+            "Tous les fichiers de conception et les uploads utilisateur sont joints à cet email pour traitement.",
           deliveryInfo: "Informations de livraison",
           deliveryTypeLabel: "Type de livraison :",
           pickup: "📦 Ramassage (Gratuit)",
@@ -294,6 +418,14 @@ function getAdminNotificationHtml(
           colorLabel: "Color:",
           customizedSidesLabel: "Customized Sides:",
           totalAmountLabel: "Total Amount:",
+          designDetailsLabel: "Design Details:",
+          numberOfDesigns: "Number of Designs:",
+          designsIncluded: "Designs Included:",
+          rawAssetsTitle: "Raw Files Attached",
+          userUploadsLabel: "User Uploads:",
+          libraryAssetsLabel: "Library Assets:",
+          rawAssetsNote:
+            "All design files and user uploads are attached to this email for processing.",
           deliveryInfo: "Delivery Information",
           deliveryTypeLabel: "Delivery Type:",
           pickup: "📦 Pickup (Free)",
@@ -376,6 +508,29 @@ function getAdminNotificationHtml(
                 <span class="detail-value">${customizedSides.join(", ")}</span>
               </div>
               <div class="detail-row">
+                <span class="detail-label">${texts.numberOfDesigns}</span>
+                <span class="detail-value"><strong>${Object.keys(designs).length}</strong> ${texts.designsIncluded}</span>
+              </div>
+              ${
+                Object.keys(designs).length > 0
+                  ? `
+              <div class="detail-row">
+                <span class="detail-label">${texts.designDetailsLabel}</span>
+                <span class="detail-value">
+                  <ul style="margin: 5px 0; padding-left: 20px; list-style-type: disc;">
+                    ${Object.keys(designs)
+                      .map(
+                        (side) =>
+                          `<li style="text-transform: capitalize;">${side.replace(/-/g, " ")}</li>`,
+                      )
+                      .join("")}
+                  </ul>
+                </span>
+              </div>
+              `
+                  : ""
+              }
+              <div class="detail-row">
                 <span class="detail-label">${texts.totalAmountLabel}</span>
                 <span class="detail-value"><strong>$${(amount / 100).toFixed(2)} CAD</strong></span>
               </div>
@@ -446,6 +601,54 @@ function getAdminNotificationHtml(
               <p style="margin-bottom: 15px;">${texts.finalDesigns}</p>
               ${designImagesHtml}
             </div>
+            ${
+              rawAssets &&
+              (rawAssets.userUploads?.length > 0 ||
+                rawAssets.libraryAssets?.length > 0)
+                ? `
+            <h2 style="margin-top: 30px;">${texts.rawAssetsTitle}</h2>
+            <div class="order-details">
+              <p style="margin-bottom: 15px; color: #059669; font-weight: bold;">
+                📎 ${texts.rawAssetsNote}
+              </p>
+              ${
+                rawAssets.userUploads?.length > 0
+                  ? `
+              <div style="margin: 15px 0;">
+                <h4 style="margin: 10px 0; color: #1e3a8a;">${texts.userUploadsLabel}</h4>
+                <ul style="margin: 5px 0; padding-left: 20px; list-style-type: disc;">
+                  ${rawAssets.userUploads
+                    .map(
+                      (asset, index) =>
+                        `<li>USER-UPLOAD-${index + 1}-${asset.side} (from ${asset.side.replace(/item\d+-/, "").toUpperCase()} side)</li>`,
+                    )
+                    .join("")}
+                </ul>
+              </div>
+              `
+                  : ""
+              }
+              ${
+                rawAssets.libraryAssets?.length > 0
+                  ? `
+              <div style="margin: 15px 0;">
+                <h4 style="margin: 10px 0; color: #1e3a8a;">${texts.libraryAssetsLabel}</h4>
+                <ul style="margin: 5px 0; padding-left: 20px; list-style-type: disc;">
+                  ${rawAssets.libraryAssets
+                    .map(
+                      (asset, index) =>
+                        `<li>LIBRARY-ASSET-${index + 1}-${asset.side} (from ${asset.side.replace(/item\d+-/, "").toUpperCase()} side)</li>`,
+                    )
+                    .join("")}
+                </ul>
+              </div>
+              `
+                  : ""
+              }
+            </div>
+            `
+                : ""
+            }
           </div>
         </div>
       </body>
@@ -466,7 +669,36 @@ export async function sendOrderConfirmationEmail(
     customizedSides,
     delivery,
     locale,
+    items,
   } = orderDetails;
+
+  // Prepare attachments for design previews
+  const attachments: Array<{
+    filename: string;
+    content: Buffer;
+    contentType: string;
+    cid: string;
+  }> = [];
+
+  // Add design images as inline attachments if items with designs exist
+  if (items && items.length > 0) {
+    items.forEach((item) => {
+      if (item.designs) {
+        Object.entries(item.designs).forEach(([side, dataUrl]) => {
+          const matches = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+          if (matches) {
+            const [, contentType, base64Data] = matches;
+            attachments.push({
+              filename: `${side}.png`,
+              content: Buffer.from(base64Data, "base64"),
+              contentType: contentType,
+              cid: `design-${side}@order`,
+            });
+          }
+        });
+      }
+    });
+  }
 
   const mailOptions = {
     from: process.env.SMTP_USER,
@@ -476,6 +708,7 @@ export async function sendOrderConfirmationEmail(
         ? `Confirmation de commande - ${orderId}`
         : `Order Confirmation - ${orderId}`,
     html: getOrderConfirmationHtml(orderDetails),
+    attachments: attachments.length > 0 ? attachments : undefined,
   };
 
   return transporter.sendMail(mailOptions);
@@ -540,37 +773,70 @@ export async function sendAdminNotificationEmail(
     contentType: string;
   }> = [];
 
-  // Add user uploads with clear naming
+  // Add user uploads with clear naming including side information
   if (rawAssets?.userUploads) {
+    console.log(
+      `Processing ${rawAssets.userUploads.length} user uploads for email attachments`,
+    );
     for (let index = 0; index < rawAssets.userUploads.length; index++) {
       const asset = rawAssets.userUploads[index];
+      console.log(
+        `User upload ${index + 1}: src length = ${asset.src?.length || 0}, side = ${asset.side}`,
+      );
       const matches = asset.src.match(/^data:([^;]+);base64,(.+)$/);
       if (matches) {
         const [, contentType, base64Data] = matches;
+        // Use actual side name from asset (e.g., "item1-front" or "item2-back")
+        const extension = contentType.includes("png")
+          ? ".png"
+          : contentType.includes("jpeg")
+            ? ".jpg"
+            : ".png";
         rawAssetAttachments.push({
-          filename: `USER-UPLOAD-${index + 1}-${asset.side}.png`,
+          filename: `USER-UPLOAD-${index + 1}-${asset.side}${extension}`,
           content: Buffer.from(base64Data, "base64"),
           contentType: contentType,
         });
+        console.log(
+          `Added user upload attachment: USER-UPLOAD-${index + 1}-${asset.side}${extension}`,
+        );
+      } else {
+        console.warn(
+          `User upload ${index + 1} does not match data URL pattern`,
+        );
       }
     }
   }
 
-  // Add library assets with clear naming
+  // Add library assets with clear naming including side information
   if (rawAssets?.libraryAssets) {
+    console.log(
+      `Processing ${rawAssets.libraryAssets.length} library assets for email attachments`,
+    );
     for (let index = 0; index < rawAssets.libraryAssets.length; index++) {
       const asset = rawAssets.libraryAssets[index];
+      console.log(
+        `Library asset ${index + 1}: src = ${asset.src}, side = ${asset.side}`,
+      );
 
       // Handle data URLs
       if (asset.src.startsWith("data:")) {
         const matches = asset.src.match(/^data:([^;]+);base64,(.+)$/);
         if (matches) {
           const [, contentType, base64Data] = matches;
+          const extension = contentType.includes("png")
+            ? ".png"
+            : contentType.includes("jpeg")
+              ? ".jpg"
+              : ".png";
           rawAssetAttachments.push({
-            filename: `LIBRARY-ASSET-${index + 1}-${asset.side}.png`,
+            filename: `LIBRARY-ASSET-${index + 1}-${asset.side}${extension}`,
             content: Buffer.from(base64Data, "base64"),
             contentType: contentType,
           });
+          console.log(
+            `Added library asset attachment (data URL): LIBRARY-ASSET-${index + 1}-${asset.side}${extension}`,
+          );
         }
       } else {
         // Handle file paths and URLs
@@ -596,6 +862,9 @@ export async function sendAdminNotificationEmail(
                 content: fileBuffer,
                 contentType: contentType,
               });
+              console.log(
+                `Added library asset attachment (file): LIBRARY-ASSET-${index + 1}-${asset.side}${ext}`,
+              );
             } catch (fileError) {
               console.warn(
                 `Could not read library asset file: ${publicPath}`,
@@ -637,6 +906,10 @@ export async function sendAdminNotificationEmail(
     html: getAdminNotificationHtml(orderDetails),
     attachments: [...attachments, ...rawAssetAttachments],
   };
+
+  console.log(
+    `Admin email attachments - Design previews: ${attachments.length}, Raw assets: ${rawAssetAttachments.length}, Total: ${attachments.length + rawAssetAttachments.length}`,
+  );
 
   return transporter.sendMail(mailOptions);
 }

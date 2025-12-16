@@ -352,14 +352,16 @@
       "darkGray": "Gris foncé",
       "lightGray": "Gris clair"
     },
-    "addToCart": "Ajouter au panier (Stripe)",
+    "addToCart": "Ajouter au panier",
+    "orderNow": "Commander maintenant",
     "exportFirst": "Exportez d'abord votre design pour activer le paiement."
   },
   "personnaliser": {
     "title": "{product}",
     "subtitle": "Ajoutez du texte, importez une image, appliquez vos styles, puis commandez.",
-    "emailPlaceholder": "imression.info@gmail.com",
-    "emailLabel": "Adresse email",
+    "emailPlaceholder": "impression.info@gmail.com",
+    "emailLabel": "Adresse e-mail",
+    "addToCart": "Ajouter au panier",
     "orderNow": "Commander maintenant",
     "loading": "Chargement…",
     "download": "Télécharger",
@@ -504,5 +506,33 @@
     "message": "En téléchargeant votre illustration ou votre logo, vous confirmez que vous avez le droit légal de l'utiliser et acceptez l'entière responsabilité de son contenu. Assurez-vous qu'il ne porte pas atteinte aux droits de tiers et qu'il est exempt de contenu offensant. Pour de meilleurs résultats, envoyez votre illustration par e-mail à impression.info@gmail.com avec votre numéro de commande. Mon Impression peut apporter des modifications mineures à des fins d'impression et n'est pas responsable des erreurs d'impression dues à des images de mauvaise qualité. En soumettant votre illustration, vous nous accordez une licence non exclusive pour utiliser votre illustration pour l'exécution de la commande.",
     "checkbox": "Je comprends et accepte les conditions générales",
     "confirmButton": "COMMANDER MAINTENANT"
+  },
+  "cart": {
+    "title": "Panier d'achat",
+    "empty": "Votre panier est vide",
+    "emptyDescription": "Ajoutez des articles personnalisés pour commencer",
+    "startCustomizing": "Commencer la personnalisation",
+    "edit": "Modifier",
+    "remove": "Supprimer",
+    "total": "Total",
+    "checkout": "Passer à la caisse"
+  },
+  "checkout": {
+    "title": "Paiement",
+    "email": "Adresse e-mail",
+    "deliveryType": "Méthode de livraison",
+    "pickup": "Ramassage",
+    "delivery": "Livraison",
+    "street": "Adresse",
+    "city": "Ville",
+    "province": "Province",
+    "postalCode": "Code postal",
+    "country": "Pays",
+    "notes": "Notes de livraison",
+    "orderSummary": "Résumé de la commande",
+    "subtotal": "Sous-total",
+    "total": "Total",
+    "pay": "Payer maintenant",
+    "processing": "Traitement en cours..."
   }
 }

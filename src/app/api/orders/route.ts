@@ -29,36 +29,23 @@ export async function PATCH(req: NextRequest) {
 }
 
 const orderSchema = z.object({
-  productId: z.string().min(1, "Product ID is required"),
   email: z.string().email("Valid email is required"),
-  designs: z.record(z.string()), // { front: "data:image...", back: "data:image..." }
-  customizedSides: z.array(z.string()).optional(),
-  rawAssets: z
-    .object({
-      userUploads: z.array(
-        z.object({
-          id: z.string(),
-          src: z.string(),
-          side: z.string(),
-        }),
-      ),
-      libraryAssets: z.array(
-        z.object({
-          id: z.string(),
-          src: z.string(),
-          side: z.string(),
-        }),
-      ),
-    })
-    .optional(),
-  size: z.string().optional(),
-  quantity: z.number().int().positive().optional(),
-  color: z.string().optional(),
-  selectedTariff: z.enum(["oneSide", "twoSides", "fullPrint"]).optional(),
-  sidesCount: z.number().int().positive().optional(),
-  description: z.string().optional(),
-  name: z.string().optional(),
-  locale: z.enum(["en", "fr"]).optional(),
+  items: z.array(
+    z.object({
+      productId: z.string().min(1, "Product ID is required"),
+      name: z.string(),
+      price: z.number(),
+      quantity: z.number().int().positive(),
+      customization: z
+        .object({
+          color: z.string(),
+          sides: z.record(z.array(z.any())), // Record<string, CanvasItem[]>
+          uploadedAssets: z.array(z.any()).optional(),
+          designs: z.record(z.string()).optional(), // { front: "data:image...", back: "data:image..." }
+        })
+        .optional(),
+    }),
+  ),
   delivery: z.object({
     type: z.enum(["delivery", "pickup"]),
     address: z
@@ -91,22 +78,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const {
-      productId,
-      email,
-      designs,
-      customizedSides,
-      rawAssets,
-      size,
-      quantity,
-      color,
-      selectedTariff,
-      sidesCount,
-      description,
-      name,
-      locale,
-      delivery,
-    } = validationResult.data;
+    const { email, items, delivery } = validationResult.data;
 
     if (
       !process.env.NEXT_PUBLIC_SUPABASE_URL ||
@@ -121,43 +93,35 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Calculate product price on backend for security
-    const productPrice = calculatePrice({
-      productId: productId as ProductId,
-      selectedTariff,
-      selectedSize: size,
-      customizedSidesCount: sidesCount || customizedSides?.length || 1,
-      quantity: quantity || 1,
-    });
+    // Calculate subtotal from items
+    const subtotal = items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0,
+    );
 
     // Calculate delivery price
     let deliveryPrice = 0;
     if (delivery.type === "delivery") {
       // Check if order qualifies for free shipping
-      if (productPrice < DELIVERY_CONFIG.freeShippingThreshold) {
+      if (subtotal < DELIVERY_CONFIG.freeShippingThreshold) {
         deliveryPrice = DELIVERY_CONFIG.standardPrice;
       }
     }
     // Pickup is always free
 
-    const totalAmount = productPrice + deliveryPrice;
+    const totalAmount = subtotal + deliveryPrice;
     const amount = Math.round(totalAmount * 100); // Convert to cents
 
     // Create comprehensive design data
     const designData = JSON.stringify({
-      designs,
-      customizedSides: customizedSides || ["front"],
-      sidesCount: sidesCount || 1,
-      rawAssets: rawAssets || { userUploads: [], libraryAssets: [] },
-      // Product details
-      productId,
-      size: size || "",
-      quantity: quantity || 1,
-      color: color || "black",
-      locale: locale || "en",
-      // Legacy fields
-      description: description || "",
-      name: name || "",
+      items,
+      delivery: {
+        type: delivery.type,
+        price: deliveryPrice,
+        address: delivery.address || null,
+      },
+      subtotal,
+      totalAmount,
     });
 
     // Create delivery data
@@ -165,7 +129,7 @@ export async function POST(req: NextRequest) {
       type: delivery.type,
       price: deliveryPrice,
       address: delivery.address || null,
-      productPrice,
+      subtotal,
       totalAmount,
     });
 

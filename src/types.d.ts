@@ -11,6 +11,35 @@ export interface DeliveryDetails {
   };
 }
 
+export interface CanvasItem {
+  id: string;
+  type: "text" | "image";
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  rotation?: number;
+  // For text
+  text?: string;
+  fill?: string;
+  fontFamily?: string;
+  fontSize?: number;
+  fontStyle?: "normal" | "bold" | "italic" | "bold italic";
+  align?: "left" | "center" | "right";
+  stroke?: string;
+  strokeWidth?: number;
+  // For images
+  src?: string;
+  source?: "upload" | "library";
+}
+
+export interface UploadedAsset {
+  id: string;
+  file: File;
+  dataUrl: string;
+  side: string;
+}
+
 export interface OrderItem {
   id: string;
   productId: string;
@@ -65,6 +94,16 @@ export interface OrderConfirmationEmailDetails {
   customizedSides: string[];
   delivery?: DeliveryDetails;
   locale: "en" | "fr";
+  items?: Array<{
+    name: string;
+    quantity: number;
+    price: number;
+    color?: string;
+    sides: string[];
+    designs?: Record<string, string>;
+  }>;
+  subtotal?: number;
+  deliveryFee?: number;
 }
 
 export interface AdminNotificationEmailDetails {
@@ -84,4 +123,22 @@ export interface AdminNotificationEmailDetails {
   paymentStatus?: string;
   delivery?: DeliveryDetails;
   locale: "en" | "fr";
+}
+
+export interface CartItem {
+  id: string;
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  customization?: {
+    color: string;
+    sides: Record<string, CanvasItem[]>;
+    uploadedAssets: UploadedAsset[];
+    designs?: Record<string, string>;
+  };
+}
+
+export interface Cart {
+  items: CartItem[];
 }

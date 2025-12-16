@@ -4,6 +4,7 @@ import { FaRegUser, FaShoppingCart } from "react-icons/fa";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useCart } from "@/lib/useCart";
 
 const navLinks = [
   { key: "home", href: "/" },
@@ -16,6 +17,8 @@ const navLinks = [
 export default function Header() {
   const pathname = usePathname();
   const t = useTranslations("header");
+  const { cart } = useCart();
+  const cartCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
   return (
     <header className="glass sticky top-0 z-50 border-b border-brand-gray-light/30">
       <div className="container-page flex items-center justify-between py-3">
@@ -43,23 +46,18 @@ export default function Header() {
         </nav>
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          {/* <Link
-            href="/account"
-            aria-label={t("account")}
-            className="p-2.5 rounded-full hover:bg-navy hover:text-white transition-all duration-300"
-          >
-            <FaRegUser />
-          </Link>
           <Link
             href="/cart"
             aria-label={t("cart")}
             className="p-2.5 rounded-full hover:bg-navy hover:text-white transition-all duration-300 relative group"
           >
             <FaShoppingCart />
-            <span className="absolute -top-1 -right-1 bg-gradient-to-br from-navy to-navy-light text-white text-[10px] leading-4 rounded-full w-5 h-5 grid place-content-center font-bold shadow-lg group-hover:scale-110 transition-transform">
-              0
-            </span>
-          </Link> */}
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-gradient-to-br from-navy to-navy-light text-white text-[10px] leading-4 rounded-full w-5 h-5 grid place-content-center font-bold shadow-lg group-hover:scale-110 transition-transform">
+                {cartCount}
+              </span>
+            )}
+          </Link>
         </div>
       </div>
       <div className="md:hidden border-t border-brand-gray-light/50">

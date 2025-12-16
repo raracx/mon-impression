@@ -244,6 +244,22 @@ export type CustomizerHandle = {
     userUploads: Array<{ id: string; src: string; side: string }>;
     libraryAssets: Array<{ id: string; src: string; side: string }>;
   };
+  // get the current canvas state for saving to cart
+  getCanvasState: () => {
+    itemsBySide: Record<string, CanvasItem[]>;
+    garmentColor: string;
+    uploadedAssets: Array<{
+      id: string;
+      file: File;
+      dataUrl: string;
+      side: string;
+    }>;
+  };
+  // load a canvas state for editing
+  loadCanvasState: (state: {
+    itemsBySide: Record<string, CanvasItem[]>;
+    garmentColor: string;
+  }) => void;
 };
 
 type Props = {
@@ -683,6 +699,47 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           });
 
           return { userUploads, libraryAssets };
+        },
+        getCanvasState: () => {
+          // Collect uploaded assets (files with data URLs) with side information
+          const uploadedAssets: Array<{
+            id: string;
+            file: File;
+            dataUrl: string;
+            side: string;
+          }> = [];
+
+          // Iterate through all items to find uploaded images
+          Object.entries(itemsBySide).forEach(([sideName, sideItems]) => {
+            sideItems.forEach((item) => {
+              if (
+                item.type === "image" &&
+                item.src &&
+                item.src.startsWith("data:") &&
+                item.source === "upload"
+              ) {
+                // For uploaded images, we need to reconstruct the File object
+                // Since we can't store File objects directly, we'll store the dataUrl
+                // and create a placeholder File when loading
+                uploadedAssets.push({
+                  id: item.id,
+                  file: new File([], "uploaded-image"), // Placeholder, will be reconstructed
+                  dataUrl: item.src,
+                  side: sideName,
+                });
+              }
+            });
+          });
+
+          return {
+            itemsBySide,
+            garmentColor,
+            uploadedAssets,
+          };
+        },
+        loadCanvasState: (state) => {
+          setItemsBySide(state.itemsBySide);
+          setGarmentColorState(state.garmentColor);
         },
       }),
       [

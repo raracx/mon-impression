@@ -13,6 +13,8 @@ import { useSearchParams, useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { products, clothingSizes, SizeOption } from "@/data/products";
 import { DELIVERY_CONFIG } from "@/data/catalog";
+import { useCart } from "@/lib/useCart";
+import { calculatePrice, type ProductId } from "@/lib/product-pricing";
 import {
   ChevronLeft,
   ChevronRight,
@@ -29,21 +31,15 @@ export default function PersonnaliserPage() {
   const searchParams = useSearchParams();
   const params = useParams();
   const locale = params.locale as string;
-  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [deliveryType, setDeliveryType] = useState<"delivery" | "pickup">(
-    "delivery",
-  );
-  const [shippingAddress, setShippingAddress] = useState("");
-  const [shippingCity, setShippingCity] = useState("");
-  const [shippingProvince, setShippingProvince] = useState("");
-  const [shippingPostalCode, setShippingPostalCode] = useState("");
-  const [shippingCountry, setShippingCountry] = useState("Canada");
-  const [shippingNotes, setShippingNotes] = useState("");
   const [showTermsModal, setShowTermsModal] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<"tools" | "stickers">("tools");
   const ref = useRef<CustomizerHandle | null>(null);
+  const { addItem, updateItem, addAsset, cart } = useCart();
   const [selectedProduct, setSelectedProduct] = useState("tshirt");
   const [selectedColor, setSelectedColor] = useState("black");
   const [activeSide, setActiveSide] = useState("front");
@@ -154,22 +150,7 @@ export default function PersonnaliserPage() {
     return basePrice * quantity;
   };
 
-  // Calculate delivery cost
-  const calculateDeliveryPrice = () => {
-    if (deliveryType === "pickup") return 0;
-
-    const subtotal = calculateProductPrice();
-    if (subtotal >= DELIVERY_CONFIG.freeShippingThreshold) return 0;
-
-    return DELIVERY_CONFIG.standardPrice;
-  };
-
-  // Calculate total price
-  const calculatePrice = () => {
-    return calculateProductPrice() + calculateDeliveryPrice();
-  };
-
-  const currentPrice = calculatePrice();
+  const currentPrice = calculateProductPrice();
 
   // Update customized sides count when canvas changes
   const updateCustomizedSides = () => {
@@ -188,6 +169,14 @@ export default function PersonnaliserPage() {
         setBase(img);
       }
     }
+
+    // Check if terms were accepted in this session
+    const termsAcceptedInSession = sessionStorage.getItem(
+      "personnaliser_terms_accepted",
+    );
+    if (termsAcceptedInSession === "true") {
+      setTermsAccepted(true);
+    }
   }, [searchParams]);
 
   // Update customized sides count periodically
@@ -198,94 +187,138 @@ export default function PersonnaliserPage() {
     return () => clearInterval(interval);
   }, [selectedProduct, activeSide]);
 
-  const order = async () => {
-    if (!ref.current) return;
-    setLoading(true);
+  // Load edit mode data
+  useEffect(() => {
+    const editMode = localStorage.getItem("personnaliser_edit_mode");
+    const itemId = localStorage.getItem("personnaliser_edit_item_id");
 
-    try {
-      // Export all customized sides
-      const customizedSides = ref.current.getCustomizedSides();
-      if (customizedSides.length === 0) {
-        alert(t("errorNoCustomization"));
-        return;
+    if (editMode === "true" && itemId) {
+      const item = cart.items.find((i) => i.id === itemId);
+      if (item && item.customization) {
+        setIsEditMode(true);
+        setEditingItemId(itemId);
+
+        // Set product and customization from item
+        const product = products.find((p) => p.id === item.productId);
+        if (product) {
+          setSelectedProduct(product.id);
+          setSelectedColor(item.customization.color || "black");
+          setGarmentColor(item.customization.color || "#FFFFFF");
+        }
+
+        // Load canvas state after canvas is ready
+        setTimeout(() => {
+          if (ref.current && item.customization?.sides) {
+            ref.current.loadCanvasState({
+              itemsBySide: item.customization.sides,
+              garmentColor: item.customization.color || "#FFFFFF",
+            });
+            // Set to front side if it has items
+            if (
+              item.customization.sides.front &&
+              item.customization.sides.front.length > 0
+            ) {
+              setActiveSide("front");
+            }
+          }
+        }, 500);
+
+        // Clear edit mode flags
+        localStorage.removeItem("personnaliser_edit_mode");
+        localStorage.removeItem("personnaliser_edit_item_id");
       }
+    }
+  }, [cart.items]);
 
-      const allDesigns = await ref.current.exportAllSides();
+  const addToCart = async () => {
+    const canvasState = ref.current?.getCanvasState();
+    if (!canvasState) return;
 
-      // Get raw assets (user uploads and library assets)
-      const rawAssets = ref.current.getRawAssets();
+    const customizedSides = Object.keys(canvasState.itemsBySide).filter(
+      (side) => canvasState.itemsBySide[side].length > 0,
+    );
+    if (customizedSides.length === 0) return;
 
-      const product = products.find((p) => p.id === selectedProduct);
-      const orderData = {
-        productId: selectedProduct,
-        email,
-        designs: allDesigns, // Now sending all sides
-        customizedSides: customizedSides, // Which sides were customized
-        rawAssets: rawAssets, // Include raw assets (user uploads and library assets)
-        size:
-          product?.isClothing || product?.hasSize ? selectedSize : undefined,
-        quantity,
-        color: selectedColor,
-        selectedTariff: selectedTariff,
-        sidesCount: customizedSides.length,
-        locale,
-        delivery: {
-          type: deliveryType,
-          address:
-            deliveryType === "delivery"
-              ? {
-                  street: shippingAddress,
-                  city: shippingCity,
-                  province: shippingProvince,
-                  postalCode: shippingPostalCode,
-                  country: shippingCountry,
-                  notes: shippingNotes,
-                }
-              : undefined,
-        },
-      };
+    // Export designs for checkout
+    const designs = await ref.current?.exportAllSides();
+    if (!designs) return;
 
-      const res = await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData),
+    const product = products.find((p) => p.id === selectedProduct);
+    let productId: ProductId;
+    if (selectedProduct === "tshirt") productId = "tshirt";
+    else if (selectedProduct === "hoodie") productId = "hoodie";
+    else if (selectedProduct === "mug") productId = "mug_ceramic";
+    else productId = "tshirt"; // fallback
+
+    const price = calculateProductPrice();
+
+    // Save uploaded assets to cart storage
+    const uploadedAssetIds: string[] = [];
+    canvasState.uploadedAssets.forEach((asset) => {
+      const assetId = addAsset({
+        file: asset.file,
+        dataUrl: asset.dataUrl,
+        side: asset.side,
       });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || t("errorOrder"));
-      const { orderId } = json;
+      uploadedAssetIds.push(assetId);
+    });
 
-      // if payment is successful, redirect to payment page
-      const pay = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId, productId: selectedProduct }),
-      });
-      const payJson = await pay.json();
-      if (!pay.ok) throw new Error(payJson.error || t("errorStripe"));
-      router.push(payJson.url);
-    } catch (e: unknown) {
-      alert(e instanceof Error ? e.message : "An error occurred");
-    } finally {
-      setLoading(false);
+    const itemData: Omit<import("@/types").CartItem, "id"> = {
+      productId,
+      name: tProducts(
+        (products.find((p) => p.id === selectedProduct)?.nameKey as string) ||
+          "product",
+      ),
+      price,
+      quantity,
+      customization: {
+        color: canvasState.garmentColor,
+        sides: canvasState.itemsBySide,
+        uploadedAssets: canvasState.uploadedAssets.map((asset, index) => ({
+          id: uploadedAssetIds[index],
+          file: asset.file,
+          dataUrl: asset.dataUrl,
+          side: asset.side,
+        })),
+        designs,
+      },
+    };
+
+    if (isEditMode && editingItemId) {
+      // Update existing item
+      updateItem(editingItemId, itemData);
+      setIsEditMode(false);
+      setEditingItemId(null);
+    } else {
+      // Add new item
+      addItem(itemData);
     }
   };
 
-  const handleOrderClick = () => {
-    setShowTermsModal(true);
+  const handleAddToCartClick = async () => {
+    const canvasState = ref.current?.getCanvasState();
+    if (!canvasState) return;
+    const customizedSides = Object.keys(canvasState.itemsBySide).filter(
+      (side) => canvasState.itemsBySide[side].length > 0,
+    );
+    if (customizedSides.length === 0) return;
+
+    // If terms already accepted in this session, proceed directly
+    if (termsAccepted) {
+      await addToCart();
+      router.push("/cart");
+    } else {
+      setShowTermsModal(true);
+    }
   };
 
-  const handleTermsConfirm = () => {
+  const handleTermsConfirm = async () => {
     setShowTermsModal(false);
-    order();
-  };
-
-  const download = () => {
-    const url = ref.current?.exportDesign();
-    if (!url) return;
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `design-${selectedProduct}.png`;
-    a.click();
+    setTermsAccepted(true);
+    // Store in session storage
+    sessionStorage.setItem("personnaliser_terms_accepted", "true");
+    await addToCart();
+    router.push("/cart");
   };
 
   return (
@@ -319,21 +352,8 @@ export default function PersonnaliserPage() {
                   <div className="text-sm text-brand-gray-dark">
                     Produit: ${calculateProductPrice().toFixed(2)}
                   </div>
-                  {deliveryType === "delivery" && (
-                    <div className="text-sm text-brand-gray-dark">
-                      Livraison: $
-                      {calculateDeliveryPrice() === 0
-                        ? "0.00 (gratuite)"
-                        : calculateDeliveryPrice().toFixed(2)}
-                    </div>
-                  )}
-                  {deliveryType === "pickup" && (
-                    <div className="text-sm text-brand-gray-dark">
-                      Ramassage: gratuit
-                    </div>
-                  )}
                   <div className="text-xl font-bold text-navy border-t border-brand-gray-light pt-1 mt-1">
-                    Total: ${currentPrice.toFixed(2)}
+                    Prix: ${calculateProductPrice().toFixed(2)}
                   </div>
                 </div>
               </div>
@@ -538,207 +558,15 @@ export default function PersonnaliserPage() {
               </div>
             </div>
 
-            {/* Contact & Delivery Information */}
-            <div className="border-t border-brand-gray-light pt-4 space-y-4">
-              <h3 className="text-sm font-semibold text-brand-gray-dark mb-3">
-                Contact et livraison
-              </h3>
-
-              {/* Email */}
-              <div>
-                <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                  {t("email")}
-                </label>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  placeholder={t("emailPlaceholder")}
-                  required
-                  className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                />
-              </div>
-
-              {/* Delivery Type */}
-              <div>
-                <label className="block text-xs font-medium text-brand-gray-dark mb-2">
-                  Mode de livraison
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setDeliveryType("delivery")}
-                    className={`p-3 rounded-lg border text-sm font-medium transition-all ${
-                      deliveryType === "delivery"
-                        ? "border-navy bg-navy-50 text-navy"
-                        : "border-brand-gray-light hover:border-brand-gray-dark"
-                    }`}
-                  >
-                    🚚 Livraison (15$)
-                    <div className="text-xs opacity-75 mt-1">
-                      Gratuite à partir de 100$
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setDeliveryType("pickup")}
-                    className={`p-3 rounded-lg border text-sm font-medium transition-all ${
-                      deliveryType === "pickup"
-                        ? "border-navy bg-navy-50 text-navy"
-                        : "border-brand-gray-light hover:border-brand-gray-dark"
-                    }`}
-                  >
-                    📦 Ramassage (gratuit)
-                    <div className="text-xs opacity-75 mt-1">À notre local</div>
-                  </button>
-                </div>
-              </div>
-
-              {/* Address - only show if delivery is selected */}
-              {deliveryType === "delivery" && (
-                <div>
-                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                    {t("address")}
-                  </label>
-                  <input
-                    value={shippingAddress}
-                    onChange={(e) => setShippingAddress(e.target.value)}
-                    type="text"
-                    placeholder={t("addressPlaceholder")}
-                    required
-                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                  />
-                </div>
-              )}
-
-              {/* Pickup Address Info */}
-              {deliveryType === "pickup" && (
-                <div className="p-3 bg-brand-gray-lighter rounded-lg">
-                  <div className="text-sm font-medium text-brand-gray-dark">
-                    📍 Adresse de ramassage :
-                  </div>
-                  <div className="text-sm text-brand-gray-dark mt-1">
-                    Mon Impression
-                    <br />
-                    123 Rue Principal
-                    <br />
-                    Montréal, QC H1A 1A1
-                    <br />
-                    <span className="text-xs opacity-75">
-                      Lun-Ven 9h-17h, Sam 10h-16h
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              {/* City and Province - only show if delivery is selected */}
-              {deliveryType === "delivery" && (
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                      {t("city")}
-                    </label>
-                    <input
-                      value={shippingCity}
-                      onChange={(e) => setShippingCity(e.target.value)}
-                      type="text"
-                      placeholder={t("cityPlaceholder")}
-                      required
-                      className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                      {t("province")}
-                    </label>
-                    <input
-                      value={shippingProvince}
-                      onChange={(e) => setShippingProvince(e.target.value)}
-                      type="text"
-                      placeholder={t("provincePlaceholder")}
-                      required
-                      className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Postal Code and Country - only show if delivery is selected */}
-              {deliveryType === "delivery" && (
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                      {t("postalCode")}
-                    </label>
-                    <input
-                      value={shippingPostalCode}
-                      onChange={(e) => setShippingPostalCode(e.target.value)}
-                      type="text"
-                      placeholder={t("postalCodePlaceholder")}
-                      required
-                      className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                      {t("country")}
-                    </label>
-                    <input
-                      value={shippingCountry}
-                      onChange={(e) => setShippingCountry(e.target.value)}
-                      type="text"
-                      placeholder={t("countryPlaceholder")}
-                      required
-                      className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Additional Notes - only show if delivery is selected */}
-              {deliveryType === "delivery" && (
-                <div>
-                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                    {t("notes")}
-                  </label>
-                  <textarea
-                    value={shippingNotes}
-                    onChange={(e) => setShippingNotes(e.target.value)}
-                    placeholder={t("notesPlaceholder")}
-                    rows={2}
-                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow resize-none"
-                  />
-                </div>
-              )}
-            </div>
-
             {/* Action Buttons */}
             <div className="border-t border-brand-gray-light pt-4 space-y-3">
               <button
-                onClick={download}
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-gray-lighter hover:bg-brand-gray-light text-brand-gray-dark rounded-lg font-medium transition-all"
-              >
-                <Download className="w-4 h-4" />
-                {t("download")}
-              </button>
-              <button
-                onClick={handleOrderClick}
-                disabled={
-                  !email ||
-                  (deliveryType === "delivery" &&
-                    (!shippingAddress ||
-                      !shippingCity ||
-                      !shippingProvince ||
-                      !shippingPostalCode ||
-                      !shippingCountry)) ||
-                  loading
-                }
+                onClick={handleAddToCartClick}
+                disabled={customizedSidesCount === 0 || loading}
                 className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-navy to-navy-light hover:from-navy-dark hover:to-navy text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShoppingCart className="w-4 h-4" />
-                {loading
-                  ? t("loading")
-                  : `${t("orderNow")} - $${currentPrice.toFixed(2)}`}
+                {loading ? t("loading") : t("addToCart")}
               </button>
               <p className="text-xs text-brand-gray-dark leading-relaxed text-center">
                 {t("paymentNote")}
@@ -866,7 +694,7 @@ export default function PersonnaliserPage() {
                     setPanMode((v) => !v);
                   }}
                   panMode={panMode}
-                  onExport={download}
+                  onExport={() => {}}
                   products={products.map((p) => ({
                     ...p,
                     name: tProducts(p.nameKey),

@@ -352,7 +352,8 @@
       "darkGray": "Dark Gray",
       "lightGray": "Light Gray"
     },
-    "addToCart": "Add to cart (Stripe)",
+    "addToCart": "Add to Cart",
+    "orderNow": "Order Now",
     "exportFirst": "Export your design first to enable payment."
   },
   "personnaliser": {
@@ -360,6 +361,7 @@
     "subtitle": "Add text, import an image, apply your styles, then order.",
     "emailPlaceholder": "impression.info@gmail.com",
     "emailLabel": "Email Address",
+    "addToCart": "Add to Cart",
     "orderNow": "Order now",
     "loading": "Loading…",
     "download": "Download",
@@ -504,5 +506,33 @@
     "message": "By uploading your illustration or logo, you confirm that you have the legal right to use it and accept full responsibility for its content. Ensure it does not infringe on third-party rights and is free of offensive content. For best results, send your illustration by email to impression.info@gmail.com with your order number. Mon Impression may make minor modifications for printing purposes and is not responsible for printing errors due to poor quality images. By submitting your illustration, you grant us a non-exclusive license to use your illustration for order fulfillment.",
     "checkbox": "I understand and accept the general terms and conditions",
     "confirmButton": "ORDER NOW"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "emptyDescription": "Add some custom items to get started",
+    "startCustomizing": "Start Customizing",
+    "edit": "Edit",
+    "remove": "Remove",
+    "total": "Total",
+    "checkout": "Proceed to Checkout"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "email": "Email Address",
+    "deliveryType": "Delivery Method",
+    "pickup": "Pickup",
+    "delivery": "Delivery",
+    "street": "Street Address",
+    "city": "City",
+    "province": "Province",
+    "postalCode": "Postal Code",
+    "country": "Country",
+    "notes": "Delivery Notes",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "pay": "Pay Now",
+    "processing": "Processing..."
   }
 }

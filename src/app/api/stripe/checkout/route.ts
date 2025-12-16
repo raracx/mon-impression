@@ -35,49 +35,114 @@ export async function POST(req: NextRequest) {
       console.error("Failed to parse delivery info:", e);
     }
 
-    const productId =
-      typeof orderDetails.productId === "string"
-        ? orderDetails.productId
-        : "product";
+    let line_items: any[] = [];
 
-    const size = typeof orderDetails.size === "string" ? orderDetails.size : "";
-    const color =
-      typeof orderDetails.color === "string" ? orderDetails.color : "";
-    const sidesCount =
-      typeof orderDetails.sidesCount === "number" ? orderDetails.sidesCount : 1;
+    if (orderDetails.items && Array.isArray(orderDetails.items)) {
+      // Multiple items - new cart format
+      line_items = orderDetails.items.map((item: any) => {
+        let description = `Customized ${item.productId}`;
 
-    // Build descriptive product name
-    let productName = `Custom ${productId.replace(/_/g, " ")}`;
-    if (size) productName += ` (${size})`;
-    if (color) productName += ` - ${color}`;
-    if (sidesCount > 1) productName += ` - ${sidesCount} sides`;
+        // Add color info
+        if (item.customization?.color) {
+          description += ` - ${item.customization.color}`;
+        }
 
-    // Build product description with delivery info
-    let description = `Customized ${productId} with ${sidesCount} side(s)`;
-    if (deliveryInfo.type === "pickup") {
-      description += " | Pickup (Free)";
+        // Count sides with designs
+        let sidesCount = 0;
+        if (
+          item.customization?.sides &&
+          typeof item.customization.sides === "object"
+        ) {
+          sidesCount = Object.keys(item.customization.sides).filter(
+            (side) =>
+              Array.isArray(item.customization.sides[side]) &&
+              item.customization.sides[side].length > 0,
+          ).length;
+        } else if (
+          item.customization?.designs &&
+          typeof item.customization.designs === "object"
+        ) {
+          sidesCount = Object.keys(item.customization.designs).length;
+        }
+
+        if (sidesCount > 1) {
+          description += ` - ${sidesCount} sides`;
+        }
+
+        // Add delivery info
+        if (deliveryInfo.type === "pickup") {
+          description += " | Pickup (Free)";
+        } else {
+          const deliveryPrice =
+            typeof deliveryInfo.price === "number" ? deliveryInfo.price : 15;
+          description += ` | Delivery ($${deliveryPrice.toFixed(2)})`;
+          if (
+            deliveryInfo.address &&
+            typeof deliveryInfo.address === "object" &&
+            deliveryInfo.address !== null
+          ) {
+            const address = deliveryInfo.address as Record<string, unknown>;
+            if (typeof address.city === "string") {
+              description += ` to ${address.city}`;
+            }
+          }
+        }
+
+        return {
+          price_data: {
+            currency: "cad",
+            product_data: {
+              name: item.name,
+              description: description,
+            },
+            unit_amount: Math.round(item.price * 100),
+          },
+          quantity: item.quantity,
+        };
+      });
     } else {
-      const deliveryPrice =
-        typeof deliveryInfo.price === "number" ? deliveryInfo.price : 15;
-      description += ` | Delivery ($${deliveryPrice.toFixed(2)})`;
-      if (
-        deliveryInfo.address &&
-        typeof deliveryInfo.address === "object" &&
-        deliveryInfo.address !== null
-      ) {
-        const address = deliveryInfo.address as Record<string, unknown>;
-        if (typeof address.city === "string") {
-          description += ` to ${address.city}`;
+      // Fallback to single item (legacy)
+      const productId =
+        typeof orderDetails.productId === "string"
+          ? orderDetails.productId
+          : "product";
+
+      const size =
+        typeof orderDetails.size === "string" ? orderDetails.size : "";
+      const color =
+        typeof orderDetails.color === "string" ? orderDetails.color : "";
+      const sidesCount =
+        typeof orderDetails.sidesCount === "number"
+          ? orderDetails.sidesCount
+          : 1;
+
+      // Build descriptive product name
+      let productName = `Custom ${productId.replace(/_/g, " ")}`;
+      if (size) productName += ` (${size})`;
+      if (color) productName += ` - ${color}`;
+      if (sidesCount > 1) productName += ` - ${sidesCount} sides`;
+
+      // Build product description with delivery info
+      let description = `Customized ${productId} with ${sidesCount} side(s)`;
+      if (deliveryInfo.type === "pickup") {
+        description += " | Pickup (Free)";
+      } else {
+        const deliveryPrice =
+          typeof deliveryInfo.price === "number" ? deliveryInfo.price : 15;
+        description += ` | Delivery ($${deliveryPrice.toFixed(2)})`;
+        if (
+          deliveryInfo.address &&
+          typeof deliveryInfo.address === "object" &&
+          deliveryInfo.address !== null
+        ) {
+          const address = deliveryInfo.address as Record<string, unknown>;
+          if (typeof address.city === "string") {
+            description += ` to ${address.city}`;
+          }
         }
       }
-    }
 
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      payment_method_types: ["card"],
-      success_url: `${req.nextUrl.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancel_url || `${req.nextUrl.origin}/personnaliser`,
-      line_items: [
+      line_items = [
         {
           price_data: {
             currency: "cad",
@@ -97,7 +162,15 @@ export async function POST(req: NextRequest) {
               ? orderDetails.quantity
               : 1,
         },
-      ],
+      ];
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      payment_method_types: ["card"],
+      success_url: `${req.nextUrl.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: cancel_url || `${req.nextUrl.origin}/cart`,
+      line_items,
       metadata: { orderId },
     });
 
