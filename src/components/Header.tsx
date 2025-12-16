@@ -1,6 +1,6 @@
 "use client";
 import { Link, usePathname } from "@/i18n/navigation";
-import { FaRegUser, FaSearch, FaShoppingCart } from "react-icons/fa";
+import { FaRegUser, FaShoppingCart } from "react-icons/fa";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -43,12 +43,6 @@ export default function Header() {
         </nav>
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <button
-            aria-label={t("search")}
-            className="p-2.5 rounded-full text-brand-gray-dark hover:bg-navy hover:text-white transition-all duration-300"
-          >
-            <FaSearch />
-          </button>
           {/* <Link
             href="/account"
             aria-label={t("account")}

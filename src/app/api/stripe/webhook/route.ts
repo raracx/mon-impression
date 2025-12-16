@@ -26,10 +26,11 @@ export async function POST(req: NextRequest) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET || "",
     );
-  } catch (err: any) {
-    console.error("Webhook signature verification failed:", err.message);
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
+    console.error("Webhook signature verification failed:", errorMessage);
     return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
+      { error: `Webhook Error: ${errorMessage}` },
       { status: 400 },
     );
   }
@@ -65,30 +66,45 @@ export async function POST(req: NextRequest) {
       }
 
       // Parse order details
-      let orderDetails: any = {};
+      let orderDetails: Record<string, unknown> = {};
       try {
         orderDetails = JSON.parse(order.design_url || "{}");
       } catch (e) {
         console.error("Failed to parse design_url:", e);
       }
 
-      // Parse shipping address
-      let shippingInfo: any = undefined;
+      // Parse delivery information
+      let deliveryInfo: Record<string, unknown> | undefined = undefined;
       try {
         if (order.shipping_address) {
-          shippingInfo = JSON.parse(order.shipping_address);
+          deliveryInfo = JSON.parse(order.shipping_address);
         }
       } catch (e) {
-        console.error("Failed to parse shipping_address:", e);
+        console.error("Failed to parse delivery info:", e);
       }
 
-      const productId = orderDetails.productId || "product";
-      const quantity = orderDetails.quantity || 1;
-      const size = orderDetails.size || "";
-      const color = orderDetails.color || "";
-      const sidesCount = orderDetails.sidesCount || 1;
-      const customizedSides = orderDetails.customizedSides || ["front"];
-      const designs = orderDetails.designs || {};
+      const productId =
+        typeof orderDetails.productId === "string"
+          ? orderDetails.productId
+          : "product";
+      const quantity =
+        typeof orderDetails.quantity === "number" ? orderDetails.quantity : 1;
+      const size =
+        typeof orderDetails.size === "string" ? orderDetails.size : "";
+      const color =
+        typeof orderDetails.color === "string" ? orderDetails.color : "";
+      const sidesCount =
+        typeof orderDetails.sidesCount === "number"
+          ? orderDetails.sidesCount
+          : 1;
+      const customizedSides = Array.isArray(orderDetails.customizedSides)
+        ? orderDetails.customizedSides
+        : ["front"];
+      const designs =
+        typeof orderDetails.designs === "object" &&
+        orderDetails.designs !== null
+          ? (orderDetails.designs as Record<string, string>)
+          : {};
 
       // Build product name
       let productName = `Custom ${productId.replace(/_/g, " ")}`;
@@ -105,7 +121,18 @@ export async function POST(req: NextRequest) {
           amount: order.amount,
           designs,
           customizedSides,
-          shipping: shippingInfo,
+          delivery: deliveryInfo as {
+            type: "pickup" | "delivery";
+            price: number;
+            address?: {
+              street: string;
+              city: string;
+              province: string;
+              postalCode: string;
+              country: string;
+              notes?: string;
+            };
+          },
         });
         console.log("Customer confirmation email sent to:", order.email);
       } catch (emailError) {
@@ -125,7 +152,18 @@ export async function POST(req: NextRequest) {
           customizedSides,
           size,
           color,
-          shipping: shippingInfo,
+          delivery: deliveryInfo as {
+            type: "pickup" | "delivery";
+            price: number;
+            address?: {
+              street: string;
+              city: string;
+              province: string;
+              postalCode: string;
+              country: string;
+              notes?: string;
+            };
+          },
         });
         console.log("Admin notification email sent");
       } catch (emailError) {
@@ -138,10 +176,13 @@ export async function POST(req: NextRequest) {
         orderId: order.id,
         status: "paid",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error processing webhook:", error);
       return NextResponse.json(
-        { error: error.message || "Internal server error" },
+        {
+          error:
+            error instanceof Error ? error.message : "Internal server error",
+        },
         { status: 500 },
       );
     }

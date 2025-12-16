@@ -11,402 +11,14 @@ import TermsModal from "@/components/TermsModal";
 import { useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { products, clothingSizes, SizeOption } from "@/data/products";
+import { DELIVERY_CONFIG } from "@/data/catalog";
 import {
   ChevronLeft,
   ChevronRight,
   Download,
   ShoppingCart,
 } from "lucide-react";
-
-const productImages: Record<string, string> = {
-  tshirt: "/Products/BlackTShirtFront.png",
-  hoodie: "/Products/BlackHoodieFront.png",
-  crewneck: "/Products/BlackCrewneckFront.png",
-  longsleeve: "/Products/WhiteLongSleeveFront.png",
-  cap: "/Products/BlackCap.png",
-  mug_insulated: "/tasses/tasseisothermegrande.png",
-  mug_frosted: "/tasses/givre.png",
-  mug_magic: "/tasses/tassemagiquenoir.png",
-  mug_ceramic: "/tasses/tasseblancheclassiqueenceramique.png",
-  mousepad: "/Products/MousePad.jpg",
-  bag: "/Products/ShoppingBag.png",
-  drawstring_bag: "/Products/DrawstringBag.png",
-  shopping_bag: "/Products/ShoppingBag.png",
-  license_plate: "/Products/LicensePlate.png",
-  suction_poster: "/Products/SuctionPoster.png",
-};
-
-const products = [
-  // Clothing
-  {
-    id: "tshirt",
-    nameKey: "tshirt",
-    category: "clothing",
-    isClothing: true,
-    availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
-    pricing: {
-      oneSide: 19.99,
-      twoSides: 22.99,
-      fullPrint: 25.99,
-    },
-  },
-  {
-    id: "longsleeve",
-    nameKey: "longsleeve",
-    category: "clothing",
-    isClothing: true,
-    availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
-    pricing: {
-      oneSide: 21.99,
-      twoSides: 24.99,
-      fullPrint: 27.99,
-    },
-  },
-  {
-    id: "hoodie",
-    nameKey: "hoodie",
-    category: "clothing",
-    isClothing: true,
-    availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
-    pricing: {
-      oneSide: 29.99,
-      twoSides: 34.99,
-      fullPrint: 39.99,
-    },
-  },
-  {
-    id: "crewneck",
-    nameKey: "crewneck",
-    category: "clothing",
-    isClothing: true,
-    availableSides: ["front", "back", "left-sleeve", "right-sleeve"],
-    pricing: {
-      oneSide: 27.99,
-      twoSides: 32.99,
-      fullPrint: 37.99,
-    },
-  },
-  // Accessories
-  {
-    id: "cap",
-    nameKey: "cap",
-    category: "accessory",
-    isClothing: false,
-    availableSides: ["front"],
-    pricing: {
-      oneSide: 25.0,
-      twoSides: 25.0,
-      fullPrint: 25.0,
-    },
-  },
-  {
-    id: "mug_insulated",
-    nameKey: "mugInsulated",
-    category: "accessory",
-    isClothing: false,
-    hasSize: true,
-    sizeOptions: [
-      { id: "large", label: "Grande (591ml)", price: 25.0 },
-      { id: "small", label: "Petite (355ml)", price: 22.0 },
-    ],
-    availableSides: ["front"],
-    pricing: {
-      oneSide: 25.0,
-      twoSides: 25.0,
-      fullPrint: 25.0,
-    },
-  },
-  {
-    id: "mug_frosted",
-    nameKey: "mugFrosted",
-    category: "accessory",
-    isClothing: false,
-    hasSize: true,
-    sizeOptions: [{ id: "473ml", label: "473ml", price: 20.0 }],
-    availableSides: ["front"],
-    pricing: {
-      oneSide: 20.0,
-      twoSides: 20.0,
-      fullPrint: 20.0,
-    },
-  },
-  {
-    id: "mug_magic",
-    nameKey: "mugMagic",
-    category: "accessory",
-    isClothing: false,
-    hasSize: true,
-    sizeOptions: [{ id: "325ml", label: "325ml", price: 20.0 }],
-    availableSides: ["front"],
-    pricing: {
-      oneSide: 20.0,
-      twoSides: 20.0,
-      fullPrint: 20.0,
-    },
-  },
-  {
-    id: "mug_ceramic",
-    nameKey: "mugCeramic",
-    category: "accessory",
-    isClothing: false,
-    hasSize: true,
-    sizeOptions: [{ id: "325ml", label: "325ml", price: 15.0 }],
-    availableSides: ["front"],
-    pricing: {
-      oneSide: 15.0,
-      twoSides: 15.0,
-      fullPrint: 15.0,
-    },
-  },
-  {
-    id: "mousepad",
-    nameKey: "mousepad",
-    category: "accessory",
-    isClothing: false,
-    availableSides: ["front"],
-    pricing: {
-      oneSide: 12.0,
-      twoSides: 12.0,
-      fullPrint: 12.0,
-    },
-  },
-  {
-    id: "shopping_bag",
-    nameKey: "shoppingBag",
-    category: "accessory",
-    isClothing: false,
-    availableSides: ["front", "back"],
-    pricing: {
-      oneSide: 18.0,
-      twoSides: 22.0,
-      fullPrint: 22.0,
-    },
-  },
-  {
-    id: "drawstring_bag",
-    nameKey: "drawstringBag",
-    category: "accessory",
-    isClothing: false,
-    availableSides: ["front", "back"],
-    pricing: {
-      oneSide: 15.0,
-      twoSides: 20.0,
-      fullPrint: 20.0,
-    },
-  },
-  {
-    id: "license_plate",
-    nameKey: "licensePlate",
-    category: "accessory",
-    isClothing: false,
-    availableSides: ["front"],
-    pricing: {
-      oneSide: 20.0,
-      twoSides: 20.0,
-      fullPrint: 20.0,
-    },
-  },
-  {
-    id: "suction_poster",
-    nameKey: "suctionPoster",
-    category: "accessory",
-    isClothing: false,
-    availableSides: ["front"],
-    pricing: {
-      oneSide: 18.0,
-      twoSides: 18.0,
-      fullPrint: 18.0,
-    },
-  },
-];
-
-const clothingSizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
-
-const productColors: Record<
-  string,
-  { id: string; name: string; images: Record<string, string> }[]
-> = {
-  tshirt: [
-    {
-      id: "black",
-      name: "Black",
-      images: {
-        front: "/Products/BlackTShirtFront.png",
-        back: "/Products/BlackTShirtBack.png",
-        "left-sleeve": "/Products/BlackTShirtLeftSide.png",
-        "right-sleeve": "/Products/BlackTShirtRightSide.png",
-      },
-    },
-    {
-      id: "white",
-      name: "White",
-      images: {
-        front: "/Products/WhiteTShirtFront.png",
-        back: "/Products/WhiteTShirtBack.png",
-        "left-sleeve": "/Products/WhiteTShirtLeftSide.png",
-        "right-sleeve": "/Products/WhiteTShirtRightSide.png",
-      },
-    },
-    {
-      id: "gray",
-      name: "Gray",
-      images: {
-        front: "/Products/GrayTShirtFront.png",
-        back: "/Products/GrayTShirtBack.png",
-        "left-sleeve": "/Products/GrayTShirtLeftSide.png",
-        "right-sleeve": "/Products/GrayTShirtRightSide.png",
-      },
-    },
-    {
-      id: "lightgray",
-      name: "Light Gray",
-      images: {
-        front: "/Products/LightGrayTShirtFront.png",
-        back: "/Products/LightGrayTShirtBack.png",
-        "left-sleeve": "/Products/LightGrayTShirtLeftSide.png",
-        "right-sleeve": "/Products/LightGrayTShirtRightSide.png",
-      },
-    },
-    {
-      id: "navy",
-      name: "Navy",
-      images: {
-        front: "/Products/NavyTShirtFront.png",
-        back: "/Products/NavyTShirtBack.png",
-        "left-sleeve": "/Products/NavyTShirtLeftSide.png",
-        "right-sleeve": "/Products/NavyTShirtRightSide.png",
-      },
-    },
-  ],
-  hoodie: [
-    {
-      id: "black",
-      name: "Black",
-      images: {
-        front: "/Products/BlackHoodieFront.png",
-        back: "/Products/BlackHoodieBack.png",
-        "left-sleeve": "/Products/BlackHoodieLeftSide.png",
-        "right-sleeve": "/Products/BlackHoodieRightSide.png",
-      },
-    },
-    {
-      id: "white",
-      name: "White",
-      images: {
-        front: "/Products/WhiteHoodieFront.png",
-        back: "/Products/WhiteHoodieBack.png",
-        "left-sleeve": "/Products/WhiteHoodieLeftSide.png",
-        "right-sleeve": "/Products/WhiteHoodieRightSide.png",
-      },
-    },
-    {
-      id: "lightgray",
-      name: "Light Gray",
-      images: {
-        front: "/Products/LightGrayHoodieFront.png",
-        back: "/Products/LightGrayHoodieBack.png",
-        "left-sleeve": "/Products/LightGrayHoodieLeftSide.png",
-        "right-sleeve": "/Products/LightGrayHoodieRightSide.png",
-      },
-    },
-    {
-      id: "darkgray",
-      name: "Dark Gray",
-      images: {
-        front: "/Products/DarkGrayHoodieFront.png",
-        back: "/Products/DarkGrayHoodieBack.png",
-        "left-sleeve": "/Products/DarkGrayHoodieLeftSide.png",
-        "right-sleeve": "/Products/DarkGrayHoodieRightSide.png",
-      },
-    },
-    {
-      id: "navy",
-      name: "Navy",
-      images: {
-        front: "/Products/NavyHoodieFront.png",
-        back: "/Products/NavyHoodieBack.png",
-        "left-sleeve": "/Products/NavyHoodieLeftSide.png",
-        "right-sleeve": "/Products/NavyHoodieRightSide.png",
-      },
-    },
-  ],
-  crewneck: [
-    {
-      id: "black",
-      name: "Black",
-      images: {
-        front: "/Products/BlackCrewneckFront.png",
-        back: "/Products/BlackCrewneckBack.png",
-        "left-sleeve": "/Products/BlackCrewneckLeftSide.png",
-        "right-sleeve": "/Products/BlackCrewneckRightSide.png",
-      },
-    },
-    {
-      id: "white",
-      name: "White",
-      images: {
-        front: "/Products/WhiteCrewneckFront.png",
-        back: "/Products/WhiteCrewneckBack.png",
-        "left-sleeve": "/Products/WhiteCrewneckLeftSide.png",
-        "right-sleeve": "/Products/WhiteCrewneckRightSide.png",
-      },
-    },
-    {
-      id: "navy",
-      name: "Navy",
-      images: {
-        front: "/Products/NavyCrewneckFront.png",
-        back: "/Products/NavyCrewneckBack.png",
-        "left-sleeve": "/Products/NavyCrewneckLeftSide.png",
-        "right-sleeve": "/Products/NavyCrewneckRightSide.png",
-      },
-    },
-    {
-      id: "lightgray",
-      name: "Light Gray",
-      images: {
-        front: "/Products/LightGrayCrewneckFront.png",
-        back: "/Products/LightGrayCrewneckBack.png",
-        "left-sleeve": "/Products/LightGrayCrewneckLeftSide.png",
-        "right-sleeve": "/Products/LightGrayCrewneckRightSide.png",
-      },
-    },
-  ],
-  longsleeve: [
-    {
-      id: "white",
-      name: "White",
-      images: {
-        front: "/Products/WhiteLongSleeveFront.png",
-        back: "/Products/WhiteLongSleeveBack.png",
-        "left-sleeve": "/Products/WhiteLongSleeveLeftSide.png",
-        "right-sleeve": "/Products/WhiteLongSleeveRightSide.png",
-      },
-    },
-  ],
-  cap: [
-    {
-      id: "black",
-      name: "Black",
-      images: {
-        front: "/Products/BlackCap.png",
-        back: "/Products/BlackCap.png",
-        "left-sleeve": "/Products/BlackCap.png",
-        "right-sleeve": "/Products/BlackCap.png",
-      },
-    },
-    {
-      id: "navy",
-      name: "Navy",
-      images: {
-        front: "/Products/NavyCap.png",
-        back: "/Products/NavyCap.png",
-        "left-sleeve": "/Products/NavyCap.png",
-        "right-sleeve": "/Products/NavyCap.png",
-      },
-    },
-  ],
-};
 
 type TariffOption = "oneSide" | "twoSides" | "fullPrint";
 
@@ -417,6 +29,9 @@ export default function PersonnaliserPage() {
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [deliveryType, setDeliveryType] = useState<"delivery" | "pickup">(
+    "delivery",
+  );
   const [shippingAddress, setShippingAddress] = useState("");
   const [shippingCity, setShippingCity] = useState("");
   const [shippingProvince, setShippingProvince] = useState("");
@@ -435,13 +50,15 @@ export default function PersonnaliserPage() {
   const [customizedSidesCount, setCustomizedSidesCount] = useState(0);
   const [selectedTariff, setSelectedTariff] = useState<TariffOption>("oneSide");
   const [base, setBase] = useState<string>(
-    productImages[selectedProduct] || "/Products/BlackTShirtFront.png",
+    products.find((p) => p.id === selectedProduct)?.defaultImage ||
+      "/Products/BlackTShirtFront.png",
   );
 
   // Update base image when product or color changes
   useEffect(() => {
-    const colors = productColors[selectedProduct];
-    if (colors && colors.length > 0) {
+    const product = products.find((p) => p.id === selectedProduct);
+    const colors = product?.colors || [];
+    if (colors.length > 0) {
       const currentColor =
         colors.find((c) => c.id === selectedColor) || colors[0];
       setBase(
@@ -452,24 +69,35 @@ export default function PersonnaliserPage() {
         setSelectedColor(colors[0].id);
       }
     } else {
-      setBase(
-        productImages[selectedProduct] || "/Products/BlackTShirtFront.png",
-      );
+      // Handle size-specific images for products like insulated mugs
+      if (product?.id === "mug_insulated" && selectedSize === "small") {
+        setBase("/tasses/isothermepetite.png");
+      } else {
+        setBase(product?.defaultImage || "/Products/BlackTShirtFront.png");
+      }
     }
-  }, [selectedProduct, selectedColor, activeSide]);
+  }, [selectedProduct, selectedColor, activeSide, selectedSize]);
 
   // Reset size when product changes
   useEffect(() => {
     const product = products.find((p) => p.id === selectedProduct);
     if (product?.hasSize && product.sizeOptions) {
       // Set to first size option for products with size variants
-      setSelectedSize((product.sizeOptions as any[])[0].id);
+      setSelectedSize((product.sizeOptions as SizeOption[])[0].id);
     } else if (product?.isClothing) {
       // Set to M for clothing
       setSelectedSize("M");
     }
     // Reset tariff choice when switching products
     setSelectedTariff("oneSide");
+  }, [selectedProduct]);
+
+  // Reset active side when product changes
+  useEffect(() => {
+    const product = products.find((p) => p.id === selectedProduct);
+    if (product?.availableSides) {
+      setActiveSide(product.availableSides[0]);
+    }
   }, [selectedProduct]);
 
   // track selected item from canvas so toolbox can show editing UI
@@ -486,11 +114,12 @@ export default function PersonnaliserPage() {
   const tariffSelectionOverrides = new Set(["license_plate"]);
 
   const shouldUseTariffSelection = (product: (typeof products)[number]) =>
+    product.availableSides.length > 1 &&
     !product.hasSize &&
     (hasVariablePricing(product) || tariffSelectionOverrides.has(product.id));
 
-  // Calculate price based on number of customized sides or explicit selection
-  const calculatePrice = () => {
+  // Calculate product price only
+  const calculateProductPrice = () => {
     const product = products.find((p) => p.id === selectedProduct);
     if (!product) return 0;
 
@@ -498,15 +127,16 @@ export default function PersonnaliserPage() {
 
     // Explicit tariff selection for eligible products
     if (shouldUseTariffSelection(product)) {
-      if (selectedTariff === "twoSides") basePrice = product.pricing.twoSides;
+      if (selectedTariff === "twoSides")
+        basePrice = product.pricing.twoSides || 0;
       else if (selectedTariff === "fullPrint")
-        basePrice = product.pricing.fullPrint;
+        basePrice = product.pricing.fullPrint || 0;
       else basePrice = product.pricing.oneSide;
     }
     // If product has size-based pricing (like insulated mugs)
     else if (product.hasSize && product.sizeOptions) {
-      const sizeOption = (product.sizeOptions as any[]).find(
-        (opt: any) => opt.id === selectedSize,
+      const sizeOption = (product.sizeOptions as SizeOption[]).find(
+        (opt: SizeOption) => opt.id === selectedSize,
       );
       basePrice = sizeOption ? sizeOption.price : product.pricing.oneSide;
     }
@@ -514,12 +144,27 @@ export default function PersonnaliserPage() {
     else if (customizedSidesCount === 0 || customizedSidesCount === 1) {
       basePrice = product.pricing.oneSide;
     } else if (customizedSidesCount === 2) {
-      basePrice = product.pricing.twoSides;
+      basePrice = product.pricing.twoSides || 0;
     } else {
-      basePrice = product.pricing.fullPrint;
+      basePrice = product.pricing.fullPrint || 0;
     }
 
     return basePrice * quantity;
+  };
+
+  // Calculate delivery cost
+  const calculateDeliveryPrice = () => {
+    if (deliveryType === "pickup") return 0;
+
+    const subtotal = calculateProductPrice();
+    if (subtotal >= DELIVERY_CONFIG.freeShippingThreshold) return 0;
+
+    return DELIVERY_CONFIG.standardPrice;
+  };
+
+  // Calculate total price
+  const calculatePrice = () => {
+    return calculateProductPrice() + calculateDeliveryPrice();
   };
 
   const currentPrice = calculatePrice();
@@ -559,7 +204,7 @@ export default function PersonnaliserPage() {
       // Export all customized sides
       const customizedSides = ref.current.getCustomizedSides();
       if (customizedSides.length === 0) {
-        alert("Veuillez personnaliser au moins un côté du produit");
+        alert(t("errorNoCustomization"));
         return;
       }
 
@@ -571,18 +216,25 @@ export default function PersonnaliserPage() {
         email,
         designs: allDesigns, // Now sending all sides
         customizedSides: customizedSides, // Which sides were customized
-        size: product?.isClothing ? selectedSize : undefined,
+        size:
+          product?.isClothing || product?.hasSize ? selectedSize : undefined,
         quantity,
         color: selectedColor,
         selectedTariff: selectedTariff,
         sidesCount: customizedSides.length,
-        shipping: {
-          address: shippingAddress,
-          city: shippingCity,
-          province: shippingProvince,
-          postalCode: shippingPostalCode,
-          country: shippingCountry,
-          notes: shippingNotes,
+        delivery: {
+          type: deliveryType,
+          address:
+            deliveryType === "delivery"
+              ? {
+                  street: shippingAddress,
+                  city: shippingCity,
+                  province: shippingProvince,
+                  postalCode: shippingPostalCode,
+                  country: shippingCountry,
+                  notes: shippingNotes,
+                }
+              : undefined,
         },
       };
 
@@ -604,8 +256,8 @@ export default function PersonnaliserPage() {
       const payJson = await pay.json();
       if (!pay.ok) throw new Error(payJson.error || t("errorStripe"));
       router.push(payJson.url);
-    } catch (e: any) {
-      alert(e.message);
+    } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -640,8 +292,8 @@ export default function PersonnaliserPage() {
               <h1 className="text-lg font-bold text-brand-black">
                 {t("title", {
                   product: tProducts(
-                    products.find((p) => p.id === selectedProduct)
-                      ?.nameKey as any,
+                    (products.find((p) => p.id === selectedProduct)
+                      ?.nameKey as string) || "product",
                   ),
                 })}
               </h1>
@@ -654,19 +306,36 @@ export default function PersonnaliserPage() {
             <div className="border-t border-brand-gray-light pt-4">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium text-brand-gray-dark">
-                  Prix:
+                  {t("price")}:
                 </span>
-                <span className="text-xl font-bold text-navy">
-                  ${currentPrice.toFixed(2)}
-                </span>
+                <div className="text-right">
+                  <div className="text-sm text-brand-gray-dark">
+                    Produit: ${calculateProductPrice().toFixed(2)}
+                  </div>
+                  {deliveryType === "delivery" && (
+                    <div className="text-sm text-brand-gray-dark">
+                      Livraison: $
+                      {calculateDeliveryPrice() === 0
+                        ? "0.00 (gratuite)"
+                        : calculateDeliveryPrice().toFixed(2)}
+                    </div>
+                  )}
+                  {deliveryType === "pickup" && (
+                    <div className="text-sm text-brand-gray-dark">
+                      Ramassage: gratuit
+                    </div>
+                  )}
+                  <div className="text-xl font-bold text-navy border-t border-brand-gray-light pt-1 mt-1">
+                    Total: ${currentPrice.toFixed(2)}
+                  </div>
+                </div>
               </div>
               <div className="space-y-1">
                 <p className="text-xs text-brand-gray-dark">
-                  {customizedSidesCount === 0 && "Aucune personnalisation"}
-                  {customizedSidesCount === 1 && "✓ 1 face personnalisée"}
-                  {customizedSidesCount === 2 && "✓ 2 faces personnalisées"}
-                  {customizedSidesCount >= 3 &&
-                    "✓ Impression complète (3+ faces)"}
+                  {customizedSidesCount === 0 && t("customization.none")}
+                  {customizedSidesCount === 1 && t("customization.oneSide")}
+                  {customizedSidesCount === 2 && t("customization.twoSides")}
+                  {customizedSidesCount >= 3 && t("customization.fullPrint")}
                 </p>
                 {(() => {
                   const product = products.find(
@@ -679,23 +348,49 @@ export default function PersonnaliserPage() {
                     return (
                       <div className="text-xs text-brand-gray-dark bg-brand-gray-lighter p-2 rounded">
                         <div className="font-medium mb-1">
-                          Formats disponibles:
+                          {t("formatsAvailable")}:
                         </div>
-                        {(product.sizeOptions as any[]).map((sizeOpt: any) => (
-                          <div
-                            key={sizeOpt.id}
-                            className="flex justify-between"
-                          >
-                            <span>{sizeOpt.label}:</span>
-                            <span>${sizeOpt.price.toFixed(2)}</span>
-                          </div>
-                        ))}
+                        {(product.sizeOptions as SizeOption[]).map(
+                          (sizeOpt: SizeOption) => (
+                            <div
+                              key={sizeOpt.id}
+                              className="flex justify-between"
+                            >
+                              <span>{sizeOpt.label}:</span>
+                              <span>${sizeOpt.price.toFixed(2)}</span>
+                            </div>
+                          ),
+                        )}
                       </div>
                     );
                   }
 
-                  const variablePricing = hasVariablePricing(product);
                   const showTariffSelector = shouldUseTariffSelection(product);
+
+                  // Determine available tariff options based on number of sides
+                  const maxSides = product.availableSides.length;
+                  const tariffOptions = [
+                    {
+                      id: "oneSide" as TariffOption,
+                      label: "pricing.options.oneSide",
+                    },
+                    ...(maxSides >= 2
+                      ? [
+                          {
+                            id: "twoSides" as TariffOption,
+                            label: "pricing.options.twoSides",
+                          },
+                        ]
+                      : []),
+                    ...(maxSides >= 3
+                      ? [
+                          {
+                            id: "fullPrint" as TariffOption,
+                            label: "pricing.options.fullPrint",
+                          },
+                        ]
+                      : []),
+                  ];
 
                   // Show customization-based pricing
                   return (
@@ -705,22 +400,7 @@ export default function PersonnaliserPage() {
                       </div>
                       {showTariffSelector ? (
                         <div className="space-y-2">
-                          {(
-                            [
-                              {
-                                id: "oneSide",
-                                label: "pricing.options.oneSide",
-                              },
-                              {
-                                id: "twoSides",
-                                label: "pricing.options.twoSides",
-                              },
-                              {
-                                id: "fullPrint",
-                                label: "pricing.options.fullPrint",
-                              },
-                            ] as { id: TariffOption; label: string }[]
-                          ).map((opt) => (
+                          {tariffOptions.map((opt) => (
                             <button
                               key={opt.id}
                               type="button"
@@ -731,34 +411,23 @@ export default function PersonnaliserPage() {
                                   : "border-brand-gray-light hover:border-navy-light hover:bg-white"
                               }`}
                             >
-                              <span>{t(opt.label as any)}</span>
+                              <span>{t(opt.label)}</span>
                               <span className="font-semibold">
-                                $
-                                {product.pricing[
-                                  opt.id === "oneSide"
-                                    ? "oneSide"
-                                    : opt.id === "twoSides"
-                                      ? "twoSides"
-                                      : "fullPrint"
-                                ].toFixed(2)}
+                                ${product.pricing[opt.id]!.toFixed(2)}
                               </span>
                             </button>
                           ))}
                         </div>
                       ) : (
                         <>
-                          <div className="flex justify-between">
-                            <span>{t("pricing.options.oneSide")}:</span>
-                            <span>${product.pricing.oneSide.toFixed(2)}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>{t("pricing.options.twoSides")}:</span>
-                            <span>${product.pricing.twoSides.toFixed(2)}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>{t("pricing.options.fullPrint")}:</span>
-                            <span>${product.pricing.fullPrint.toFixed(2)}</span>
-                          </div>
+                          {tariffOptions.map((opt) => (
+                            <div key={opt.id} className="flex justify-between">
+                              <span>{t(opt.label)}:</span>
+                              <span>
+                                ${product.pricing[opt.id]!.toFixed(2)}
+                              </span>
+                            </div>
+                          ))}
                         </>
                       )}
                     </div>
@@ -779,7 +448,7 @@ export default function PersonnaliserPage() {
                     return (
                       <div className="flex-1">
                         <label className="block text-xs font-medium text-brand-gray-dark mb-2">
-                          Taille:
+                          {t("size")}:
                         </label>
                         <select
                           value={selectedSize}
@@ -801,18 +470,20 @@ export default function PersonnaliserPage() {
                     return (
                       <div className="flex-1">
                         <label className="block text-xs font-medium text-brand-gray-dark mb-2">
-                          Format:
+                          {t("format")}:
                         </label>
                         <select
                           value={selectedSize}
                           onChange={(e) => setSelectedSize(e.target.value)}
                           className="w-full border border-brand-gray-light rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
                         >
-                          {currentProduct.sizeOptions.map((sizeOpt: any) => (
-                            <option key={sizeOpt.id} value={sizeOpt.id}>
-                              {sizeOpt.label}
-                            </option>
-                          ))}
+                          {currentProduct.sizeOptions.map(
+                            (sizeOpt: SizeOption) => (
+                              <option key={sizeOpt.id} value={sizeOpt.id}>
+                                {sizeOpt.label}
+                              </option>
+                            ),
+                          )}
                         </select>
                       </div>
                     );
@@ -831,7 +502,7 @@ export default function PersonnaliserPage() {
                   }
                 >
                   <label className="block text-xs font-medium text-brand-gray-dark mb-2">
-                    Qté:
+                    {t("quantity")}:
                   </label>
                   <div className="flex items-center gap-1">
                     <button
@@ -860,115 +531,178 @@ export default function PersonnaliserPage() {
               </div>
             </div>
 
-            {/* Contact & Shipping Information */}
+            {/* Contact & Delivery Information */}
             <div className="border-t border-brand-gray-light pt-4 space-y-4">
               <h3 className="text-sm font-semibold text-brand-gray-dark mb-3">
-                Contact & Shipping Details
+                Contact et livraison
               </h3>
 
               {/* Email */}
               <div>
                 <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                  Email *
+                  {t("email")}
                 </label>
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
-                  placeholder="your@email.com"
+                  placeholder={t("emailPlaceholder")}
                   required
                   className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
                 />
               </div>
 
-              {/* Address */}
+              {/* Delivery Type */}
               <div>
-                <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                  Street Address *
+                <label className="block text-xs font-medium text-brand-gray-dark mb-2">
+                  Mode de livraison
                 </label>
-                <input
-                  value={shippingAddress}
-                  onChange={(e) => setShippingAddress(e.target.value)}
-                  type="text"
-                  placeholder="123 Main Street"
-                  required
-                  className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                />
-              </div>
-
-              {/* City and Province */}
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                    City *
-                  </label>
-                  <input
-                    value={shippingCity}
-                    onChange={(e) => setShippingCity(e.target.value)}
-                    type="text"
-                    placeholder="Toronto"
-                    required
-                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                    Province *
-                  </label>
-                  <input
-                    value={shippingProvince}
-                    onChange={(e) => setShippingProvince(e.target.value)}
-                    type="text"
-                    placeholder="ON"
-                    required
-                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                  />
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryType("delivery")}
+                    className={`p-3 rounded-lg border text-sm font-medium transition-all ${
+                      deliveryType === "delivery"
+                        ? "border-navy bg-navy-50 text-navy"
+                        : "border-brand-gray-light hover:border-brand-gray-dark"
+                    }`}
+                  >
+                    🚚 Livraison (15$)
+                    <div className="text-xs opacity-75 mt-1">
+                      Gratuite à partir de 100$
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryType("pickup")}
+                    className={`p-3 rounded-lg border text-sm font-medium transition-all ${
+                      deliveryType === "pickup"
+                        ? "border-navy bg-navy-50 text-navy"
+                        : "border-brand-gray-light hover:border-brand-gray-dark"
+                    }`}
+                  >
+                    📦 Ramassage (gratuit)
+                    <div className="text-xs opacity-75 mt-1">À notre local</div>
+                  </button>
                 </div>
               </div>
 
-              {/* Postal Code and Country */}
-              <div className="grid grid-cols-2 gap-3">
+              {/* Address - only show if delivery is selected */}
+              {deliveryType === "delivery" && (
                 <div>
                   <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                    Postal Code *
+                    {t("address")}
                   </label>
                   <input
-                    value={shippingPostalCode}
-                    onChange={(e) => setShippingPostalCode(e.target.value)}
+                    value={shippingAddress}
+                    onChange={(e) => setShippingAddress(e.target.value)}
                     type="text"
-                    placeholder="A1A 1A1"
+                    placeholder={t("addressPlaceholder")}
                     required
                     className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                    Country *
-                  </label>
-                  <input
-                    value={shippingCountry}
-                    onChange={(e) => setShippingCountry(e.target.value)}
-                    type="text"
-                    placeholder="Canada"
-                    required
-                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
-                  />
-                </div>
-              </div>
+              )}
 
-              {/* Additional Notes */}
-              <div>
-                <label className="block text-xs font-medium text-brand-gray-dark mb-1">
-                  Delivery Notes (Optional)
-                </label>
-                <textarea
-                  value={shippingNotes}
-                  onChange={(e) => setShippingNotes(e.target.value)}
-                  placeholder="Apartment number, special instructions, etc."
-                  rows={2}
-                  className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow resize-none"
-                />
-              </div>
+              {/* Pickup Address Info */}
+              {deliveryType === "pickup" && (
+                <div className="p-3 bg-brand-gray-lighter rounded-lg">
+                  <div className="text-sm font-medium text-brand-gray-dark">
+                    📍 Adresse de ramassage :
+                  </div>
+                  <div className="text-sm text-brand-gray-dark mt-1">
+                    Mon Impression
+                    <br />
+                    123 Rue Principal
+                    <br />
+                    Montréal, QC H1A 1A1
+                    <br />
+                    <span className="text-xs opacity-75">
+                      Lun-Ven 9h-17h, Sam 10h-16h
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* City and Province - only show if delivery is selected */}
+              {deliveryType === "delivery" && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                      {t("city")}
+                    </label>
+                    <input
+                      value={shippingCity}
+                      onChange={(e) => setShippingCity(e.target.value)}
+                      type="text"
+                      placeholder={t("cityPlaceholder")}
+                      required
+                      className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                      {t("province")}
+                    </label>
+                    <input
+                      value={shippingProvince}
+                      onChange={(e) => setShippingProvince(e.target.value)}
+                      type="text"
+                      placeholder={t("provincePlaceholder")}
+                      required
+                      className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Postal Code and Country - only show if delivery is selected */}
+              {deliveryType === "delivery" && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                      {t("postalCode")}
+                    </label>
+                    <input
+                      value={shippingPostalCode}
+                      onChange={(e) => setShippingPostalCode(e.target.value)}
+                      type="text"
+                      placeholder={t("postalCodePlaceholder")}
+                      required
+                      className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                      {t("country")}
+                    </label>
+                    <input
+                      value={shippingCountry}
+                      onChange={(e) => setShippingCountry(e.target.value)}
+                      type="text"
+                      placeholder={t("countryPlaceholder")}
+                      required
+                      className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Additional Notes - only show if delivery is selected */}
+              {deliveryType === "delivery" && (
+                <div>
+                  <label className="block text-xs font-medium text-brand-gray-dark mb-1">
+                    {t("notes")}
+                  </label>
+                  <textarea
+                    value={shippingNotes}
+                    onChange={(e) => setShippingNotes(e.target.value)}
+                    placeholder={t("notesPlaceholder")}
+                    rows={2}
+                    className="w-full border border-brand-gray-light rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-navy focus:border-navy transition-shadow resize-none"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Action Buttons */}
@@ -984,11 +718,12 @@ export default function PersonnaliserPage() {
                 onClick={handleOrderClick}
                 disabled={
                   !email ||
-                  !shippingAddress ||
-                  !shippingCity ||
-                  !shippingProvince ||
-                  !shippingPostalCode ||
-                  !shippingCountry ||
+                  (deliveryType === "delivery" &&
+                    (!shippingAddress ||
+                      !shippingCity ||
+                      !shippingProvince ||
+                      !shippingPostalCode ||
+                      !shippingCountry)) ||
                   loading
                 }
                 className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-navy to-navy-light hover:from-navy-dark hover:to-navy text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
@@ -1126,11 +861,13 @@ export default function PersonnaliserPage() {
                   onExport={download}
                   products={products.map((p) => ({
                     ...p,
-                    name: tProducts(p.nameKey as any),
+                    name: tProducts(p.nameKey),
                   }))}
                   selectedProduct={selectedProduct}
                   onProductChange={setSelectedProduct}
-                  productColors={productColors[selectedProduct] || []}
+                  productColors={
+                    products.find((p) => p.id === selectedProduct)?.colors || []
+                  }
                   selectedColor={selectedColor}
                   onColorChange={setSelectedColor}
                   onSideChange={setActiveSide}
@@ -1151,14 +888,14 @@ export default function PersonnaliserPage() {
           {/* Help Section - Fixed at Bottom */}
           <div className="border-t border-brand-gray-light bg-navy-50 p-4 space-y-2">
             <h4 className="text-sm font-semibold text-navy mb-2">
-              💡 Besoin d'aide ?
+              {t("helpTitle")}
             </h4>
             <p className="text-xs text-brand-gray-dark leading-relaxed">
-              • Téléversez votre propre image
+              {t("help.upload")}
               <br />
-              • Choisissez un design dans l'onglet "Designs"
-              <br />• Besoin de modifications ? Contactez-nous à
-              contact@monimpression.com
+              {t("help.designs")}
+              <br />
+              {t("help.contact")}
             </p>
           </div>
         </div>

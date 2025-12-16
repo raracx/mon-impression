@@ -20,7 +20,7 @@
     "company": "Mon Impression",
     "address": "Saint-Lin–Laurentides, QC",
     "phone": "514-677-2809 | 514-659-1137",
-    "email": "contact@monimpression.com",
+    "email": "impression.info@gmail.com",
     "facebook": "Notre page Facebook",
     "information": "Informations",
     "about": "À propos",
@@ -239,7 +239,7 @@
   },
   "contact": {
     "title": "Contactez-nous",
-    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 | 514-659-1137 — contact@monimpression.com",
+    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 | 514-659-1137 — impression.info@gmail.com",
     "mapTitle": "Carte",
     "form": {
       "name": "Nom complet",
@@ -280,13 +280,13 @@
     },
     "section5": {
       "title": "5. Vos droits",
-      "content": "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles. Pour exercer ces droits, contactez-nous à contact@monimpression.com."
+      "content": "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles. Pour exercer ces droits, contactez-nous à impression.info@gmail.com."
     },
     "section6": {
       "title": "6. Cookies",
       "content": "Notre site utilise des cookies pour améliorer votre expérience de navigation et analyser l'utilisation du site. Vous pouvez désactiver les cookies dans les paramètres de votre navigateur."
     },
-    "contact": "Pour toute question concernant cette politique, contactez-nous à contact@monimpression.com ou au 514-677-2809 | 514-659-1137."
+    "contact": "Pour toute question concernant cette politique, contactez-nous à impression.info@gmail.com ou au 514-677-2809 | 514-659-1137."
   },
   "terms": {
     "title": "Conditions d'utilisation",
@@ -319,7 +319,7 @@
       "title": "7. Limitation de Responsabilité",
       "content": "Mon Impression n'est pas responsable des délais de livraison causés par des transporteurs tiers, des événements hors de notre contrôle, ou des erreurs dans les informations de livraison fournies par le client."
     },
-    "contact": "Pour toute question concernant ces conditions, contactez-nous à contact@monimpression.com ou par téléphone au 514-677-2809 | 514-659-1137."
+    "contact": "Pour toute question concernant ces conditions, contactez-nous à impression.info@gmail.com ou par téléphone au 514-677-2809 | 514-659-1137."
   },
   "success": {
     "title": "Merci pour votre achat!",
@@ -358,7 +358,7 @@
   "personnaliser": {
     "title": "{product}",
     "subtitle": "Ajoutez du texte, importez une image, appliquez vos styles, puis commandez.",
-    "emailPlaceholder": "Votre email",
+    "emailPlaceholder": "imression.info@gmail.com",
     "emailLabel": "Adresse email",
     "orderNow": "Commander maintenant",
     "loading": "Chargement…",
@@ -368,6 +368,38 @@
     "paymentNote": "Le paiement est traité par Stripe. Un aperçu de votre design sera envoyé avec la commande.",
     "errorOrder": "Erreur lors de la création de la commande",
     "errorStripe": "Erreur Stripe",
+    "price": "Prix",
+    "customization": {
+      "none": "Aucune personnalisation",
+      "oneSide": "✓ 1 face personnalisée",
+      "twoSides": "✓ 2 faces personnalisées",
+      "fullPrint": "✓ Impression complète (3+ faces)"
+    },
+    "formatsAvailable": "Formats disponibles",
+    "size": "Taille",
+    "format": "Format",
+    "quantity": "Qté",
+    "contactShippingTitle": "Détails de contact et d'expédition",
+    "email": "Email *",
+    "address": "Adresse *",
+    "city": "Ville *",
+    "province": "Province *",
+    "postalCode": "Code postal *",
+    "country": "Pays *",
+    "notes": "Notes de livraison (Optionnel)",
+    "addressPlaceholder": "123 Rue Principale",
+    "cityPlaceholder": "Toronto",
+    "provincePlaceholder": "ON",
+    "postalCodePlaceholder": "A1A 1A1",
+    "countryPlaceholder": "Canada",
+    "notesPlaceholder": "Numéro d'appartement, instructions spéciales, etc.",
+    "helpTitle": "💡 Besoin d'aide ?",
+    "help": {
+      "upload": "• Téléversez votre propre image",
+      "designs": "• Choisissez un design dans l'onglet Designs",
+      "contact": "• Besoin de modifications ? Contactez-nous à impression.info@gmail.com"
+    },
+    "errorNoCustomization": "Veuillez personnaliser au moins un côté du produit",
     "pricing": {
       "title": "Tarifs",
       "choose": "Choisissez l'option",
@@ -469,7 +501,7 @@
   },
   "termsModal": {
     "title": "Confirmation",
-    "message": "En téléchargeant votre illustration ou votre logo, vous confirmez que vous avez le droit légal de l'utiliser et acceptez l'entière responsabilité de son contenu. Assurez-vous qu'il ne porte pas atteinte aux droits de tiers et qu'il est exempt de contenu offensant. Pour de meilleurs résultats, envoyez votre illustration par e-mail à contact@monimpression.com avec votre numéro de commande. Mon Impression peut apporter des modifications mineures à des fins d'impression et n'est pas responsable des erreurs d'impression dues à des images de mauvaise qualité. En soumettant votre illustration, vous nous accordez une licence non exclusive pour utiliser votre illustration pour l'exécution de la commande.",
+    "message": "En téléchargeant votre illustration ou votre logo, vous confirmez que vous avez le droit légal de l'utiliser et acceptez l'entière responsabilité de son contenu. Assurez-vous qu'il ne porte pas atteinte aux droits de tiers et qu'il est exempt de contenu offensant. Pour de meilleurs résultats, envoyez votre illustration par e-mail à impression.info@gmail.com avec votre numéro de commande. Mon Impression peut apporter des modifications mineures à des fins d'impression et n'est pas responsable des erreurs d'impression dues à des images de mauvaise qualité. En soumettant votre illustration, vous nous accordez une licence non exclusive pour utiliser votre illustration pour l'exécution de la commande.",
     "checkbox": "Je comprends et accepte les conditions générales",
     "confirmButton": "COMMANDER MAINTENANT"
   }

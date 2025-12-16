@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { z } from "zod";
 import { calculatePrice, ProductId } from "@/lib/product-pricing";
+import { DELIVERY_CONFIG } from "@/data/catalog";
 
 export async function GET() {
   const { data, error } = await supabase
@@ -39,16 +40,19 @@ const orderSchema = z.object({
   sidesCount: z.number().int().positive().optional(),
   description: z.string().optional(),
   name: z.string().optional(),
-  shipping: z
-    .object({
-      address: z.string().min(1, "Address is required"),
-      city: z.string().min(1, "City is required"),
-      province: z.string().min(1, "Province is required"),
-      postalCode: z.string().min(1, "Postal code is required"),
-      country: z.string().min(1, "Country is required"),
-      notes: z.string().optional(),
-    })
-    .optional(),
+  delivery: z.object({
+    type: z.enum(["delivery", "pickup"]),
+    address: z
+      .object({
+        street: z.string().min(1, "Address is required"),
+        city: z.string().min(1, "City is required"),
+        province: z.string().min(1, "Province is required"),
+        postalCode: z.string().min(1, "Postal code is required"),
+        country: z.string().min(1, "Country is required"),
+        notes: z.string().optional(),
+      })
+      .optional(),
+  }),
 });
 
 export async function POST(req: NextRequest) {
@@ -80,7 +84,7 @@ export async function POST(req: NextRequest) {
       sidesCount,
       description,
       name,
-      shipping,
+      delivery,
     } = validationResult.data;
 
     if (
@@ -96,8 +100,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Calculate price on backend for security
-    const calculatedPrice = calculatePrice({
+    // Calculate product price on backend for security
+    const productPrice = calculatePrice({
       productId: productId as ProductId,
       selectedTariff,
       selectedSize: size,
@@ -105,7 +109,18 @@ export async function POST(req: NextRequest) {
       quantity: quantity || 1,
     });
 
-    const amount = Math.round(calculatedPrice * 100); // Convert to cents
+    // Calculate delivery price
+    let deliveryPrice = 0;
+    if (delivery.type === "delivery") {
+      // Check if order qualifies for free shipping
+      if (productPrice < DELIVERY_CONFIG.freeShippingThreshold) {
+        deliveryPrice = DELIVERY_CONFIG.standardPrice;
+      }
+    }
+    // Pickup is always free
+
+    const totalAmount = productPrice + deliveryPrice;
+    const amount = Math.round(totalAmount * 100); // Convert to cents
 
     // Create comprehensive design data
     const designData = JSON.stringify({
@@ -122,8 +137,14 @@ export async function POST(req: NextRequest) {
       name: name || "",
     });
 
-    // Create shipping data
-    const shippingData = shipping ? JSON.stringify(shipping) : null;
+    // Create delivery data
+    const deliveryData = JSON.stringify({
+      type: delivery.type,
+      price: deliveryPrice,
+      address: delivery.address || null,
+      productPrice,
+      totalAmount,
+    });
 
     const { data, error } = await supabase
       .from("orders")
@@ -133,16 +154,16 @@ export async function POST(req: NextRequest) {
         amount,
         currency: "cad",
         design_url: designData,
-        shipping_address: shippingData,
+        shipping_address: deliveryData,
       })
       .select("id, amount")
       .single();
     if (error)
       return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json({ orderId: data.id, amount: data.amount });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return NextResponse.json(
-      { error: e?.message || "Erreur serveur" },
+      { error: e instanceof Error ? e.message : "Erreur serveur" },
       { status: 500 },
     );
   }

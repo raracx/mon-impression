@@ -116,11 +116,25 @@ export default async function CataloguePage({
       <section className="card p-6">
         <h2 className="section-title mb-2">{t("shippingTitle")}</h2>
         <p className="text-brand-gray-dark text-sm">
-          {t("shippingPrice", {
-            price: SHIPPING.price,
-            freeFrom: SHIPPING.freeFrom,
-          })}
+          Livraison : 15$ (gratuite à partir de 100$) | Ramassage gratuit à
+          notre local
         </p>
+        <div className="mt-3 p-3 bg-brand-gray-lighter rounded-lg">
+          <div className="text-sm font-medium text-brand-gray-dark">
+            📍 Adresse de ramassage :
+          </div>
+          <div className="text-sm text-brand-gray-dark mt-1">
+            Mon Impression
+            <br />
+            123 Rue Principal
+            <br />
+            Montréal, QC H1A 1A1
+            <br />
+            <span className="text-xs opacity-75">
+              Lun-Ven 9h-17h, Sam 10h-16h
+            </span>
+          </div>
+        </div>
         <ul className="mt-2 text-sm list-disc ml-5 text-brand-gray-dark">
           {(isFr ? SHIPPING.careFr : SHIPPING.careEn).map((c) => (
             <li key={c}>{c}</li>

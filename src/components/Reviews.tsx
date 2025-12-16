@@ -177,7 +177,9 @@ export default function Reviews() {
               <p className="mt-4 text-brand-gray-dark text-sm leading-relaxed">
                 {r.text}
               </p>
-              <div className="mt-4 font-semibold text-brand-black">{r.name}</div>
+              <div className="mt-4 font-semibold text-brand-black">
+                {r.name}
+              </div>
               <div className="mt-2 flex justify-center gap-1 text-navy">
                 {Array.from({ length: r.rating || 5 }).map((_, i) => (
                   <FaStar key={i} />

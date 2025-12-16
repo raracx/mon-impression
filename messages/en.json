@@ -20,7 +20,7 @@
     "company": "Mon Impression",
     "address": "Saint-Lin–Laurentides, QC",
     "phone": "514-677-2809 | 514-659-1137",
-    "email": "contact@monimpression.com",
+    "email": "impression.info@gmail.com",
     "facebook": "Our Facebook Page",
     "information": "Information",
     "about": "About",
@@ -239,7 +239,7 @@
   },
   "contact": {
     "title": "Contact us",
-    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 | 514-659-1137 — contact@monimpression.com",
+    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 | 514-659-1137 — impression.info@gmail.com",
     "mapTitle": "Map",
     "form": {
       "name": "Full name",
@@ -280,13 +280,13 @@
     },
     "section5": {
       "title": "5. Your Rights",
-      "content": "You have the right to access, correct, or delete your personal information. To exercise these rights, contact us at contact@monimpression.com."
+      "content": "You have the right to access, correct, or delete your personal information. To exercise these rights, contact us at impression.info@gmail.com."
     },
     "section6": {
       "title": "6. Cookies",
       "content": "Our site uses cookies to improve your browsing experience and analyze site usage. You can disable cookies in your browser settings."
     },
-    "contact": "For any questions regarding this policy, contact us at contact@monimpression.com or at 514-677-2809 | 514-659-1137."
+    "contact": "For any questions regarding this policy, contact us at impression.info@gmail.com or at 514-677-2809 | 514-659-1137."
   },
   "terms": {
     "title": "Terms of Use",
@@ -319,7 +319,7 @@
       "title": "7. Limitation of Liability",
       "content": "Mon Impression is not responsible for delivery delays caused by third-party carriers, events beyond our control, or errors in delivery information provided by the customer."
     },
-    "contact": "For any questions regarding these terms, contact us at contact@monimpression.com or by phone at 514-677-2809 | 514-659-1137."
+    "contact": "For any questions regarding these terms, contact us at impression.info@gmail.com or by phone at 514-677-2809 | 514-659-1137."
   },
   "success": {
     "title": "Thank you for your purchase!",
@@ -358,7 +358,7 @@
   "personnaliser": {
     "title": "{product}",
     "subtitle": "Add text, import an image, apply your styles, then order.",
-    "emailPlaceholder": "Your email",
+    "emailPlaceholder": "impression.info@gmail.com",
     "emailLabel": "Email Address",
     "orderNow": "Order now",
     "loading": "Loading…",
@@ -368,6 +368,38 @@
     "paymentNote": "Payment is processed by Stripe. A preview of your design will be sent with the order.",
     "errorOrder": "Error creating order",
     "errorStripe": "Stripe error",
+    "price": "Price",
+    "customization": {
+      "none": "No customization",
+      "oneSide": "✓ 1 side customized",
+      "twoSides": "✓ 2 sides customized",
+      "fullPrint": "✓ Full print (3+ sides)"
+    },
+    "formatsAvailable": "Available formats",
+    "size": "Size",
+    "format": "Format",
+    "quantity": "Qty",
+    "contactShippingTitle": "Contact & Shipping Details",
+    "email": "Email *",
+    "address": "Street Address *",
+    "city": "City *",
+    "province": "Province *",
+    "postalCode": "Postal Code *",
+    "country": "Country *",
+    "notes": "Delivery Notes (Optional)",
+    "addressPlaceholder": "123 Main Street",
+    "cityPlaceholder": "Toronto",
+    "provincePlaceholder": "ON",
+    "postalCodePlaceholder": "A1A 1A1",
+    "countryPlaceholder": "Canada",
+    "notesPlaceholder": "Apartment number, special instructions, etc.",
+    "helpTitle": "💡 Need help?",
+    "help": {
+      "upload": "• Upload your own image",
+      "designs": "• Choose a design from the Designs tab",
+      "contact": "• Need modifications? Contact us at impression.info@gmail.com"
+    },
+    "errorNoCustomization": "Please customize at least one side of the product",
     "pricing": {
       "title": "Pricing",
       "choose": "Choose an option",
@@ -426,7 +458,7 @@
       "delete": "Delete"
     },
     "properties": {
-    "editTextLabel": "Edit text",
+      "editTextLabel": "Edit text",
       "font": "Font",
       "size": "Size",
       "color": "Color",
@@ -469,7 +501,7 @@
   },
   "termsModal": {
     "title": "Confirmation",
-    "message": "By uploading your illustration or logo, you confirm that you have the legal right to use it and accept full responsibility for its content. Ensure it does not infringe on third-party rights and is free of offensive content. For best results, send your illustration by email to contact@monimpression.com with your order number. Mon Impression may make minor modifications for printing purposes and is not responsible for printing errors due to poor quality images. By submitting your illustration, you grant us a non-exclusive license to use your illustration for order fulfillment.",
+    "message": "By uploading your illustration or logo, you confirm that you have the legal right to use it and accept full responsibility for its content. Ensure it does not infringe on third-party rights and is free of offensive content. For best results, send your illustration by email to impression.info@gmail.com with your order number. Mon Impression may make minor modifications for printing purposes and is not responsible for printing errors due to poor quality images. By submitting your illustration, you grant us a non-exclusive license to use your illustration for order fulfillment.",
     "checkbox": "I understand and accept the general terms and conditions",
     "confirmButton": "ORDER NOW"
   }

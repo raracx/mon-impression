@@ -328,10 +328,10 @@ export const SHIPPING = {
   price: "12,99 $",
   freeFrom: "100 $",
   careFr: [
-    "Lavage à l’eau froide, cycle délicat",
+    "Lavage à l'eau froide, cycle délicat",
     "Ne pas javelliser",
     "Séchage à basse température",
-    "Repasser à l’envers si nécessaire",
+    "Repasser à l'envers si nécessaire",
   ],
   careEn: [
     "Cold wash, gentle cycle",
@@ -339,6 +339,19 @@ export const SHIPPING = {
     "Tumble dry low",
     "Iron inside out if needed",
   ],
+};
+
+export const DELIVERY_CONFIG = {
+  standardPrice: 15.0, // $15 delivery fee
+  freeShippingThreshold: 100.0, // Free delivery over $100
+  pickupAddress: {
+    name: "Mon Impression",
+    street: "123 Rue Principal",
+    city: "Montréal",
+    province: "QC",
+    postalCode: "H1A 1A1",
+    hours: "Lun-Ven 9h-17h, Sam 10h-16h",
+  },
 };
 
 export type MugItem = {

@@ -28,10 +28,7 @@ export default function TermsModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/50"
-        onClick={onClose}
-      ></div>
+      <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
 
       {/* Modal */}
       <div className="relative bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
@@ -87,4 +84,3 @@ export default function TermsModal({
     </div>
   );
 }
-

@@ -29,7 +29,12 @@ type Props = {
   onTogglePan: () => void;
   panMode?: boolean;
   onExport: () => void;
-  products: { id: string; name: string; nameKey?: string; availableSides?: string[] }[];
+  products: {
+    id: string;
+    name: string;
+    nameKey?: string;
+    availableSides?: string[];
+  }[];
   selectedProduct: string;
   onProductChange: (product: string) => void;
   productColors: { id: string; name: string; images: Record<string, string> }[];
@@ -45,7 +50,7 @@ export default function Toolbox(props: Props) {
   const [editingText, setEditingText] = React.useState<string>("");
 
   const handleSetSide = (
-    side: "front" | "back" | "left-sleeve" | "right-sleeve"
+    side: "front" | "back" | "left-sleeve" | "right-sleeve",
   ) => {
     setActiveSide(side);
     props.onSetSide(side);
@@ -60,10 +65,17 @@ export default function Toolbox(props: Props) {
   const isTshirt = props.selectedProduct === "tshirt";
   const isHoodie = props.selectedProduct === "hoodie";
   const isCap = props.selectedProduct === "cap";
-  
+
   // Get available sides for the current product
-  const currentProduct = props.products.find(p => p.id === props.selectedProduct);
-  const availableSides = currentProduct?.availableSides || ["front", "back", "left-sleeve", "right-sleeve"];
+  const currentProduct = props.products.find(
+    (p) => p.id === props.selectedProduct,
+  );
+  const availableSides = currentProduct?.availableSides || [
+    "front",
+    "back",
+    "left-sleeve",
+    "right-sleeve",
+  ];
 
   const Thumb = ({ src, label }: { src: string; label: string }) => (
     <div className="flex flex-col items-center gap-2 w-full">
@@ -171,7 +183,7 @@ export default function Toolbox(props: Props) {
                     <Thumb
                       src={
                         props.productColors.find(
-                          (c) => c.id === props.selectedColor
+                          (c) => c.id === props.selectedColor,
                         )?.images.front || "/Products/BlackTShirtFront.png"
                       }
                       label={t("sides.front")}
@@ -196,7 +208,7 @@ export default function Toolbox(props: Props) {
                     <Thumb
                       src={
                         props.productColors.find(
-                          (c) => c.id === props.selectedColor
+                          (c) => c.id === props.selectedColor,
                         )?.images.back || "/Products/BlackTShirtBack.png"
                       }
                       label={t("sides.back")}
@@ -221,7 +233,7 @@ export default function Toolbox(props: Props) {
                     <Thumb
                       src={
                         props.productColors.find(
-                          (c) => c.id === props.selectedColor
+                          (c) => c.id === props.selectedColor,
                         )?.images["left-sleeve"] ||
                         "/Products/BlackTShirtLeftSide.png"
                       }
@@ -247,7 +259,7 @@ export default function Toolbox(props: Props) {
                     <Thumb
                       src={
                         props.productColors.find(
-                          (c) => c.id === props.selectedColor
+                          (c) => c.id === props.selectedColor,
                         )?.images["right-sleeve"] ||
                         "/Products/BlackTShirtRightSide.png"
                       }

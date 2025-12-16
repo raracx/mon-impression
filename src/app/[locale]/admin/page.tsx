@@ -9,6 +9,7 @@ type Order = {
   currency: string;
   status: string;
   design_url?: string | null;
+  shipping_address?: string | null;
   created_at: string;
 };
 
@@ -48,6 +49,7 @@ export default function AdminPage() {
               <th className="p-3">{t("table.date")}</th>
               <th className="p-3">{t("table.customer")}</th>
               <th className="p-3">{t("table.amount")}</th>
+              <th className="p-3">Livraison</th>
               <th className="p-3">{t("table.status")}</th>
               <th className="p-3">{t("table.design")}</th>
               <th className="p-3"></th>
@@ -56,52 +58,90 @@ export default function AdminPage() {
           <tbody>
             {loading && (
               <tr>
-                <td className="p-3" colSpan={6}>
+                <td className="p-3" colSpan={7}>
                   {t("loading")}
                 </td>
               </tr>
             )}
-            {orders.map((o) => (
-              <tr key={o.id} className="border-t">
-                <td className="p-3">
-                  {new Date(o.created_at).toLocaleString()}
-                </td>
-                <td className="p-3">{o.email}</td>
-                <td className="p-3">
-                  {(o.amount / 100).toFixed(2)} {o.currency.toUpperCase()}
-                </td>
-                <td className="p-3">{o.status}</td>
-                <td className="p-3">
-                  {o.design_url ? (
-                    <a
-                      href={o.design_url}
-                      target="_blank"
-                      className="text-slate-900 underline"
-                    >
-                      {t("download")}
-                    </a>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-                <td className="p-3">
-                  <div className="flex gap-2">
-                    <button
-                      className="btn-primary"
-                      onClick={() => setStatus(o.id, "fulfilled")}
-                    >
-                      {t("markFulfilled")}
-                    </button>
-                    <button
-                      className="btn-primary"
-                      onClick={() => setStatus(o.id, "failed")}
-                    >
-                      {t("cancel")}
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {orders.map((o) => {
+              let deliveryInfo: {
+                type: string;
+                price: number;
+                address?: { city: string; province: string };
+              } = { type: "pickup", price: 0 };
+              try {
+                if (o.shipping_address) {
+                  deliveryInfo = JSON.parse(o.shipping_address);
+                }
+              } catch (e) {
+                console.error("Failed to parse delivery info:", e);
+              }
+
+              return (
+                <tr key={o.id} className="border-t">
+                  <td className="p-3">
+                    {new Date(o.created_at).toLocaleString()}
+                  </td>
+                  <td className="p-3">{o.email}</td>
+                  <td className="p-3">
+                    {(o.amount / 100).toFixed(2)} {o.currency.toUpperCase()}
+                  </td>
+                  <td className="p-3">
+                    <div className="text-xs">
+                      <div className="font-medium">
+                        {deliveryInfo.type === "pickup"
+                          ? "📦 Pickup"
+                          : "🚚 Delivery"}
+                      </div>
+                      {deliveryInfo.type === "delivery" && (
+                        <div className="text-gray-600">
+                          ${deliveryInfo.price?.toFixed(2) || "0.00"}
+                          {deliveryInfo.address && (
+                            <div className="mt-1">
+                              {deliveryInfo.address.city},{" "}
+                              {deliveryInfo.address.province}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {deliveryInfo.type === "pickup" && (
+                        <div className="text-gray-600">Free</div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="p-3">{o.status}</td>
+                  <td className="p-3">
+                    {o.design_url ? (
+                      <a
+                        href={o.design_url}
+                        target="_blank"
+                        className="text-slate-900 underline"
+                      >
+                        {t("download")}
+                      </a>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                  <td className="p-3">
+                    <div className="flex gap-2">
+                      <button
+                        className="btn-primary"
+                        onClick={() => setStatus(o.id, "fulfilled")}
+                      >
+                        {t("markFulfilled")}
+                      </button>
+                      <button
+                        className="btn-primary"
+                        onClick={() => setStatus(o.id, "failed")}
+                      >
+                        {t("cancel")}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

@@ -20,16 +20,20 @@ const gallery = [
 
 export const metadata = { title: "Tasses & Gobelets — Mon Impression" };
 
-export default async function TassesPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function TassesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const isFr = locale === 'fr';
-  const t = await getTranslations('mugs');
+  const isFr = locale === "fr";
+  const t = await getTranslations("mugs");
   return (
     <div className="container-page py-10 space-y-10">
       <header className="text-center">
-        <h1 className="text-2xl md:text-3xl font-semibold">{t('title')}</h1>
-        <p className="text-brand-gray-dark mt-2">{t('subtitle')}</p>
+        <h1 className="text-2xl md:text-3xl font-semibold">{t("title")}</h1>
+        <p className="text-brand-gray-dark mt-2">{t("subtitle")}</p>
       </header>
 
       <section className="card p-4 overflow-hidden">
@@ -38,7 +42,7 @@ export default async function TassesPage({ params }: { params: Promise<{ locale:
             <img
               key={src}
               src={src}
-              alt={t('galleryAlt')}
+              alt={t("galleryAlt")}
               className="snap-start rounded-md h-56 w-auto object-cover"
             />
           ))}
@@ -48,15 +52,19 @@ export default async function TassesPage({ params }: { params: Promise<{ locale:
       <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {MUGS.map((m) => (
           <article key={m.slug} className="card p-6">
-            <h2 className="font-semibold text-lg">{isFr ? m.titleFr : m.titleEn}</h2>
-            <p className="text-brand-gray-dark text-sm mt-1">{isFr ? m.descriptionFr : m.descriptionEn}</p>
+            <h2 className="font-semibold text-lg">
+              {isFr ? m.titleFr : m.titleEn}
+            </h2>
+            <p className="text-brand-gray-dark text-sm mt-1">
+              {isFr ? m.descriptionFr : m.descriptionEn}
+            </p>
             <ul className="mt-3 text-sm list-disc ml-5 text-brand-gray-dark">
               {(isFr ? m.bulletsFr : m.bulletsEn).map((b) => (
                 <li key={b}>{b}</li>
               ))}
             </ul>
             <div className="mt-3 text-sm">
-              <span className="font-semibold">{t('priceLabel')}</span> {m.price}
+              <span className="font-semibold">{t("priceLabel")}</span> {m.price}
             </div>
           </article>
         ))}

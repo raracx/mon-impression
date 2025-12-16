@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     type: "website",
     images: ["/Logo.png"],
   },
-  metadataBase: new URL("https://monimpression.com"),
+  metadataBase: new URL("https://monimpression.ca"),
 };
 
 export function generateStaticParams() {

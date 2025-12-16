@@ -21,17 +21,21 @@ export async function sendOrderConfirmationEmail(
     amount: number;
     designs: Record<string, string>;
     customizedSides: string[];
-    shipping?: {
-      address: string;
-      city: string;
-      province: string;
-      postalCode: string;
-      country: string;
-      notes?: string;
+    delivery?: {
+      type: "delivery" | "pickup";
+      price: number;
+      address?: {
+        street: string;
+        city: string;
+        province: string;
+        postalCode: string;
+        country: string;
+        notes?: string;
+      };
     };
   },
 ) {
-  const { orderId, productName, quantity, amount, customizedSides, shipping } =
+  const { orderId, productName, quantity, amount, customizedSides, delivery } =
     orderDetails;
 
   const mailOptions = {
@@ -86,46 +90,71 @@ export async function sendOrderConfirmationEmail(
                   <span class="detail-value total">$${(amount / 100).toFixed(2)} CAD</span>
                 </div>
               </div>
-              ${
-                shipping
-                  ? `
-              <h2 style="margin-top: 30px;">Shipping Address</h2>
+              <h2 style="margin-top: 30px;">Delivery Information</h2>
               <div class="order-details">
                 <div class="detail-row">
-                  <span class="detail-label">Address:</span>
-                  <span class="detail-value">${shipping.address}</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">City:</span>
-                  <span class="detail-value">${shipping.city}</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">Province:</span>
-                  <span class="detail-value">${shipping.province}</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">Postal Code:</span>
-                  <span class="detail-value">${shipping.postalCode}</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">Country:</span>
-                  <span class="detail-value">${shipping.country}</span>
+                  <span class="detail-label">Delivery Type:</span>
+                  <span class="detail-value">${delivery?.type === "pickup" ? "📦 Pickup (Free)" : "🚚 Delivery"}</span>
                 </div>
                 ${
-                  shipping.notes
+                  delivery?.type === "delivery"
                     ? `
                 <div class="detail-row">
-                  <span class="detail-label">Delivery Notes:</span>
-                  <span class="detail-value">${shipping.notes}</span>
+                  <span class="detail-label">Delivery Fee:</span>
+                  <span class="detail-value">$${delivery.price?.toFixed(2) || "15.00"}</span>
                 </div>
                 `
                     : ""
                 }
+                ${
+                  delivery?.address
+                    ? `
+                <div class="detail-row">
+                  <span class="detail-label">Address:</span>
+                  <span class="detail-value">${delivery.address.street}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">City:</span>
+                  <span class="detail-value">${delivery.address.city}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Province:</span>
+                  <span class="detail-value">${delivery.address.province}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Postal Code:</span>
+                  <span class="detail-value">${delivery.address.postalCode}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Country:</span>
+                  <span class="detail-value">${delivery.address.country}</span>
+                </div>
+                ${
+                  delivery.address.notes
+                    ? `
+                <div class="detail-row">
+                  <span class="detail-label">Delivery Notes:</span>
+                  <span class="detail-value">${delivery.address.notes}</span>
+                </div>
+                `
+                    : ""
+                }
+                `
+                    : delivery?.type === "pickup"
+                      ? `
+                <div class="detail-row">
+                  <span class="detail-label">Pickup Address:</span>
+                  <span class="detail-value">Mon Impression<br>123 Rue Principal<br>Montréal, QC H1A 1A1</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Pickup Hours:</span>
+                  <span class="detail-value">Lun-Ven 9h-17h, Sam 10h-16h</span>
+                </div>
+                `
+                      : ""
+                }
               </div>
-              `
-                  : ""
-              }
-              <p>We're processing your custom order and will notify you once it's ready for shipping.</p>
+              We're processing your custom order and will notify you once it's ready ${delivery?.type === "pickup" ? "for pickup" : "for delivery"}.
               <p>If you have any questions, please don't hesitate to contact us.</p>
             </div>
             <div class="footer">
@@ -151,13 +180,17 @@ export async function sendAdminNotificationEmail(orderDetails: {
   customizedSides: string[];
   size?: string;
   color?: string;
-  shipping?: {
-    address: string;
-    city: string;
-    province: string;
-    postalCode: string;
-    country: string;
-    notes?: string;
+  delivery?: {
+    type: "delivery" | "pickup";
+    price: number;
+    address?: {
+      street: string;
+      city: string;
+      province: string;
+      postalCode: string;
+      country: string;
+      notes?: string;
+    };
   };
 }) {
   const {
@@ -169,7 +202,7 @@ export async function sendAdminNotificationEmail(orderDetails: {
     customizedSides,
     size,
     color,
-    shipping,
+    delivery,
   } = orderDetails;
 
   const adminEmail = process.env.ADMIN_EMAIL;
@@ -237,41 +270,66 @@ export async function sendAdminNotificationEmail(orderDetails: {
                   <span class="detail-value"><strong>$${(amount / 100).toFixed(2)} CAD</strong></span>
                 </div>
               </div>
-              ${
-                shipping
-                  ? `
-              <h2>Shipping Address</h2>
+              <h2>Delivery Information</h2>
               <div class="order-details">
                 <div class="detail-row">
-                  <span class="detail-label">Address:</span>
-                  <span class="detail-value">${shipping.address}</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">City:</span>
-                  <span class="detail-value">${shipping.city}, ${shipping.province}</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">Postal Code:</span>
-                  <span class="detail-value">${shipping.postalCode}</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">Country:</span>
-                  <span class="detail-value">${shipping.country}</span>
+                  <span class="detail-label">Delivery Type:</span>
+                  <span class="detail-value">${delivery?.type === "pickup" ? "📦 Pickup (Free)" : "🚚 Delivery"}</span>
                 </div>
                 ${
-                  shipping.notes
+                  delivery?.type === "delivery"
                     ? `
                 <div class="detail-row">
-                  <span class="detail-label">Delivery Notes:</span>
-                  <span class="detail-value">${shipping.notes}</span>
+                  <span class="detail-label">Delivery Fee:</span>
+                  <span class="detail-value">$${delivery.price?.toFixed(2) || "15.00"}</span>
                 </div>
                 `
                     : ""
                 }
+                ${
+                  delivery?.address
+                    ? `
+                <div class="detail-row">
+                  <span class="detail-label">Address:</span>
+                  <span class="detail-value">${delivery.address.street}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">City:</span>
+                  <span class="detail-value">${delivery.address.city}, ${delivery.address.province}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Postal Code:</span>
+                  <span class="detail-value">${delivery.address.postalCode}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Country:</span>
+                  <span class="detail-value">${delivery.address.country}</span>
+                </div>
+                ${
+                  delivery.address.notes
+                    ? `
+                <div class="detail-row">
+                  <span class="detail-label">Delivery Notes:</span>
+                  <span class="detail-value">${delivery.address.notes}</span>
+                </div>
+                `
+                    : ""
+                }
+                `
+                    : delivery?.type === "pickup"
+                      ? `
+                <div class="detail-row">
+                  <span class="detail-label">Pickup Address:</span>
+                  <span class="detail-value">Mon Impression<br>123 Rue Principal<br>Montréal, QC H1A 1A1</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Pickup Hours:</span>
+                  <span class="detail-value">Lun-Ven 9h-17h, Sam 10h-16h</span>
+                </div>
+                `
+                      : ""
+                }
               </div>
-              `
-                  : ""
-              }
               <p><strong>Next Steps:</strong></p>
               <ul>
                 <li>Review the custom design files in the admin dashboard</li>

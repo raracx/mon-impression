@@ -30,7 +30,7 @@ export default function ProductPage() {
   const [showTermsModal, setShowTermsModal] = useState(false);
 
   const [customTshirtImage, setCustomTshirtImage] = useState<string | null>(
-    null
+    null,
   );
   const [specifications, setSpecifications] = useState({
     size: "",
@@ -60,7 +60,7 @@ export default function ProductPage() {
 
   const handleSpecificationsChange = (
     field: keyof typeof specifications,
-    value: string
+    value: string,
   ) => {
     setSpecifications((prev) => ({
       ...prev,
@@ -96,7 +96,7 @@ export default function ProductPage() {
       const json = await res.json();
       if (!res.ok)
         throw new Error(
-          json.error || (isFr ? "Erreur de commande" : "Order error")
+          json.error || (isFr ? "Erreur de commande" : "Order error"),
         );
       const { orderId } = json;
       const pay = await fetch("/api/stripe/checkout", {
@@ -111,7 +111,7 @@ export default function ProductPage() {
       const payJson = await pay.json();
       if (!pay.ok)
         throw new Error(
-          payJson.error || (isFr ? "Erreur de paiement" : "Payment error")
+          payJson.error || (isFr ? "Erreur de paiement" : "Payment error"),
         );
       setLoading(false);
       router.push(payJson.url);
@@ -423,7 +423,7 @@ export default function ProductPage() {
                         </svg>
                         <span>{feature}</span>
                       </li>
-                    )
+                    ),
                   )}
                 </ul>
               </div>
