@@ -126,12 +126,12 @@ export default function Toolbox(props: Props) {
           <h3 className="text-sm font-semibold text-slate-900 mb-3">
             {t("productColor")}
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap sm:flex-wrap gap-2 overflow-x-auto pb-2 sm:pb-0 no-scrollbar mask-linear-fade">
             {props.productColors.map((color) => (
               <button
                 key={color.id}
                 onClick={() => props.onColorChange(color.id)}
-                className="group flex flex-col items-center gap-1 transition-all"
+                className="group flex flex-col items-center gap-1 transition-all shrink-0"
                 title={color.name}
               >
                 <div
@@ -168,10 +168,10 @@ export default function Toolbox(props: Props) {
           <h3 className="text-sm font-semibold text-slate-900 mb-3">
             {t("viewSection")}
           </h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="flex sm:grid sm:grid-cols-2 gap-3 overflow-x-auto pb-2 sm:pb-0 no-scrollbar">
             {availableSides.includes("front") && (
               <button
-                className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
+                className={`shrink-0 w-28 sm:w-auto py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
                   activeSide === "front"
                     ? "border-navy bg-navy-50 text-navy shadow-sm"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
@@ -179,7 +179,7 @@ export default function Toolbox(props: Props) {
                 onClick={() => handleSetSide("front")}
               >
                 {(isTshirt || isHoodie) && hasColorOptions ? (
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
                     <Thumb
                       src={
                         props.productColors.find(
@@ -196,7 +196,7 @@ export default function Toolbox(props: Props) {
             )}
             {availableSides.includes("back") && (
               <button
-                className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
+                className={`shrink-0 w-28 sm:w-auto py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
                   activeSide === "back"
                     ? "border-navy bg-navy-50 text-navy shadow-sm"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
@@ -204,7 +204,7 @@ export default function Toolbox(props: Props) {
                 onClick={() => handleSetSide("back")}
               >
                 {(isTshirt || isHoodie) && hasColorOptions ? (
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
                     <Thumb
                       src={
                         props.productColors.find(
@@ -221,7 +221,7 @@ export default function Toolbox(props: Props) {
             )}
             {availableSides.includes("left-sleeve") && (
               <button
-                className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
+                className={`shrink-0 w-28 sm:w-auto py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
                   activeSide === "left-sleeve"
                     ? "border-navy bg-navy-50 text-navy shadow-sm"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
@@ -229,7 +229,7 @@ export default function Toolbox(props: Props) {
                 onClick={() => handleSetSide("left-sleeve")}
               >
                 {(isTshirt || isHoodie) && hasColorOptions ? (
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
                     <Thumb
                       src={
                         props.productColors.find(
@@ -247,7 +247,7 @@ export default function Toolbox(props: Props) {
             )}
             {availableSides.includes("right-sleeve") && (
               <button
-                className={`py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
+                className={`shrink-0 w-28 sm:w-auto py-2.5 px-3 text-xs font-medium rounded-lg border-2 transition-all ${
                   activeSide === "right-sleeve"
                     ? "border-navy bg-navy-50 text-navy shadow-sm"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
@@ -255,7 +255,7 @@ export default function Toolbox(props: Props) {
                 onClick={() => handleSetSide("right-sleeve")}
               >
                 {(isTshirt || isHoodie) && hasColorOptions ? (
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
                     <Thumb
                       src={
                         props.productColors.find(

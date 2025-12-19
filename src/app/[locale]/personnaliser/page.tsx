@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import CustomizerCanvas, {
   type CustomizerHandle,
   type CanvasItem,
@@ -20,6 +21,11 @@ import {
   ChevronRight,
   Download,
   ShoppingCart,
+  Shirt,
+  Palette,
+  Image as ImageIcon,
+  X,
+  Layers,
 } from "lucide-react";
 
 type TariffOption = "oneSide" | "twoSides" | "fullPrint";
@@ -38,6 +44,7 @@ export default function PersonnaliserPage() {
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<"tools" | "stickers">("tools");
+  const [activeMobilePanel, setActiveMobilePanel] = useState<"product" | "tools" | "stickers" | null>(null);
   const ref = useRef<CustomizerHandle | null>(null);
   const { addItem, updateItem, addAsset, cart } = useCart();
   const [selectedProduct, setSelectedProduct] = useState("tshirt");
@@ -322,18 +329,18 @@ export default function PersonnaliserPage() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-brand-gray-lighter to-white min-h-screen">
+    <div className="bg-gradient-to-br from-brand-gray-lighter to-white min-h-screen pb-20 lg:pb-0">
       {/* Main Content */}
-      <div className="relative flex items-start px-4 py-4 gap-4">
+      <div className="relative flex flex-col lg:flex-row items-center lg:items-start px-0 sm:px-2 lg:px-4 py-0 sm:py-4 gap-0 sm:gap-4">
         {/* Left Info Panel */}
-        <div className="w-80 shrink-0 hidden lg:block">
+        <div className="w-80 shrink-0 hidden lg:block mt-4 lg:mt-0">
           <div className="bg-white border border-brand-gray-light rounded-2xl shadow-lg p-5 space-y-4">
             <div>
               <h1 className="text-lg font-bold text-brand-black">
                 {t("title", {
                   product: tProducts(
                     (products.find((p) => p.id === selectedProduct)
-                      ?.nameKey as string) || "product",
+                      ?.nameKey as string) || "product"
                   ),
                 })}
               </h1>
@@ -366,7 +373,7 @@ export default function PersonnaliserPage() {
                 </p>
                 {(() => {
                   const product = products.find(
-                    (p) => p.id === selectedProduct,
+                    (p) => p.id === selectedProduct
                   );
                   if (!product) return null;
 
@@ -386,7 +393,7 @@ export default function PersonnaliserPage() {
                               <span>{sizeOpt.label}:</span>
                               <span>${sizeOpt.price.toFixed(2)}</span>
                             </div>
-                          ),
+                          )
                         )}
                       </div>
                     );
@@ -469,7 +476,7 @@ export default function PersonnaliserPage() {
                 {/* Size Selection for Clothing or Accessories with sizes */}
                 {(() => {
                   const currentProduct = products.find(
-                    (p) => p.id === selectedProduct,
+                    (p) => p.id === selectedProduct
                   );
                   if (currentProduct?.isClothing) {
                     return (
@@ -509,7 +516,7 @@ export default function PersonnaliserPage() {
                               <option key={sizeOpt.id} value={sizeOpt.id}>
                                 {sizeOpt.label}
                               </option>
-                            ),
+                            )
                           )}
                         </select>
                       </div>
@@ -576,8 +583,8 @@ export default function PersonnaliserPage() {
         </div>
 
         {/* Canvas Area - Centered */}
-        <div className="flex-1 flex justify-center">
-          <div className="pb-8">
+        <div className="flex-none lg:flex-1 flex flex-col items-center w-full max-w-full overflow-hidden">
+          <div className="w-full flex justify-center items-center py-4 lg:py-0 lg:h-full">
             <CustomizerCanvas
               ref={ref}
               baseImage={base}
@@ -588,11 +595,454 @@ export default function PersonnaliserPage() {
               onGarmentColorChange={setGarmentColor}
             />
           </div>
+
+          {/* Mobile Bottom Navigation Bar */}
+          <div className="fixed bottom-4 left-4 right-4 h-16 bg-navy/90 backdrop-blur-md rounded-2xl shadow-2xl flex items-center justify-around z-40 lg:hidden border border-white/10">
+            <button
+              onClick={() =>
+                setActiveMobilePanel(
+                  activeMobilePanel === "product" ? null : "product"
+                )
+              }
+              className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${
+                activeMobilePanel === "product"
+                  ? "text-white bg-white/20"
+                  : "text-white/70 hover:text-white"
+              }`}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{t("productTab")}</span>
+            </button>
+            <button
+              onClick={() =>
+                setActiveMobilePanel(
+                  activeMobilePanel === "tools" ? null : "tools"
+                )
+              }
+              className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${
+                activeMobilePanel === "tools"
+                  ? "text-white bg-white/20"
+                  : "text-white/70 hover:text-white"
+              }`}
+            >
+              <Palette className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{t("toolsTab")}</span>
+            </button>
+            <button
+              onClick={() =>
+                setActiveMobilePanel(
+                  activeMobilePanel === "stickers" ? null : "stickers"
+                )
+              }
+              className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${
+                activeMobilePanel === "stickers"
+                  ? "text-white bg-white/20"
+                  : "text-white/70 hover:text-white"
+              }`}
+            >
+              <ImageIcon className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{t("designsTab")}</span>
+            </button>
+          </div>
+
+          {/* Mobile Slide-up Panels */}
+          <AnimatePresence>
+            {activeMobilePanel && (
+              <>
+                {/* Backdrop */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setActiveMobilePanel(null)}
+                  className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+                />
+
+                {/* Panel */}
+                <motion.div
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "100%" }}
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                  className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.3)] z-50 lg:hidden max-h-[75vh] flex flex-col"
+                >
+                  {/* Drag Handle */}
+                  <div
+                    className="w-full flex justify-center pt-3 pb-1"
+                    onClick={() => setActiveMobilePanel(null)}
+                  >
+                    <div className="w-12 h-1.5 bg-gray-300 rounded-full" />
+                  </div>
+
+                  {/* Header */}
+                  <div className="px-5 py-3 flex items-center justify-between border-b border-gray-100">
+                    <h3 className="text-lg font-bold text-navy">
+                      {activeMobilePanel === "product" && t("productTab")}
+                      {activeMobilePanel === "tools" && t("toolsTab")}
+                      {activeMobilePanel === "stickers" && t("designsTab")}
+                    </h3>
+                    <button
+                      onClick={() => setActiveMobilePanel(null)}
+                      className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                    >
+                      <X className="w-4 h-4 text-gray-600" />
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="overflow-y-auto p-5 pb-24">
+                    {activeMobilePanel === "product" && (
+                      <div className="space-y-6">
+                        <div>
+                          <h2 className="text-xl font-bold text-brand-black">
+                            {tProducts(
+                              (products.find((p) => p.id === selectedProduct)
+                                ?.nameKey as string) || "product"
+                            )}
+                          </h2>
+                          <p className="text-sm text-brand-gray-dark mt-1">
+                            {t("subtitle")}
+                          </p>
+                        </div>
+
+                        {/* Pricing & Tariff Selection */}
+                        <div className="space-y-4">
+                          {(() => {
+                            const product = products.find(
+                              (p) => p.id === selectedProduct
+                            );
+                            if (!product) return null;
+
+                            const showTariffSelector =
+                              shouldUseTariffSelection(product);
+                            const maxSides = product.availableSides.length;
+                            const tariffOptions = [
+                              {
+                                id: "oneSide" as TariffOption,
+                                label: "pricing.options.oneSide",
+                              },
+                              ...(maxSides >= 2
+                                ? [
+                                    {
+                                      id: "twoSides" as TariffOption,
+                                      label: "pricing.options.twoSides",
+                                    },
+                                  ]
+                                : []),
+                              ...(maxSides >= 3
+                                ? [
+                                    {
+                                      id: "fullPrint" as TariffOption,
+                                      label: "pricing.options.fullPrint",
+                                    },
+                                  ]
+                                : []),
+                            ];
+
+                            return (
+                              <div className="bg-navy/5 p-4 rounded-xl border border-navy/10 space-y-4">
+                                <div className="flex items-center justify-between">
+                                  <div className="space-y-1">
+                                    <span className="text-sm font-medium text-brand-gray-dark">
+                                      {t("price")}:
+                                    </span>
+                                    <div className="text-xs text-brand-gray-dark">
+                                      Produit: $
+                                      {calculateProductPrice().toFixed(2)}
+                                    </div>
+                                  </div>
+                                  <div className="text-right">
+                                    <span className="text-2xl font-bold text-navy">
+                                      ${calculateProductPrice().toFixed(2)}
+                                    </span>
+                                    <p className="text-[10px] text-brand-gray-dark mt-1">
+                                      {customizedSidesCount === 0 &&
+                                        t("customization.none")}
+                                      {customizedSidesCount === 1 &&
+                                        t("customization.oneSide")}
+                                      {customizedSidesCount === 2 &&
+                                        t("customization.twoSides")}
+                                      {customizedSidesCount >= 3 &&
+                                        t("customization.fullPrint")}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                {/* Formats Available (Size-based pricing) */}
+                                {product.hasSize && product.sizeOptions && (
+                                  <div className="text-xs text-brand-gray-dark bg-white/50 p-3 rounded-lg border border-navy/5">
+                                    <div className="font-bold mb-2 text-navy">
+                                      {t("formatsAvailable")}:
+                                    </div>
+                                    <div className="space-y-1">
+                                      {(
+                                        product.sizeOptions as SizeOption[]
+                                      ).map((sizeOpt: SizeOption) => (
+                                        <div
+                                          key={sizeOpt.id}
+                                          className="flex justify-between"
+                                        >
+                                          <span>{sizeOpt.label}:</span>
+                                          <span className="font-semibold">
+                                            ${sizeOpt.price.toFixed(2)}
+                                          </span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {showTariffSelector ? (
+                                  <div className="space-y-2">
+                                    <div className="text-xs font-bold text-navy uppercase tracking-wider">
+                                      {t("pricing.title")}
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-2">
+                                      {tariffOptions.map((opt) => (
+                                        <button
+                                          key={opt.id}
+                                          onClick={() =>
+                                            setSelectedTariff(opt.id)
+                                          }
+                                          className={`flex items-center justify-between px-4 py-3 rounded-lg border transition-all ${
+                                            selectedTariff === opt.id
+                                              ? "border-navy bg-white shadow-sm ring-2 ring-navy/10"
+                                              : "border-gray-200 bg-white/50 hover:border-navy/30"
+                                          }`}
+                                        >
+                                          <span className="text-sm font-medium">
+                                            {t(opt.label)}
+                                          </span>
+                                          <span className="font-bold text-navy">
+                                            $
+                                            {product.pricing[opt.id]!.toFixed(
+                                              2
+                                            )}
+                                          </span>
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="space-y-1 pt-2 border-t border-navy/10">
+                                    {tariffOptions.map((opt) => (
+                                      <div
+                                        key={opt.id}
+                                        className="flex justify-between text-xs text-brand-gray-dark"
+                                      >
+                                        <span>{t(opt.label)}:</span>
+                                        <span className="font-semibold">
+                                          ${product.pricing[opt.id]!.toFixed(2)}
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })()}
+                        </div>
+
+                        <div className="space-y-4">
+                          {(() => {
+                            const currentProduct = products.find(
+                              (p) => p.id === selectedProduct
+                            );
+                            if (currentProduct?.isClothing) {
+                              return (
+                                <div>
+                                  <label className="block text-sm font-medium text-brand-gray-dark mb-2">
+                                    {t("size")}
+                                  </label>
+                                  <div className="grid grid-cols-4 gap-2">
+                                    {clothingSizes.map((size) => (
+                                      <button
+                                        key={size}
+                                        onClick={() => setSelectedSize(size)}
+                                        className={`py-2 rounded-lg border font-medium transition-all ${
+                                          selectedSize === size
+                                            ? "border-navy bg-navy text-white"
+                                            : "border-gray-200 text-gray-600 hover:border-navy/50"
+                                        }`}
+                                      >
+                                        {size}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              );
+                            } else if (
+                              currentProduct?.hasSize &&
+                              currentProduct?.sizeOptions
+                            ) {
+                              return (
+                                <div>
+                                  <label className="block text-sm font-medium text-brand-gray-dark mb-2">
+                                    {t("format")}
+                                  </label>
+                                  <select
+                                    value={selectedSize}
+                                    onChange={(e) =>
+                                      setSelectedSize(e.target.value)
+                                    }
+                                    className="w-full border border-brand-gray-light rounded-xl px-4 py-3 text-base"
+                                  >
+                                    {currentProduct.sizeOptions.map(
+                                      (sizeOpt: SizeOption) => (
+                                        <option
+                                          key={sizeOpt.id}
+                                          value={sizeOpt.id}
+                                        >
+                                          {sizeOpt.label}
+                                        </option>
+                                      )
+                                    )}
+                                  </select>
+                                </div>
+                              );
+                            }
+                            return null;
+                          })()}
+
+                          <div>
+                            <label className="block text-sm font-medium text-brand-gray-dark mb-2">
+                              {t("quantity")}
+                            </label>
+                            <div className="flex items-center gap-3 bg-gray-50 w-fit p-1 rounded-2xl border border-gray-100">
+                              <button
+                                onClick={() =>
+                                  setQuantity(Math.max(1, quantity - 1))
+                                }
+                                className="w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-xl text-xl font-medium shadow-sm active:scale-90 transition-transform"
+                              >
+                                −
+                              </button>
+                              <input
+                                type="number"
+                                min="1"
+                                value={quantity}
+                                onChange={(e) =>
+                                  setQuantity(
+                                    Math.max(1, parseInt(e.target.value) || 1)
+                                  )
+                                }
+                                className="w-14 text-center bg-transparent border-none focus:ring-0 text-lg font-bold text-navy"
+                              />
+                              <button
+                                onClick={() => setQuantity(quantity + 1)}
+                                className="w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-xl text-xl font-medium shadow-sm active:scale-90 transition-transform"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3">
+                          <button
+                            onClick={handleAddToCartClick}
+                            disabled={customizedSidesCount === 0 || loading}
+                            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-navy text-white rounded-xl font-bold text-lg shadow-lg shadow-navy/20 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100"
+                          >
+                            <ShoppingCart className="w-6 h-6" />
+                            {loading ? t("loading") : t("addToCart")}
+                          </button>
+                          <p className="text-xs text-brand-gray-dark leading-relaxed text-center">
+                            {t("paymentNote")}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeMobilePanel === "tools" && (
+                      <Toolbox
+                        onAddText={() => {
+                          ref.current?.addText();
+                          setTimeout(updateCustomizedSides, 100);
+                          setActiveMobilePanel(null); // Close panel to see canvas
+                        }}
+                        onUploadImage={(f) => {
+                          ref.current?.addImage(f);
+                          setTimeout(updateCustomizedSides, 100);
+                          setActiveMobilePanel(null);
+                        }}
+                        onColor={(c) => ref.current?.setColor(c)}
+                        onDelete={() => {
+                          ref.current?.deleteSelected();
+                          setTimeout(updateCustomizedSides, 100);
+                        }}
+                        onFontFamily={(f) => ref.current?.setFontFamily(f)}
+                        onFontSize={(s) => ref.current?.setFontSize(s)}
+                        onBold={() => ref.current?.toggleBold()}
+                        onItalic={() => ref.current?.toggleItalic()}
+                        onAlign={(a) => ref.current?.alignText(a)}
+                        onStroke={(c) => ref.current?.setStroke(c)}
+                        onStrokeWidth={(w) => ref.current?.setStrokeWidth(w)}
+                        onDuplicate={() => {
+                          ref.current?.duplicateSelected();
+                          setTimeout(updateCustomizedSides, 100);
+                        }}
+                        onForward={() => ref.current?.bringForward()}
+                        onBackward={() => ref.current?.sendBackward()}
+                        onToggleGrid={() => ref.current?.toggleGrid()}
+                        onSetSide={(s) => {
+                          ref.current?.setSide(s);
+                          setTimeout(updateCustomizedSides, 100);
+                        }}
+                        productId={selectedProduct}
+                        selectedText={
+                          selectedItem?.type === "text"
+                            ? selectedItem.text || ""
+                            : undefined
+                        }
+                        isTextSelected={selectedItem?.type === "text"}
+                        onEditText={(text: string) =>
+                          ref.current?.setSelectedText(text)
+                        }
+                        onZoomIn={() => ref.current?.zoomIn()}
+                        onZoomOut={() => ref.current?.zoomOut()}
+                        onResetZoom={() => ref.current?.resetZoom()}
+                        onTogglePan={() => {
+                          ref.current?.togglePan();
+                          setPanMode((v) => !v);
+                        }}
+                        panMode={panMode}
+                        onExport={() => {}}
+                        products={products.map((p) => ({
+                          ...p,
+                          name: tProducts(p.nameKey),
+                        }))}
+                        selectedProduct={selectedProduct}
+                        onProductChange={setSelectedProduct}
+                        productColors={
+                          products.find((p) => p.id === selectedProduct)
+                            ?.colors || []
+                        }
+                        selectedColor={selectedColor}
+                        onColorChange={setSelectedColor}
+                        onSideChange={setActiveSide}
+                      />
+                    )}
+
+                    {activeMobilePanel === "stickers" && (
+                      <StickersPanel
+                        onPick={(url) => {
+                          ref.current?.addImageFromUrl(url);
+                          setTimeout(updateCustomizedSides, 100);
+                          setActiveMobilePanel(null);
+                        }}
+                      />
+                    )}
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Right Sidebar - Collapsible */}
+        {/* Right Sidebar - Collapsible (Desktop Only) */}
         <div
-          className={`h-[calc(100vh-112px)] w-96 shrink-0 bg-white border border-brand-gray-light rounded-2xl shadow-2xl transform transition-transform duration-300 z-20 overflow-hidden flex flex-col ${
+          className={`hidden lg:flex h-[calc(100vh-112px)] w-96 shrink-0 bg-white border border-brand-gray-light rounded-2xl shadow-2xl transform transition-transform duration-300 z-20 overflow-hidden flex-col ${
             rightPanelOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >

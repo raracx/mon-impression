@@ -369,6 +369,7 @@
     "download": "Download",
     "toolsTab": "Tools",
     "designsTab": "Designs",
+    "productTab": "Product",
     "paymentNote": "Payment is processed by Stripe. A preview of your design will be sent with the order.",
     "errorOrder": "Error creating order",
     "errorStripe": "Stripe error",

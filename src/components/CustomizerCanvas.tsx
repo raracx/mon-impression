@@ -32,6 +32,14 @@ const loadImage = (src: string): Promise<HTMLImageElement> => {
   });
 };
 
+// Helper to generate unique IDs (fallback for non-secure contexts like IP access)
+const generateId = () => {
+  if (typeof window !== "undefined" && window.crypto && window.crypto.randomUUID) {
+    return window.crypto.randomUUID();
+  }
+  return Math.random().toString(36).substring(2, 11) + Date.now().toString(36);
+};
+
 // Render a specific side to image without UI state changes
 const renderSideToImage = async (
   sideName: string,
@@ -366,7 +374,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
       ref,
       () => ({
         addText: () => {
-          const id = crypto.randomUUID();
+          const id = generateId();
           setItems((arr) =>
             arr.concat({
               id,
@@ -386,7 +394,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
         addImage: (file: File) => {
           const reader = new FileReader();
           reader.onload = () => {
-            const id = crypto.randomUUID();
+            const id = generateId();
             setItems((arr) =>
               arr.concat({
                 id,
@@ -408,7 +416,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           const safe = isRemote
             ? `/api/img?url=${encodeURIComponent(url)}`
             : url;
-          const id = crypto.randomUUID();
+          const id = generateId();
           setItems((arr) =>
             arr.concat({
               id,
@@ -506,7 +514,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           ),
         duplicateSelected: () => {
           if (!selected) return;
-          const id = crypto.randomUUID();
+          const id = generateId();
           setItems((arr) =>
             arr.concat({
               ...selected,
@@ -788,7 +796,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           e.preventDefault();
           const s = items.find((i) => i.id === selectedId);
           if (s) {
-            const id = crypto.randomUUID();
+            const id = generateId();
             setItems((arr) =>
               arr.concat({ ...s, id, x: (s.x || 0) + 20, y: (s.y || 0) + 20 })
             );
@@ -889,8 +897,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
     };
 
     return (
-      <div ref={containerRef} className="flex justify-center">
-        <div className="bg-white rounded-2xl shadow-xl ring-1 ring-slate-200 p-3 relative overflow-hidden">
+      <div ref={containerRef} className="flex justify-center w-full">
+        <div className="bg-white sm:rounded-2xl shadow-none sm:shadow-xl ring-0 sm:ring-1 sm:ring-slate-200 p-0 sm:p-3 relative overflow-hidden w-full max-w-[560px]">
           <div
             className="transition-transform duration-700 ease-in-out"
             style={{ transform: `rotateY(${rotation}deg)` }}

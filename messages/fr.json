@@ -369,6 +369,7 @@
     "download": "Télécharger",
     "toolsTab": "Outils",
     "designsTab": "Designs",
+    "productTab": "Produit",
     "paymentNote": "Le paiement est traité par Stripe. Un aperçu de votre design sera envoyé avec la commande.",
     "errorOrder": "Erreur lors de la création de la commande",
     "errorStripe": "Erreur Stripe",
