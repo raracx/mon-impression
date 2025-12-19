@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "../../styles/globals.css";
 import { Poppins } from "next/font/google";
 import Header from "@/components/Header";
@@ -32,6 +32,14 @@ export const metadata: Metadata = {
     images: ["/Logo.png"],
   },
   metadataBase: new URL("https://monimpression.ca"),
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: '#1e3a5f',
 };
 
 export function generateStaticParams() {

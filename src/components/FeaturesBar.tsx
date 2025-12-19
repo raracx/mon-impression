@@ -10,18 +10,18 @@ export default async function FeaturesBar() {
   ];
 
   return (
-    <section className="container-page grid sm:grid-cols-3 gap-6 my-12">
+    <section className="container-page grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 my-8 sm:my-12">
       {items.map(({ icon: Icon, title }, index) => (
         <div
           key={index}
-          className="group card p-6 flex items-center gap-4 hover:bg-gradient-to-br hover:from-navy-50 hover:to-white cursor-pointer border-l-4 border-transparent hover:border-navy transition-all duration-300"
+          className="group card p-4 sm:p-6 flex items-center gap-3 sm:gap-4 hover:bg-gradient-to-br hover:from-navy-50 hover:to-white cursor-pointer border-l-4 border-transparent hover:border-navy transition-all duration-300"
           style={{ animationDelay: `${index * 100}ms` }}
         >
-          <div className="text-navy text-2xl p-3 rounded-xl bg-navy-50 group-hover:bg-navy group-hover:text-white transition-all duration-300 group-hover:rotate-6">
+          <div className="text-navy text-xl sm:text-2xl p-2 sm:p-3 rounded-xl bg-navy-50 group-hover:bg-navy group-hover:text-white transition-all duration-300 group-hover:rotate-6 flex-shrink-0">
             <Icon />
           </div>
-          <div>
-            <div className="font-bold text-brand-black group-hover:text-navy transition-colors">
+          <div className="min-w-0">
+            <div className="font-bold text-brand-black group-hover:text-navy transition-colors text-sm sm:text-base">
               {title}
             </div>
           </div>

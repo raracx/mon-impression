@@ -21,6 +21,28 @@ body,
 
 body {
   @apply bg-white text-brand-black antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 640px) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Header specific mobile optimizations */
+  header .container-page {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Better scrolling on iOS */
+* {
+  -webkit-overflow-scrolling: touch;
 }
 
 a {
@@ -42,15 +64,15 @@ a.btn-outline {
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-navy to-navy-light text-white px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm font-semibold hover:from-navy-dark hover:to-navy transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap overflow-hidden text-ellipsis max-w-full;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-navy to-navy-light text-white px-3 py-2 sm:px-4 sm:py-2 lg:px-6 lg:py-3 text-xs sm:text-sm font-semibold hover:from-navy-dark hover:to-navy transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap overflow-hidden text-ellipsis max-w-full;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-gray-dark text-white px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm font-semibold hover:bg-brand-black transition-all duration-300 shadow-md hover:shadow-lg;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-gray-dark text-white px-3 py-2 sm:px-4 sm:py-2 lg:px-6 lg:py-3 text-xs sm:text-sm font-semibold hover:bg-brand-black transition-all duration-300 shadow-md hover:shadow-lg;
 }
 
 .btn-outline {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg border-2 border-navy text-navy px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm font-semibold hover:bg-navy hover:text-white transition-all duration-300;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border-2 border-navy text-navy px-3 py-2 sm:px-4 sm:py-2 lg:px-6 lg:py-3 text-xs sm:text-sm font-semibold hover:bg-navy hover:text-white transition-all duration-300;
 }
 
 .card {

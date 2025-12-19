@@ -14,7 +14,9 @@
     },
     "search": "Search",
     "account": "Account",
-    "cart": "Cart"
+    "cart": "Cart",
+    "menu": "Menu",
+    "language": "Language"
   },
   "footer": {
     "company": "Mon Impression",
