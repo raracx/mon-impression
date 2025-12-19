@@ -124,7 +124,7 @@ export default function Toolbox(props: Props) {
       {hasColorOptions && (
         <div>
           <h3 className="text-sm font-semibold text-slate-900 mb-3">
-            Product Color
+            {t("productColor")}
           </h3>
           <div className="flex flex-wrap gap-2">
             {props.productColors.map((color) => (
@@ -183,7 +183,7 @@ export default function Toolbox(props: Props) {
                     <Thumb
                       src={
                         props.productColors.find(
-                          (c) => c.id === props.selectedColor,
+                          (c) => c.id === props.selectedColor
                         )?.images.front || "/Products/BlackTShirtFront.png"
                       }
                       label={t("sides.front")}
@@ -208,7 +208,7 @@ export default function Toolbox(props: Props) {
                     <Thumb
                       src={
                         props.productColors.find(
-                          (c) => c.id === props.selectedColor,
+                          (c) => c.id === props.selectedColor
                         )?.images.back || "/Products/BlackTShirtBack.png"
                       }
                       label={t("sides.back")}
@@ -233,7 +233,7 @@ export default function Toolbox(props: Props) {
                     <Thumb
                       src={
                         props.productColors.find(
-                          (c) => c.id === props.selectedColor,
+                          (c) => c.id === props.selectedColor
                         )?.images["left-sleeve"] ||
                         "/Products/BlackTShirtLeftSide.png"
                       }
@@ -259,7 +259,7 @@ export default function Toolbox(props: Props) {
                     <Thumb
                       src={
                         props.productColors.find(
-                          (c) => c.id === props.selectedColor,
+                          (c) => c.id === props.selectedColor
                         )?.images["right-sleeve"] ||
                         "/Products/BlackTShirtRightSide.png"
                       }

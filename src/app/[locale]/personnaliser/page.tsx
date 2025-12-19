@@ -147,7 +147,7 @@ export default function PersonnaliserPage() {
       basePrice = product.pricing.fullPrint || 0;
     }
 
-    return basePrice * quantity;
+    return basePrice;
   };
 
   const currentPrice = calculateProductPrice();

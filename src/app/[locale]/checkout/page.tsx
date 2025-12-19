@@ -30,7 +30,7 @@ export default function CheckoutPage() {
 
   const subtotal = cart.items
     .filter((item) => selectedItems.includes(item.id))
-    .reduce((sum, item) => sum + item.price, 0);
+    .reduce((sum, item) => sum + item.price * item.quantity, 0);
   const deliveryPrice =
     formData.deliveryType === "delivery" &&
     subtotal < DELIVERY_CONFIG.freeShippingThreshold

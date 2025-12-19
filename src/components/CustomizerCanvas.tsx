@@ -781,13 +781,16 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
           setItems((arr) => arr.filter((i) => i.id !== selectedId));
           setSelectedId(null);
         }
+        if (e.key === "Escape") {
+          setSelectedId(null);
+        }
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "d") {
           e.preventDefault();
           const s = items.find((i) => i.id === selectedId);
           if (s) {
             const id = crypto.randomUUID();
             setItems((arr) =>
-              arr.concat({ ...s, id, x: (s.x || 0) + 20, y: (s.y || 0) + 20 }),
+              arr.concat({ ...s, id, x: (s.x || 0) + 20, y: (s.y || 0) + 20 })
             );
             setSelectedId(id);
           }
@@ -811,7 +814,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
       e.cancelBubble = true;
       const node = e.target;
       setItems((arr) =>
-        arr.map((i) => (i.id === id ? { ...i, x: node.x(), y: node.y() } : i)),
+        arr.map((i) => (i.id === id ? { ...i, x: node.x(), y: node.y() } : i))
       );
     };
 
@@ -834,8 +837,8 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                 height,
                 rotation: node.rotation(),
               }
-            : i,
-        ),
+            : i
+        )
       );
     };
 
@@ -868,7 +871,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             stroke="#e5e7eb"
             strokeWidth={1}
             listening={false}
-          />,
+          />
         );
       }
       for (let y = 0; y <= height; y += step) {
@@ -879,7 +882,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
             stroke="#e5e7eb"
             strokeWidth={1}
             listening={false}
-          />,
+          />
         );
       }
       return lines;
@@ -901,6 +904,12 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
               x={stagePos.x}
               y={stagePos.y}
               draggable={panMode}
+              onClick={(e) => {
+                // Deselect if clicking on empty space (stage background)
+                if (e.target === e.target.getStage()) {
+                  setSelectedId(null);
+                }
+              }}
               {...(panMode && {
                 onDragEnd: (e: any) => {
                   setStagePos({ x: e.target.x(), y: e.target.y() });
@@ -971,7 +980,7 @@ const CustomizerCanvas = forwardRef<CustomizerHandle, Props>(
                       onDragEnd={(e) => onDragEnd(it.id, e)}
                       onTransformEnd={(e) => onTransformEnd(it.id, e.target)}
                     />
-                  ),
+                  )
                 )}
                 {selectedId && <SelectedTransformer />}
               </Layer>

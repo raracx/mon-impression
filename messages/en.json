@@ -18,9 +18,9 @@
   },
   "footer": {
     "company": "Mon Impression",
-    "address": "Saint-Lin–Laurentides, QC",
+    "address": "581 rue Stéphanie, Saint-Lin, Qc J5M 2J5",
     "phone": "514-677-2809 | 514-659-1137",
-    "email": "impression.info@gmail.com",
+    "email": "monimpression.info@gmail.com",
     "facebook": "Our Facebook Page",
     "information": "Information",
     "about": "About",
@@ -42,7 +42,7 @@
     "hero": {
       "title": "The modern custom clothing shop.",
       "subtitle1": "Customize your t-shirts, hoodies and accessories online.",
-      "subtitle2": "Built to last, printed here, delivered everywhere.",
+      "subtitle2": "Built to last, printed here, delivered everywhere in Quebec.",
       "cta": "Launch Studio"
     },
     "popularProducts": "Popular Products",
@@ -239,7 +239,7 @@
   },
   "contact": {
     "title": "Contact us",
-    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 | 514-659-1137 — impression.info@gmail.com",
+    "addressLine": "581 rue Stéphanie, Saint-Lin, Qc J5M 2J5 — By appointment only at 514.659.1137 — monimpression.info@gmail.com",
     "mapTitle": "Map",
     "form": {
       "name": "Full name",
@@ -280,13 +280,13 @@
     },
     "section5": {
       "title": "5. Your Rights",
-      "content": "You have the right to access, correct, or delete your personal information. To exercise these rights, contact us at impression.info@gmail.com."
+      "content": "You have the right to access, correct, or delete your personal information. To exercise these rights, contact us at monimpression.info@gmail.com."
     },
     "section6": {
       "title": "6. Cookies",
       "content": "Our site uses cookies to improve your browsing experience and analyze site usage. You can disable cookies in your browser settings."
     },
-    "contact": "For any questions regarding this policy, contact us at impression.info@gmail.com or at 514-677-2809 | 514-659-1137."
+    "contact": "For any questions regarding this policy, contact us at monimpression.info@gmail.com or at 514-677-2809 | 514-659-1137."
   },
   "terms": {
     "title": "Terms of Use",
@@ -319,7 +319,7 @@
       "title": "7. Limitation of Liability",
       "content": "Mon Impression is not responsible for delivery delays caused by third-party carriers, events beyond our control, or errors in delivery information provided by the customer."
     },
-    "contact": "For any questions regarding these terms, contact us at impression.info@gmail.com or by phone at 514-677-2809 | 514-659-1137."
+    "contact": "For any questions regarding these terms, contact us at monimpression.info@gmail.com or by phone at 514-677-2809 | 514-659-1137."
   },
   "success": {
     "title": "Thank you for your purchase!",
@@ -359,7 +359,7 @@
   "personnaliser": {
     "title": "{product}",
     "subtitle": "Add text, import an image, apply your styles, then order.",
-    "emailPlaceholder": "impression.info@gmail.com",
+    "emailPlaceholder": "monimpression.info@gmail.com",
     "emailLabel": "Email Address",
     "addToCart": "Add to Cart",
     "orderNow": "Order now",
@@ -399,7 +399,7 @@
     "help": {
       "upload": "• Upload your own image",
       "designs": "• Choose a design from the Designs tab",
-      "contact": "• Need modifications? Contact us at impression.info@gmail.com"
+      "contact": "• Need modifications? Contact us at monimpression.info@gmail.com"
     },
     "errorNoCustomization": "Please customize at least one side of the product",
     "pricing": {
@@ -443,6 +443,7 @@
       "darkGray": "Dark Gray",
       "lightGray": "Light Gray"
     },
+    "productColor": "Product Color",
     "sides": {
       "front": "Front",
       "back": "Back",
@@ -503,7 +504,7 @@
   },
   "termsModal": {
     "title": "Confirmation",
-    "message": "By uploading your illustration or logo, you confirm that you have the legal right to use it and accept full responsibility for its content. Ensure it does not infringe on third-party rights and is free of offensive content. For best results, send your illustration by email to impression.info@gmail.com with your order number. Mon Impression may make minor modifications for printing purposes and is not responsible for printing errors due to poor quality images. By submitting your illustration, you grant us a non-exclusive license to use your illustration for order fulfillment.",
+    "message": "By uploading your illustration or logo, you confirm that you have the legal right to use it and accept full responsibility for its content. Ensure it does not infringe on third-party rights and is free of offensive content. For best results, send your illustration by email to monimpression.info@gmail.com with your order number. Mon Impression may make minor modifications for printing purposes and is not responsible for printing errors due to poor quality images. By submitting your illustration, you grant us a non-exclusive license to use your illustration for order fulfillment.",
     "checkbox": "I understand and accept the general terms and conditions",
     "confirmButton": "ORDER NOW"
   },

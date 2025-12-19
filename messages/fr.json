@@ -18,9 +18,9 @@
   },
   "footer": {
     "company": "Mon Impression",
-    "address": "Saint-Lin–Laurentides, QC",
+    "address": "581 rue Stéphanie, Saint-Lin, Qc J5M 2J5",
     "phone": "514-677-2809 | 514-659-1137",
-    "email": "impression.info@gmail.com",
+    "email": "monimpression.info@gmail.com",
     "facebook": "Notre page Facebook",
     "information": "Informations",
     "about": "À propos",
@@ -42,7 +42,7 @@
     "hero": {
       "title": "La boutique du vêtement sur mesure moderne.",
       "subtitle1": "Personnalisez vos t-shirts, hoodies et accessoires en ligne.",
-      "subtitle2": "Conçus pour durer, imprimés ici, livrés partout.",
+      "subtitle2": "Conçus pour durer, imprimés ici, livrés partout au Québec.",
       "cta": "Lancer le studio"
     },
     "popularProducts": "Produits populaires",
@@ -239,7 +239,7 @@
   },
   "contact": {
     "title": "Contactez-nous",
-    "addressLine": "Saint-Lin–Laurentides, QC — 514-677-2809 | 514-659-1137 — impression.info@gmail.com",
+    "addressLine": "581 rue Stéphanie, Saint-Lin, Qc J5M 2J5 — Sur rendez-vous seulement au 514.659.1137 — monimpression.info@gmail.com",
     "mapTitle": "Carte",
     "form": {
       "name": "Nom complet",
@@ -280,13 +280,13 @@
     },
     "section5": {
       "title": "5. Vos droits",
-      "content": "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles. Pour exercer ces droits, contactez-nous à impression.info@gmail.com."
+      "content": "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles. Pour exercer ces droits, contactez-nous à monimpression.info@gmail.com."
     },
     "section6": {
       "title": "6. Cookies",
       "content": "Notre site utilise des cookies pour améliorer votre expérience de navigation et analyser l'utilisation du site. Vous pouvez désactiver les cookies dans les paramètres de votre navigateur."
     },
-    "contact": "Pour toute question concernant cette politique, contactez-nous à impression.info@gmail.com ou au 514-677-2809 | 514-659-1137."
+    "contact": "Pour toute question concernant cette politique, contactez-nous à monimpression.info@gmail.com ou au 514-677-2809 | 514-659-1137."
   },
   "terms": {
     "title": "Conditions d'utilisation",
@@ -319,7 +319,7 @@
       "title": "7. Limitation de Responsabilité",
       "content": "Mon Impression n'est pas responsable des délais de livraison causés par des transporteurs tiers, des événements hors de notre contrôle, ou des erreurs dans les informations de livraison fournies par le client."
     },
-    "contact": "Pour toute question concernant ces conditions, contactez-nous à impression.info@gmail.com ou par téléphone au 514-677-2809 | 514-659-1137."
+    "contact": "Pour toute question concernant ces conditions, contactez-nous à monimpression.info@gmail.com ou par téléphone au 514-677-2809 | 514-659-1137."
   },
   "success": {
     "title": "Merci pour votre achat!",
@@ -359,7 +359,7 @@
   "personnaliser": {
     "title": "{product}",
     "subtitle": "Ajoutez du texte, importez une image, appliquez vos styles, puis commandez.",
-    "emailPlaceholder": "impression.info@gmail.com",
+    "emailPlaceholder": "monimpression.info@gmail.com",
     "emailLabel": "Adresse e-mail",
     "addToCart": "Ajouter au panier",
     "orderNow": "Commander maintenant",
@@ -399,7 +399,7 @@
     "help": {
       "upload": "• Téléversez votre propre image",
       "designs": "• Choisissez un design dans l'onglet Designs",
-      "contact": "• Besoin de modifications ? Contactez-nous à impression.info@gmail.com"
+      "contact": "• Besoin de modifications ? Contactez-nous à monimpression.info@gmail.com"
     },
     "errorNoCustomization": "Veuillez personnaliser au moins un côté du produit",
     "pricing": {
@@ -443,6 +443,7 @@
       "darkGray": "Gris foncé",
       "lightGray": "Gris clair"
     },
+    "productColor": "Couleur du produit",
     "sides": {
       "front": "Avant",
       "back": "Arrière",
@@ -503,7 +504,7 @@
   },
   "termsModal": {
     "title": "Confirmation",
-    "message": "En téléchargeant votre illustration ou votre logo, vous confirmez que vous avez le droit légal de l'utiliser et acceptez l'entière responsabilité de son contenu. Assurez-vous qu'il ne porte pas atteinte aux droits de tiers et qu'il est exempt de contenu offensant. Pour de meilleurs résultats, envoyez votre illustration par e-mail à impression.info@gmail.com avec votre numéro de commande. Mon Impression peut apporter des modifications mineures à des fins d'impression et n'est pas responsable des erreurs d'impression dues à des images de mauvaise qualité. En soumettant votre illustration, vous nous accordez une licence non exclusive pour utiliser votre illustration pour l'exécution de la commande.",
+    "message": "En téléchargeant votre illustration ou votre logo, vous confirmez que vous avez le droit légal de l'utiliser et acceptez l'entière responsabilité de son contenu. Assurez-vous qu'il ne porte pas atteinte aux droits de tiers et qu'il est exempt de contenu offensant. Pour de meilleurs résultats, envoyez votre illustration par e-mail à monimpression.info@gmail.com avec votre numéro de commande. Mon Impression peut apporter des modifications mineures à des fins d'impression et n'est pas responsable des erreurs d'impression dues à des images de mauvaise qualité. En soumettant votre illustration, vous nous accordez une licence non exclusive pour utiliser votre illustration pour l'exécution de la commande.",
     "checkbox": "Je comprends et accepte les conditions générales",
     "confirmButton": "COMMANDER MAINTENANT"
   },
