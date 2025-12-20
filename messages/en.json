@@ -350,6 +350,7 @@
     "colors": {
       "white": "White",
       "black": "Black",
+      "gray": "Gray",
       "navy": "Navy Blue",
       "darkGray": "Dark Gray",
       "lightGray": "Light Gray"
@@ -446,6 +447,13 @@
       "darkGray": "Dark Gray",
       "lightGray": "Light Gray"
     },
+    "colors": {
+      "black": "Black",
+      "white": "White",
+      "gray": "Gray",
+      "lightgray": "Light Gray",
+      "navy": "Navy"
+    },
     "productColor": "Product Color",
     "sides": {
       "front": "Front",
@@ -527,6 +535,14 @@
     "deliveryType": "Delivery Method",
     "pickup": "Pickup",
     "delivery": "Delivery",
+    "pickupAddress": {
+      "name": "Pickup Address",
+      "street": "581 rue Stéphanie",
+      "city": "Saint-Lin",
+      "province": "Qc",
+      "postalCode": "J5M 2J5",
+      "hours": "By appointment only (via SMS at 514-659-1137 or by email)"
+    },
     "street": "Street Address",
     "city": "City",
     "province": "Province",

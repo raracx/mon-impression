@@ -154,7 +154,7 @@ export default function Toolbox(props: Props) {
                       : "text-slate-500 group-hover:text-slate-700"
                   }`}
                 >
-                  {color.name}
+                  {t(`colors.${color.id}`)}
                 </span>
               </button>
             ))}

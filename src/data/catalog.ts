@@ -350,7 +350,8 @@ export const DELIVERY_CONFIG = {
     city: "Saint-Lin",
     province: "Qc",
     postalCode: "J5M 2J5",
-    hours: "Sur rendez-vous seulement au 514.659.1137",
+    hours:
+      "Sur rendez-vous seulement (par SMS au 514-659-1137 ou par courriel)",
   },
 };
 

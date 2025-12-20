@@ -350,6 +350,7 @@
     "colors": {
       "white": "Blanc",
       "black": "Noir",
+      "gray": "Gris",
       "navy": "Bleu marine",
       "darkGray": "Gris foncé",
       "lightGray": "Gris clair"
@@ -446,6 +447,13 @@
       "darkGray": "Gris foncé",
       "lightGray": "Gris clair"
     },
+    "colors": {
+      "black": "Noir",
+      "white": "Blanc",
+      "gray": "Gris",
+      "lightgray": "Gris clair",
+      "navy": "Marine"
+    },
     "productColor": "Couleur du produit",
     "sides": {
       "front": "Avant",
@@ -527,6 +535,14 @@
     "deliveryType": "Méthode de livraison",
     "pickup": "Ramassage",
     "delivery": "Livraison",
+    "pickupAddress": {
+      "name": "Adresse de ramassage",
+      "street": "581 rue Stéphanie",
+      "city": "Saint-Lin",
+      "province": "Qc",
+      "postalCode": "J5M 2J5",
+      "hours": "Sur rendez-vous seulement (par SMS au 514-659-1137 ou par courriel)"
+    },
     "street": "Adresse",
     "city": "Ville",
     "province": "Province",

@@ -157,20 +157,18 @@ export default function CheckoutPage() {
             {formData.deliveryType === "pickup" && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <h3 className="font-semibold text-navy mb-2">
-                  📍 Pickup Location
+                  📍 {t("pickup")}
                 </h3>
                 <div className="text-sm text-brand-gray-dark space-y-1">
                   <p className="font-medium">
-                    {DELIVERY_CONFIG.pickupAddress.name}
+                    {t("pickupAddress.name")}
                   </p>
-                  <p>{DELIVERY_CONFIG.pickupAddress.street}</p>
+                  <p>{t("pickupAddress.street")}</p>
                   <p>
-                    {DELIVERY_CONFIG.pickupAddress.city},{" "}
-                    {DELIVERY_CONFIG.pickupAddress.province}{" "}
-                    {DELIVERY_CONFIG.pickupAddress.postalCode}
+                    {t("pickupAddress.city")}, {t("pickupAddress.province")} {t("pickupAddress.postalCode")}
                   </p>
                   <p className="mt-2 text-navy font-medium">
-                    ⏰ Hours: {DELIVERY_CONFIG.pickupAddress.hours}
+                    ⏰ {t("pickupAddress.hours")}
                   </p>
                 </div>
               </div>
