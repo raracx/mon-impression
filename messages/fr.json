@@ -63,10 +63,10 @@
           "description": "Expliquez-nous votre projet (quantités, délais, besoins) et nous revenons avec un prix détaillé.",
           "cta": "Demander une soumission"
         },
-        "catalog": {
-          "title": "Idées et modèles",
-          "description": "Parcourez le catalogue pour voir ce que nous imprimons : hoodies, t-shirts, tasses et plus.",
-          "cta": "Voir le catalogue"
+        "facebook": {
+          "title": "Suivez-nous",
+          "description": "Découvrez nos dernières créations et actualités sur Facebook.",
+          "cta": "Visitez notre page Facebook"
         }
       }
     },
@@ -535,6 +535,10 @@
     "notes": "Notes de livraison",
     "orderSummary": "Résumé de la commande",
     "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "gst": "TPS (5%)",
+    "qst": "TVQ (9.975%)",
+    "tax": "Taxes",
     "total": "Total",
     "pay": "Payer maintenant",
     "processing": "Traitement en cours..."

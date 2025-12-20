@@ -8,7 +8,11 @@ import Image from "next/image";
 const serviceCards = [
   { key: "studio", href: "/personnaliser", border: "border-navy" },
   { key: "quote", href: "/soumission", border: "border-navy-light" },
-  { key: "catalog", href: "/catalogue", border: "border-brand-gray-dark" },
+  {
+    key: "facebook",
+    href: "https://www.facebook.com/share/16gq2T7tHK/?mibextid=wwXIfr",
+    border: "border-brand-gray-dark",
+  },
 ] as const;
 
 export default async function HomePage({

@@ -345,12 +345,12 @@ export const DELIVERY_CONFIG = {
   standardPrice: 15.0, // $15 delivery fee
   freeShippingThreshold: 100.0, // Free delivery over $100
   pickupAddress: {
-    name: "Mon Impression",
-    street: "123 Rue Principal",
-    city: "Montréal",
-    province: "QC",
-    postalCode: "H1A 1A1",
-    hours: "Lun-Ven 9h-17h, Sam 10h-16h",
+    name: "Adresse de ramassage",
+    street: "581 rue Stéphanie",
+    city: "Saint-Lin",
+    province: "Qc",
+    postalCode: "J5M 2J5",
+    hours: "Sur rendez-vous seulement au 514.659.1137",
   },
 };
 

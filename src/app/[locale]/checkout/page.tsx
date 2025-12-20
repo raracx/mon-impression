@@ -36,7 +36,10 @@ export default function CheckoutPage() {
     subtotal < DELIVERY_CONFIG.freeShippingThreshold
       ? DELIVERY_CONFIG.standardPrice
       : 0;
-  const total = subtotal + deliveryPrice;
+  const gst = subtotal * 0.05;
+  const qst = subtotal * 0.09975;
+  const tax = gst + qst;
+  const total = subtotal + deliveryPrice + tax;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -394,7 +397,7 @@ export default function CheckoutPage() {
               <span>${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
-              <span>{t("delivery")}</span>
+              <span>{t("shipping")}</span>
               <span>
                 {formData.deliveryType === "pickup" ? (
                   <span className="text-green-600 font-semibold">FREE</span>
@@ -406,6 +409,14 @@ export default function CheckoutPage() {
                   </span>
                 )}
               </span>
+            </div>
+            <div className="flex justify-between">
+              <span>{t("gst")}</span>
+              <span>${gst.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>{t("qst")}</span>
+              <span>${qst.toFixed(2)}</span>
             </div>
             <div className="flex justify-between font-semibold">
               <span>{t("total")}</span>

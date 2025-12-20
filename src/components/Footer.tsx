@@ -28,9 +28,6 @@ export default function Footer() {
                   className="h-14 w-auto object-contain"
                 />
               </div>
-              <p className="text-gray-300 text-sm leading-relaxed">
-                {t("address")}
-              </p>
             </div>
 
             {/* Information Column */}

@@ -63,10 +63,10 @@
           "description": "Tell us about quantities, deadlines and needs; we reply quickly with clear pricing.",
           "cta": "Request a quote"
         },
-        "catalog": {
-          "title": "Ideas & models",
-          "description": "Browse the catalog to see what we print: hoodies, tees, mugs and more.",
-          "cta": "View catalog"
+        "facebook": {
+          "title": "Follow us",
+          "description": "Discover our latest creations and news on Facebook.",
+          "cta": "Visit our Facebook page"
         }
       }
     },
@@ -535,6 +535,10 @@
     "notes": "Delivery Notes",
     "orderSummary": "Order Summary",
     "subtotal": "Subtotal",
+    "shipping": "Delivery",
+    "gst": "GST (5%)",
+    "qst": "QST (9.975%)",
+    "tax": "Taxes",
     "total": "Total",
     "pay": "Pay Now",
     "processing": "Processing..."
