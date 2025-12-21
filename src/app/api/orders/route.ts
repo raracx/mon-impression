@@ -109,7 +109,12 @@ export async function POST(req: NextRequest) {
     }
     // Pickup is always free
 
-    const totalAmount = subtotal + deliveryPrice;
+    // Calculate taxes (Quebec rates)
+    const gst = subtotal * 0.05; // GST 5%
+    const qst = subtotal * 0.09975; // QST 9.975%
+    const tax = gst + qst;
+
+    const totalAmount = subtotal + deliveryPrice + tax;
     const amount = Math.round(totalAmount * 100); // Convert to cents
 
     // Create comprehensive design data
@@ -120,6 +125,11 @@ export async function POST(req: NextRequest) {
         price: deliveryPrice,
         address: delivery.address || null,
       },
+      taxes: {
+        gst,
+        qst,
+        total: tax,
+      },
       subtotal,
       totalAmount,
     });
@@ -129,6 +139,11 @@ export async function POST(req: NextRequest) {
       type: delivery.type,
       price: deliveryPrice,
       address: delivery.address || null,
+      taxes: {
+        gst,
+        qst,
+        total: tax,
+      },
       subtotal,
       totalAmount,
     });
