@@ -8,7 +8,8 @@ export default function ContactPage() {
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = new FormData(e.currentTarget);
+    const formElement = e.currentTarget;
+    const form = new FormData(formElement);
     setStatus(t("form.sending"));
     const res = await fetch("/api/forms/contact", {
       method: "POST",
@@ -17,7 +18,7 @@ export default function ContactPage() {
     });
     const json = await res.json();
     setStatus(json.ok ? t("form.sent") : t("form.error"));
-    if (json.ok) e.currentTarget.reset();
+    if (json.ok && formElement) formElement.reset();
   };
 
   return (
