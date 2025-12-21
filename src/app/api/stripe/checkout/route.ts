@@ -183,6 +183,26 @@ export async function POST(req: NextRequest) {
       ];
     }
 
+    // Add delivery fee line item if applicable
+    const deliveryPrice =
+      typeof deliveryInfo.price === "number" ? deliveryInfo.price : 0;
+    if (deliveryPrice > 0) {
+      line_items.push({
+        price_data: {
+          currency: "cad",
+          product_data: {
+            name: "🚚 Delivery",
+            description:
+              deliveryInfo.address && typeof deliveryInfo.address === "object"
+                ? `Delivery to ${(deliveryInfo.address as any).city || "your address"}`
+                : "Standard delivery",
+          },
+          unit_amount: Math.round(deliveryPrice * 100),
+        },
+        quantity: 1,
+      });
+    }
+
     // Add tax line items if taxes are present
     if (taxInfo.total > 0) {
       line_items.push({
