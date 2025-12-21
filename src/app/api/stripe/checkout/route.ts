@@ -17,10 +17,28 @@ export async function POST(req: NextRequest) {
 
     const amount = order.amount ?? 2500;
 
-    // Parse design_url to get order details
+    // Parse design_url to get order details (includes tax info)
     let orderDetails: Record<string, unknown> = {};
+    let taxInfo: { gst: number; qst: number; total: number } = {
+      gst: 0,
+      qst: 0,
+      total: 0,
+    };
     try {
       orderDetails = JSON.parse(order.design_url || "{}");
+      // Extract tax information if available
+      if (
+        orderDetails.taxes &&
+        typeof orderDetails.taxes === "object" &&
+        orderDetails.taxes !== null
+      ) {
+        const taxes = orderDetails.taxes as Record<string, unknown>;
+        taxInfo = {
+          gst: typeof taxes.gst === "number" ? taxes.gst : 0,
+          qst: typeof taxes.qst === "number" ? taxes.qst : 0,
+          total: typeof taxes.total === "number" ? taxes.total : 0,
+        };
+      }
     } catch (e) {
       console.error("Failed to parse design_url:", e);
     }
@@ -163,6 +181,33 @@ export async function POST(req: NextRequest) {
               : 1,
         },
       ];
+    }
+
+    // Add tax line items if taxes are present
+    if (taxInfo.total > 0) {
+      line_items.push({
+        price_data: {
+          currency: "cad",
+          product_data: {
+            name: "GST (5%)",
+            description: "Goods and Services Tax",
+          },
+          unit_amount: Math.round(taxInfo.gst * 100),
+        },
+        quantity: 1,
+      });
+
+      line_items.push({
+        price_data: {
+          currency: "cad",
+          product_data: {
+            name: "QST (9.975%)",
+            description: "Quebec Sales Tax",
+          },
+          unit_amount: Math.round(taxInfo.qst * 100),
+        },
+        quantity: 1,
+      });
     }
 
     const session = await stripe.checkout.sessions.create({
