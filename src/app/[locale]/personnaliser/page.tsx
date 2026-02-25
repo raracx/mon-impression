@@ -401,14 +401,14 @@ export default function PersonnaliserPage() {
 
                   const showTariffSelector = shouldUseTariffSelection(product);
 
-                  // Determine available tariff options based on number of sides
+                  // Determine available tariff options based on number of sides and defined pricing
                   const maxSides = product.availableSides.length;
                   const tariffOptions = [
                     {
                       id: "oneSide" as TariffOption,
                       label: "pricing.options.oneSide",
                     },
-                    ...(maxSides >= 2
+                    ...(maxSides >= 2 && product.pricing.twoSides !== undefined
                       ? [
                           {
                             id: "twoSides" as TariffOption,
@@ -416,7 +416,7 @@ export default function PersonnaliserPage() {
                           },
                         ]
                       : []),
-                    ...(maxSides >= 3
+                    ...(maxSides >= 3 && product.pricing.fullPrint !== undefined
                       ? [
                           {
                             id: "fullPrint" as TariffOption,
@@ -721,7 +721,7 @@ export default function PersonnaliserPage() {
                                 id: "oneSide" as TariffOption,
                                 label: "pricing.options.oneSide",
                               },
-                              ...(maxSides >= 2
+                              ...(maxSides >= 2 && product.pricing.twoSides !== undefined
                                 ? [
                                     {
                                       id: "twoSides" as TariffOption,
@@ -729,7 +729,7 @@ export default function PersonnaliserPage() {
                                     },
                                   ]
                                 : []),
-                              ...(maxSides >= 3
+                              ...(maxSides >= 3 && product.pricing.fullPrint !== undefined
                                 ? [
                                     {
                                       id: "fullPrint" as TariffOption,

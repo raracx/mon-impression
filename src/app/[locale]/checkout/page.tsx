@@ -36,8 +36,9 @@ export default function CheckoutPage() {
     subtotal < DELIVERY_CONFIG.freeShippingThreshold
       ? DELIVERY_CONFIG.standardPrice
       : 0;
-  const gst = subtotal * 0.05;
-  const qst = subtotal * 0.09975;
+  const taxableAmount = subtotal + deliveryPrice;
+  const gst = taxableAmount * 0.05;
+  const qst = taxableAmount * 0.09975;
   const tax = gst + qst;
   const total = subtotal + deliveryPrice + tax;
 

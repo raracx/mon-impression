@@ -109,9 +109,10 @@ export async function POST(req: NextRequest) {
     }
     // Pickup is always free
 
-    // Calculate taxes (Quebec rates)
-    const gst = subtotal * 0.05; // GST 5%
-    const qst = subtotal * 0.09975; // QST 9.975%
+    // Calculate taxes (Quebec rates - applies to subtotal + delivery)
+    const taxableAmount = subtotal + deliveryPrice;
+    const gst = taxableAmount * 0.05; // GST 5%
+    const qst = taxableAmount * 0.09975; // QST 9.975%
     const tax = gst + qst;
 
     const totalAmount = subtotal + deliveryPrice + tax;

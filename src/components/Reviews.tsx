@@ -25,7 +25,7 @@ const reviews: Review[] = [
   {
     id: "r2",
     name: "Marie-Eve",
-    text: "Wow superbe verre et livraison super rapide. Merci beaucoup ❤",
+    text: "Wow superbe et livraison super rapide. Merci beaucoup ❤",
     image: "/testimonial/image1.png",
     rating: 5,
   },
@@ -38,14 +38,14 @@ const reviews: Review[] = [
   },
   {
     id: "r4",
-    name: "Antoine",
+    name: "Isabelle",
     text: "Qualité d'impression top et super service après-vente.",
     image: "/testimonial/image3.png",
     rating: 5,
   },
   {
     id: "r5",
-    name: "Sophie",
+    name: "Étienne",
     text: "Commande personnalisée parfaite pour mon événement. Recommande fortement!",
     image: "/testimonial/image4.png",
     rating: 5,
@@ -59,7 +59,7 @@ const reviews: Review[] = [
   },
   {
     id: "r7",
-    name: "Camille",
+    name: "Éric",
     text: "Un grand merci pour vos idées cadeaux originales!",
     image: "/testimonial/image6.png",
     rating: 5,
@@ -80,7 +80,7 @@ const reviews: Review[] = [
   },
   {
     id: "r10",
-    name: "Mélanie",
+    name: "François",
     text: "Impression de qualité et conseils utiles pour mon design.",
     image: "/testimonial/image9.png",
     rating: 5,

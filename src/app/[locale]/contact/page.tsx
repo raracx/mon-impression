@@ -25,7 +25,12 @@ export default function ContactPage() {
     <div className="container-page py-10 grid md:grid-cols-2 gap-10">
       <div>
         <h1 className="text-2xl font-semibold mb-4">{t("title")}</h1>
-        <p className="text-brand-gray-dark">{t("addressLine")}</p>
+        <p className="text-brand-gray-dark">
+          Par téléphone ou SMS au{" "}
+          <a href="tel:5146591137" className="font-semibold text-navy hover:underline">
+            (514) 659-1137
+          </a>
+        </p>
         <form className="card p-6 mt-6 space-y-4" onSubmit={submit}>
           <input
             name="name"
@@ -54,13 +59,6 @@ export default function ContactPage() {
             <div className="text-sm text-brand-gray-dark">{status}</div>
           )}
         </form>
-      </div>
-      <div className="card overflow-hidden">
-        <iframe
-          title={t("mapTitle")}
-          src="https://www.google.com/maps?q=7077%20Blvd.%20Newman%20LaSalle%20QC%20H8N%201X1&output=embed"
-          className="w-full h-[360px]"
-        />
       </div>
     </div>
   );

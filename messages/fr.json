@@ -258,8 +258,11 @@
   },
   "about": {
     "title": "À propos de Mon Impression",
-    "p1": "Nous sommes fiers de personnaliser vos vêtements et accessoires. Démarrée avec l’impression de t-shirts, notre équipe couvre aujourd’hui tout ce qui est imprimable, avec une qualité constante et des délais rapides.",
-    "p2": "Venez en boutique ou utilisez notre outil en ligne pour créer le produit parfait."
+    "p1": "Mon Impression est une entreprise familiale de Lanaudière, établie à Saint-Lin–Laurentides, spécialisée dans la personnalisation de vêtements et d’objets promotionnels.",
+    "p2": "Notre objectif est d’offrir aux entreprises et aux particuliers des solutions de qualité, adaptées à leur image et à leurs besoins. Nous croyons qu’une marque forte commence par une identité visuelle bien présentée.",
+    "p3": "Plutôt que de suivre les grandes tendances, nous encourageons la création de votre propre style et le développement de votre propre marque.",
+    "p4": "Un service personnalisé, une approche humaine et une attention aux détails font partie de notre engagement.",
+    "p5": "Merci de soutenir une entreprise locale."
   },
   "privacy": {
     "title": "Politique de Confidentialité",
